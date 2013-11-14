@@ -794,6 +794,7 @@ public class DatabaseProcess {
 	public static void closeConnection(){
 		
 		try {
+          System.out.println("closing connection");
 			conn.close();
 		} catch (SQLException e) {
 			System.out.println("error closing connection within process class");

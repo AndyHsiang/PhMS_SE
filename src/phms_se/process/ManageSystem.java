@@ -24,10 +24,9 @@ public class ManageSystem {
 	public static boolean shutDown(String username, String pass){
 		
 		String position = checkPosition(username, pass);
-		
 		if(position.equals("manager")){
 			DatabaseProcess.closeConnection();
-			System.exit(0);
+            System.out.println("connection closed successfully");
 			return true;
 		}
 		return false;

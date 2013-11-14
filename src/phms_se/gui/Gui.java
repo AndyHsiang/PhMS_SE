@@ -168,19 +168,19 @@ public class Gui extends JFrame implements ActionListener{
 		 * only manager can shut the system down
 		 */
 		if(e.getSource()==exit){
-			String user=null, pass=null;
 			if(Credentials.UserInputs()){
-				user=Credentials.getUser().getText();
-				pass=Credentials.getPass().getText();
-			}
-			if(currentUser!=null && ManageSystem.shutDown(currentUser.getUsername(), currentUser.getPass()))
-				System.out.println("shutdown successful");
-			else{
-				if(ManageSystem.shutDown(user, pass))
-					System.out.println("shutdown successful");
-				else
-					System.out.println("no access right");		
-			}
+				String user=Credentials.getUser().getText();
+				String pass=Credentials.getPass().getText();
+                
+                if(ManageSystem.shutDown(user, pass)){
+                System.out.println("exiting the system ...");
+                System.exit(0);
+                }else{
+                  System.out.println("Only manager may shutdown the system!");
+                }
+            }else{
+              System.out.println("wrong input");
+            }
 		}
 		if(e.getSource()==menuP.getPatientButton()){
 			getContentPane().removeAll();
@@ -355,23 +355,32 @@ public class Gui extends JFrame implements ActionListener{
 		 * only manager can shut down the system
 		 */
 		else if(e.getSource()==systemP.getSystemExitButton()){
-			String user=null, pass=null;
-			if(Credentials.UserInputs()){
-				user=Credentials.getUser().getText();
-				pass=Credentials.getPass().getText();
-			}
-			String position = currentUser.getPosition().toLowerCase();
-			if(position.equals("manager")){
-				ManageSystem.shutDown(currentUser.getUsername(), currentUser.getPass());
-			}else{
-
-				ManageSystem.shutDown(user, pass);
-			} 
+			if(currentUser!=null){
+              if(ManageSystem.shutDown(currentUser.getUsername(), currentUser.getPass())){
+                System.out.println("exiting the system ...");
+                System.exit(0);
+              }
+            }
+            
+            if(Credentials.UserInputs()){
+				String user=Credentials.getUser().getText();
+				String pass=Credentials.getPass().getText();
+                
+                if(ManageSystem.shutDown(user, pass)){
+                System.out.println("exiting the system ...");
+                System.exit(0);
+                }else{
+                  System.out.println("Only manager may shutdown the system! check your credential...");
+                }
+            }else{
+              System.out.println("shutdown canceled");
+            }           
 		}
 		else if(e.getSource()==systemP.getLogout()){
 			System.out.println("logout pressed");
 			getContentPane().removeAll();
 			getContentPane().add(picLabel);
+            currentUser=null;
 			userField.setText("");
 			passField.setText("");
 			revalidate();
@@ -379,7 +388,7 @@ public class Gui extends JFrame implements ActionListener{
 		}
 	}		
 
-	public static Employee getCurrentUser() {
+	public static Employee getCurrentUser(){
 		return currentUser;
 	}
 
