@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 import phms_se.database.bean.Drug;
 import phms_se.database.bean.Employee;
 import phms_se.database.bean.Patient;
@@ -44,6 +46,7 @@ public class DatabaseProcess {
 				rs = stmt.executeQuery(sql);
 				displayEmployees(rs);
 			}
+			
 			else if(tableName.toLowerCase().equals("drugs")){
 				sql = "SELECT * FROM DRUGS";
 				rs = stmt.executeQuery(sql);
@@ -59,6 +62,7 @@ public class DatabaseProcess {
 				rs = stmt.executeQuery(sql);
 				displaySchedules(rs);
 			}
+			
 		}catch(SQLException e){
 			System.out.println("sql exception in display()");
 			System.out.println(e);
@@ -96,6 +100,20 @@ public class DatabaseProcess {
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
 		}
+	}
+	public static ArrayList<String> getEmployeeNames()throws SQLException{
+		Statement stmt =  conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		String sql= "SELECT * FROM EMPLOYEES";
+		ResultSet rs1 = stmt.executeQuery(sql);
+		ArrayList<String> names= new ArrayList<String>();
+		int i=0;
+		while(rs1.next()){
+			
+			names.add(i,rs1.getString("name"));
+			i++;
+		}
+		return names;
+		
 	}
 	
 	private static void displayDrugs(ResultSet rs) throws SQLException{
@@ -794,7 +812,6 @@ public class DatabaseProcess {
 	public static void closeConnection(){
 		
 		try {
-          System.out.println("closing connection");
 			conn.close();
 		} catch (SQLException e) {
 			System.out.println("error closing connection within process class");

@@ -54,11 +54,11 @@ public class spatientPanel extends JPanel{
 		back.addActionListener(frame);
 		
 		//stuff
-		this.warning = new JLabel ("Warning");
-		c.insets = new Insets(20,20,0,0);
+		this.warning = new JLabel (" ");
+		c.insets = new Insets(20,0,0,0);
 		c.gridx=0;
 		c.gridy=0;
-		c.gridwidth=1;
+		c.gridwidth=2;
 		picLabel.add(warning,c);
 		warning.setForeground(Color.red);
 	}
@@ -76,6 +76,10 @@ public class spatientPanel extends JPanel{
 	}
 	public void setEnterPatient(JTextField enterPatient) {
 		this.enterPatient = enterPatient;
+	}
+	public void setWarningLabel(String label){
+		this.warning.setText(label);
+		
 	}
 }
 

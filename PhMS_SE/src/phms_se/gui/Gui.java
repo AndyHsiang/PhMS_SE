@@ -3,10 +3,12 @@ package phms_se.gui;
 
 import javax.swing.*;
 
+import phms_se.database.DatabaseProcess;
 import phms_se.database.bean.Drug;
 import phms_se.database.bean.Employee;
 import phms_se.database.bean.Patient;
 import phms_se.process.ManageDrug;
+import phms_se.process.ManageEmployee;
 import phms_se.process.ManagePatient;
 import phms_se.process.ManageSystem;
 import phms_se.process.helper.Credentials;
@@ -15,6 +17,7 @@ import phms_se.process.helper.InputChecker;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @SuppressWarnings("serial")
 public class Gui extends JFrame implements ActionListener{
@@ -40,6 +43,7 @@ public class Gui extends JFrame implements ActionListener{
 	private RestockPage restockP;
 	private SystemsPage systemP;
 	private ManageEmployeePage employeePage;
+	private NewEmployeePage newEmployee;
 	final static boolean shouldFill=true;
 	final static boolean shouldWeightx=true;
 	final static boolean RIGHT_TO_LEFT=false;
@@ -92,10 +96,6 @@ public class Gui extends JFrame implements ActionListener{
 		picLabel.add(passField, c);
 		
 		
-		//Hey it's Kenny, I have no clue what you want with this warning so I just put it under the Login button for now
-		//Right now I just made it say warning so you can see where it'll be on the login page
-		//Change it however you like
-		//
 		warning = new JLabel(" ");
 		password.setFont(new Font("Comic Sans",Font.BOLD, 14));
 		c.fill=GridBagConstraints.HORIZONTAL;
@@ -149,6 +149,7 @@ public class Gui extends JFrame implements ActionListener{
 		this.nDrugP=new NewDrugPage(this);
 		this.systemP=new SystemsPage(this);
 		this.employeePage=new ManageEmployeePage(this);
+		this.newEmployee=new NewEmployeePage(this);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -168,19 +169,19 @@ public class Gui extends JFrame implements ActionListener{
 		 * only manager can shut the system down
 		 */
 		if(e.getSource()==exit){
+			String user=null, pass=null;
 			if(Credentials.UserInputs()){
-				String user=Credentials.getUser().getText();
-				String pass=Credentials.getPass().getText();
-                
-                if(ManageSystem.shutDown(user, pass)){
-                System.out.println("exiting the system ...");
-                System.exit(0);
-                }else{
-                  System.out.println("Only manager may shutdown the system!");
-                }
-            }else{
-              System.out.println("wrong input");
-            }
+				user=Credentials.getUser().getText();
+				pass=Credentials.getPass().getText();
+			}
+			if(currentUser!=null && ManageSystem.shutDown(currentUser.getUsername(), currentUser.getPass()))
+				System.out.println("shutdown successful");
+			else{
+				if(ManageSystem.shutDown(user, pass))
+					System.out.println("shutdown successful");
+				else
+					System.out.println("no access right");		
+			}
 		}
 		if(e.getSource()==menuP.getPatientButton()){
 			getContentPane().removeAll();
@@ -218,6 +219,8 @@ public class Gui extends JFrame implements ActionListener{
 					revalidate();
 					repaint();
 				}
+			}else{
+				spatientP.setWarningLabel("Patient not found.");
 			}
 		}
 		else if(e.getSource()==pProfileP.getfillButton()){
@@ -244,12 +247,22 @@ public class Gui extends JFrame implements ActionListener{
 			if(currentUser.getPosition().toLowerCase().equals("manager")){
 				getContentPane().removeAll();
 				getContentPane().add(employeePage);
+				try {
+					ManageEmployee.fillEmployeeTable(employeePage);
+				} catch (SQLException e1) {
+					
+				}
 				revalidate();
 				repaint();
 			}else{
 				if(ManageSystem.canAccess(ManageSystem.checkPosition(user, pass),"employee")){
 					getContentPane().removeAll();
 					getContentPane().add(employeePage);
+					try {
+						ManageEmployee.fillEmployeeTable(employeePage);
+					} catch (SQLException e1) {
+						
+					}
 					revalidate();
 					repaint();
 				}else
@@ -298,6 +311,7 @@ public class Gui extends JFrame implements ActionListener{
 			getContentPane().add(menuP);
 			revalidate();
 			repaint();
+			spatientP.setWarningLabel("");
 		}
 		else if(e.getSource()==drugP.getBackButton()){
 			getContentPane().removeAll();
@@ -320,12 +334,14 @@ public class Gui extends JFrame implements ActionListener{
 			getContentPane().add(spatientP);
 			revalidate();
 			repaint();
+			spatientP.setWarningLabel("");
 		}
 		else if(e.getSource()==pProfileP.getExitButton()){
 			getContentPane().removeAll();
 			getContentPane().add(spatientP);
 			revalidate();
 			repaint();
+			spatientP.setWarningLabel("");
 		}
 		else if(e.getSource()==fillP.getCancelButton()){
 			getContentPane().removeAll();
@@ -355,40 +371,50 @@ public class Gui extends JFrame implements ActionListener{
 		 * only manager can shut down the system
 		 */
 		else if(e.getSource()==systemP.getSystemExitButton()){
-			if(currentUser!=null){
-              if(ManageSystem.shutDown(currentUser.getUsername(), currentUser.getPass())){
-                System.out.println("exiting the system ...");
-                System.exit(0);
-              }
-            }
-            
-            if(Credentials.UserInputs()){
-				String user=Credentials.getUser().getText();
-				String pass=Credentials.getPass().getText();
-                
-                if(ManageSystem.shutDown(user, pass)){
-                System.out.println("exiting the system ...");
-                System.exit(0);
-                }else{
-                  System.out.println("Only manager may shutdown the system! check your credential...");
-                }
-            }else{
-              System.out.println("shutdown canceled");
-            }           
+			String user=null, pass=null;
+			if(Credentials.UserInputs()){
+				user=Credentials.getUser().getText();
+				pass=Credentials.getPass().getText();
+			}
+			String position = currentUser.getPosition().toLowerCase();
+			if(position.equals("manager")){
+				ManageSystem.shutDown(currentUser.getUsername(), currentUser.getPass());
+			}else{
+
+				ManageSystem.shutDown(user, pass);
+			} 
 		}
 		else if(e.getSource()==systemP.getLogout()){
 			System.out.println("logout pressed");
 			getContentPane().removeAll();
 			getContentPane().add(picLabel);
-            currentUser=null;
 			userField.setText("");
 			passField.setText("");
 			revalidate();
 			repaint();
 		}
+		else if(e.getSource()==employeePage.getBack()){			
+			getContentPane().removeAll();
+			getContentPane().add(menuP);
+			revalidate();
+			repaint();
+		}
+		else if(e.getSource()==employeePage.getAdd()){			
+			getContentPane().removeAll();
+			getContentPane().add(newEmployee);
+			revalidate();
+			repaint();
+		}
+		else if(e.getSource()==newEmployee.getCancel()){
+			getContentPane().removeAll();
+			getContentPane().add(employeePage);
+			revalidate();
+			repaint();
+		}
+		
 	}		
 
-	public static Employee getCurrentUser(){
+	public static Employee getCurrentUser() {
 		return currentUser;
 	}
 
@@ -404,6 +430,8 @@ public class Gui extends JFrame implements ActionListener{
 		frame = new Gui();
 		frame.createPages();
 		frame.addFirstPage();
+		
+//      Connection conn = ConnectionManager.getInstance().getConnection();
 	}			 
 }
 

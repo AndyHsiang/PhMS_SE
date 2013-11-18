@@ -36,8 +36,6 @@ public class ManageDrug {
 		String effects=bean.getSideEffect();
 		drugInv.setEffectsText(effects);
 		
-		System.out.println(general);
-		
 		boolean flag=bean.getControlFlag();
 		drugInv.getTable().setValueAt(flag, 1, 2);
 

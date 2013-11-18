@@ -5,6 +5,7 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class NewPatientPage extends JPanel {
+	
 	private JTextField fName;
 	private JTextField lName;
 	private JTextField DoB;
