@@ -392,6 +392,7 @@ public class Gui extends JFrame implements ActionListener{
 			revalidate();
 			repaint();
 		}
+        
 		else if(e.getSource()==employeePage.getBack()){			
 			getContentPane().removeAll();
 			getContentPane().add(menuP);
