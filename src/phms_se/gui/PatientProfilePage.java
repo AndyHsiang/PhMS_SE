@@ -3,6 +3,7 @@ package phms_se.gui;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 
 @SuppressWarnings("serial")
@@ -101,7 +102,7 @@ public class PatientProfilePage extends JPanel{
 				c.gridwidth=2;
 				picLabel.add(drugHist,c);
 				String[] dcolumnName={"Drug History" };
-				Object[][] ddata={{"diiiiiiiiiiiicks"},{11},{1},{1},{1},{1},{1},{1}};
+				Object[][] ddata={{1},{11},{1},{1},{1},{1},{1},{1}};
 				JTable drugHistory = new JTable(ddata, dcolumnName);
 				drugHistory.setRowHeight(25);
 				drugHistory.setPreferredSize(new Dimension(200,200 ));
@@ -109,6 +110,9 @@ public class PatientProfilePage extends JPanel{
 				c.gridy=1;
 				c.gridheight=7;
 				picLabel.add(drugHistory,c);
+				 drugHistory.setBackground(Color.decode("#CCEEEE"));
+				 Border border = BorderFactory.createLineBorder(Color.black);
+				 drugHistory.setBorder(border);
 	
 	
 	String[] columnNames={"FirstName", "LastName", "Sport", "#ofYears", "hey" };
@@ -121,6 +125,9 @@ public class PatientProfilePage extends JPanel{
 	c.gridy=8;
 	c.gridwidth=4;
 	picLabel.add(table,c);
+	 table.setBackground(Color.decode("#CCEEEE"));
+	 Border border2 = BorderFactory.createLineBorder(Color.black);
+	 table.setBorder(border2);
 	
 }
 	   JButton getfillButton() {

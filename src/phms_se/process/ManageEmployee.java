@@ -1,8 +1,13 @@
 package phms_se.process;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import phms_se.database.DatabaseProcess;
 import phms_se.database.bean.Employee;
 import phms_se.database.bean.Schedule;
 import phms_se.gui.ManageEmployeePage;
+
 
 /**
  * @author Andy Hsiang
@@ -61,13 +66,12 @@ public class ManageEmployee {
 		
 	}
 	
-//	public static void fillEmployeeTable (ManageEmployeePage manageEmp) throws SQLException{
-//		String value = null;
-//		ArrayList<String> names=new ArrayList<String>();
-//		names= DatabaseProcess.getEmployeeNames();
-//		for(int i =0;i<names.size();i++){
-//			value= names.get(i);
-//		manageEmp.getTable().setValueAt(value, i, 0);
-//        }
-//	}
+	public static void fillEmployeeTable (ManageEmployeePage manageEmp){
+		String value = null;
+		ArrayList<String> names=new ArrayList<String>();
+		names= DatabaseProcess.getEmployeeNames();
+		for(int i =0;i<names.size();i++){
+			value= names.get(i);
+		manageEmp.getTable().setValueAt(value, i, 0);}
+	}
 }

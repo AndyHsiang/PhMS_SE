@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import phms_se.database.bean.Drug;
 import phms_se.database.bean.Employee;
 import phms_se.database.bean.Patient;
@@ -96,6 +100,32 @@ public class DatabaseProcess {
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
 		}
+	}
+	public static ArrayList<String> getEmployeeNames(){
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql= "SELECT * FROM EMPLOYEES";
+        ArrayList<String> names=null;
+      try {
+        stmt =  conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);	
+        rs = stmt.executeQuery(sql);
+		names= new ArrayList<String>();
+		int i=0;
+		while(rs.next()){		
+			names.add(i,rs.getString("name"));
+			i++;
+		}  
+      } catch (SQLException ex) {
+        Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
+      }	finally{
+          try {
+            if(rs!=null) rs.close();
+            if(stmt!=null) stmt.close();
+          } catch (SQLException ex) {
+            Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }
+		return names;		
 	}
 	
 	private static void displayDrugs(ResultSet rs) throws SQLException{
