@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -37,10 +38,12 @@ private JTable currentEmployees;
 private JButton addNew;
 private JButton remove;
 private JButton back;
+private JButton modify;
 private JPanel subpanel;
 private JPanel currentpanel;
 private JPanel currentEmployeeP;
 private JPanel buttonPanel;
+private JScrollPane tablePane;
 
 	
 	public ManageEmployeePage(Gui frame){
@@ -85,7 +88,7 @@ private JPanel buttonPanel;
 		
 		
 		this.currentEmployeeP=new JPanel();
-		currentEmployeeP.setPreferredSize(new java.awt.Dimension(400, 260));
+		currentEmployeeP.setPreferredSize(new java.awt.Dimension(400, 350));
 		c.gridx=0;
 		c.gridy=1;
 		currentEmployeeP.setOpaque(false);	
@@ -115,7 +118,10 @@ private JPanel buttonPanel;
 		 c.gridy=3;
 		 back.addActionListener(frame);
 		 buttonPanel.add(back, c);
-		
+		 this.modify=new JButton("Modify");
+		 c.gridx=4;
+		 c.gridy=3;
+		 buttonPanel.add(modify, c);
 		this.currentEmp=new JLabel("Current Employees");
 		currentEmp.setFont(new Font("Comic Sans",Font.BOLD, 18));
 		c.insets= new Insets(0,0,10,0);
@@ -125,20 +131,23 @@ private JPanel buttonPanel;
 		c.gridwidth=2;
 		currentEmployeeP.add(currentEmp,c);
 		
-		 String[] dcolumnName={"Current Employees" };
-		 Object[][] ddata={{""},{""},{""},{""},{""},{""},{""},{""}};
+		 String[] dcolumnName={"Current Employees","Username" };
+		 Object[][] ddata={{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""}};
 		 currentEmployees = new JTable(ddata, dcolumnName);
 		 currentEmployees.setRowHeight(25);
-		 currentEmployees.setPreferredSize(new Dimension(200,200 ));
+		 currentEmployees.setPreferredSize(new Dimension(280,250));
 		 c.insets= new Insets(0,0,0,0);
 		 c.gridx=0;
 		 c.gridy=1;
-		 currentEmployeeP.add(currentEmployees,c);
+		// currentEmployeeP.add(currentEmployees,c);
 		 currentEmployees.setGridColor(Color.black);
 		 currentEmployees.setBackground(Color.decode("#CCEEEE"));
 		 Border border = BorderFactory.createLineBorder(Color.black);
 		 currentEmployees.setBorder(border);
-		 
+		 this.tablePane=new JScrollPane(currentEmployees);
+		
+		 tablePane.setPreferredSize(new Dimension(280,250 ));
+		 currentEmployeeP.add(tablePane,c);
 		 currentpanel.setLayout(new GridBagLayout());
 
 		 this.currentSel = new JLabel("Current Selection");

@@ -18,6 +18,9 @@ public class NewDrugPage extends JPanel {
 	private JButton submit;
 	private JScrollPane i;
 	private JScrollPane j;
+	private JRadioButton yes;
+	private JRadioButton no;
+	private ButtonGroup radioButtonGroup;
 	NewDrugPage(Gui frame){
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -97,6 +100,18 @@ public class NewDrugPage extends JPanel {
 				 c.gridy=3;
 				 c.gridwidth=1;
 				 picLabel.add(j,c);
+				 this.yes=new JRadioButton("yes");
+				 c.insets= new Insets(0,0,20,100);
+				 c.gridx=1;
+				 c.gridy=4;
+				 c.gridwidth=2;
+				 picLabel.add(yes,c);
+				 this.no=new JRadioButton("no");
+				 c.insets= new Insets(0,50,20,0);
+				 picLabel.add(no,c);
+				 radioButtonGroup = new ButtonGroup();
+			        radioButtonGroup.add(yes);
+			        radioButtonGroup.add(no);
 
 				 this.controlledL = new JLabel ("Controlled Substance:");
 				 controlledL.setFont(new Font("Comic Sans",Font.BOLD, 15));
@@ -105,16 +120,7 @@ public class NewDrugPage extends JPanel {
 				 c.gridy=4;
 				 c.gridwidth=1;
 				 picLabel.add(controlledL,c);
-				 this.controlledT= new JTextField(20);
-				 c.insets= new Insets(0,0,20,0);
-				 controlledT.setFont(new Font("Comic Sans",Font.BOLD, 15));
-				 c.gridx=1;
-				 c.gridy=4;
-				 c.gridwidth=1;
-				 picLabel.add(controlledT,c);
-				 
-				 
-				 this.submit = new JButton ("Submit");
+				this.submit = new JButton ("Submit");
 				  submit.setPreferredSize(new Dimension(100, 40));
 
 				 c.insets= new Insets(0,0,0,0);

@@ -113,8 +113,10 @@ public class DatabaseProcess {
 		int i=0;
 		while(rs.next()){		
 			names.add(i,rs.getString("name"));
+			names.add(++i,rs.getString("username"));
 			i++;
 		}  
+		System.out.println(names);
       } catch (SQLException ex) {
         Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
       }	finally{

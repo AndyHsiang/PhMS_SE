@@ -22,6 +22,9 @@ public class PatientProfilePage extends JPanel{
 	private JButton fillPrescription;
 	private JButton removePrescription;
 	private JButton exitProfile;
+	private JButton modify;
+	private JButton remove;
+	private JScrollPane tablePane;
 	 PatientProfilePage(Gui frame){
 		 GridBagConstraints c = new GridBagConstraints();
 			JLabel picLabel=new JLabel();
@@ -79,14 +82,28 @@ public class PatientProfilePage extends JPanel{
 				c.insets= new Insets(20,0,0,0);
 				c.gridx=0;
 				c.gridy=5;
-				c.gridwidth=2;
+				c.gridwidth=1;
 				fillPrescription.setPreferredSize(new Dimension(155, 35));
 				picLabel.add(fillPrescription, c);
 				fillPrescription.addActionListener(frame);
-				this.removePrescription= new JButton("Remove Prescription");
-				
-				
+				this.modify= new JButton("Modify");
+				c.insets= new Insets(20,0,0,0);
+				c.gridx=1;
+				c.gridy=5;
+				c.gridwidth=1;
+				modify.setPreferredSize(new Dimension(155, 35));
+				picLabel.add(modify, c);
+				this.remove= new JButton("Remove Patient");
+				c.insets= new Insets(20,0,0,0);
+				c.gridx=1;
 				c.gridy=6;
+				c.gridwidth=1;
+				remove.setPreferredSize(new Dimension(155, 35));
+				picLabel.add(remove, c);
+				this.removePrescription= new JButton("Remove Prescription");
+				c.gridy=6;
+				c.gridx=0;
+				c.gridwidth=1;
 				removePrescription.setPreferredSize(new Dimension(155, 35));
 				picLabel.add(removePrescription, c);
 				this.exitProfile= new JButton("Exit Patient Profile");
@@ -113,21 +130,23 @@ public class PatientProfilePage extends JPanel{
 				 drugHistory.setBackground(Color.decode("#CCEEEE"));
 				 Border border = BorderFactory.createLineBorder(Color.black);
 				 drugHistory.setBorder(border);
-	
-	
-	String[] columnNames={"FirstName", "LastName", "Sport", "#ofYears", "hey" };
-	Object[][] data={{"Prescription Number","Drug Name","Dose","Date Filled","Refills rm"},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1}};
+				 
+	String[] columnNames={"Prescription Number","Drug Name","Dose","Date Filled","Refills rm"};
+	Object[][] data={{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1}};
 	JTable table = new JTable(data, columnNames);
-	table.setPreferredSize(new Dimension(650,100 ));
+	table.setPreferredSize(new Dimension(650,500 ));
 	table.setRowHeight(20);
 	c.insets= new Insets(20,0,0,0);
 	c.gridx=0;
 	c.gridy=8;
 	c.gridwidth=4;
-	picLabel.add(table,c);
+	//picLabel.add(table,c);
 	 table.setBackground(Color.decode("#CCEEEE"));
 	 Border border2 = BorderFactory.createLineBorder(Color.black);
 	 table.setBorder(border2);
+	 this.tablePane=new JScrollPane(table);
+	 tablePane.setPreferredSize(new Dimension(650,150 ));
+	 picLabel.add(tablePane,c);
 	
 }
 	   JButton getfillButton() {

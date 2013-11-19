@@ -7,7 +7,6 @@ import javax.swing.*;
 public class NewPatientPage extends JPanel {
 	private JTextField fName;
 	private JTextField lName;
-	private JTextField DoB;
 	private JTextField doctor;
 	private JTextField phone;
 	private JTextField address;
@@ -19,6 +18,9 @@ public class NewPatientPage extends JPanel {
 	private JLabel addressL;
 	private JButton cancel;
 	private JButton submit;
+	private JComboBox day;
+	private JComboBox month;
+	private JComboBox year;
 	
 	NewPatientPage(Gui frame){
 		
@@ -64,13 +66,41 @@ public class NewPatientPage extends JPanel {
 		c.gridy=2;
 		c.gridwidth=1;
 		picLabel.add(DoBL,c);
-		this.DoB= new JTextField(15);
+		/*this.DoB= new JTextField(15);
 		c.insets= new Insets(0,0,20,0);
 		DoB.setFont(new Font("Comic Sans",Font.BOLD, 15));
 		c.gridx=2;
 		c.gridy=2;
 		c.gridwidth=1;
-		picLabel.add(DoB,c);
+		picLabel.add(DoB,c);*/
+		String[] monthBox = {"January","February","March","April","May","June","July","August","September","October","November","December"};
+		this.month=new JComboBox(monthBox);
+		c.insets= new Insets(0,0,20,100);
+		c.gridx=2;
+		c.gridy=2;
+		c.gridwidth=1;
+		picLabel.add(month,c);
+		String[] dayBox={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+		this.day=new JComboBox(dayBox);
+		c.insets= new Insets(0,35,20,0);
+		c.gridx=2;
+		c.gridy=2;
+		c.gridwidth=1;
+		picLabel.add(day,c);
+		String[] yearBox = new String[100];
+		int years=2013;
+		for(int i=0;i<100;i++){
+			
+			yearBox[i]=""+years;
+			years--;
+		}
+		System.out.println(yearBox[2]);
+		this.year=new JComboBox(yearBox);
+		c.insets= new Insets(0,130,20,0);
+		c.gridx=2;
+		c.gridy=2;
+		c.gridwidth=1;
+		picLabel.add(year,c);
 		this.doctorL = new JLabel ("Primary Doctor:");
 		doctorL.setFont(new Font("Comic Sans",Font.BOLD, 15));
 		c.insets= new Insets(0,0,20,0);
@@ -145,9 +175,9 @@ public class NewPatientPage extends JPanel {
 		return lName;
 	}
 
-	public JTextField getDoB() {
+	/*public JTextField getDoB() {
 		return DoB;
-	}
+	}*/
 
 	public JTextField getDoctor() {
 		return doctor;
@@ -155,6 +185,39 @@ public class NewPatientPage extends JPanel {
 
 	public JTextField getPhone() {
 		return phone;
+	}
+	public JComboBox getYear(){
+		return year;
+	}
+	public JComboBox getMonth(){
+		return month;
+	}
+	public JComboBox getDay(){
+		return day;
+	}
+	public String getDob(){
+		String year= getYear().getSelectedItem().toString();
+		String month=getMonth().getSelectedItem().toString();
+		String day=getDay().getSelectedItem().toString();
+		
+		switch(month){
+		 case "January": month="01";break;
+		 case "February": month="02";break;
+		 case "March": month="03";break;
+		 case "April": month="04";break;
+		 case "May": month="05";break;
+		 case "June": month="06";break;
+		 case "July": month="07";break;
+		 case "August": month="08";break;
+		 case "September": month="09";break;
+		 case "October": month="10";break;
+		 case "November": month="11";break;
+		 case "December": month="12";break;}
+		 String DoB= year+"-"+day +"-"+ month;
+	return DoB;
+
+		
+		
 	}
 
 	public JTextField getAddress() {

@@ -67,11 +67,14 @@ public class ManageEmployee {
 	}
 	
 	public static void fillEmployeeTable (ManageEmployeePage manageEmp){
-		String value = null;
+		String realname = null;
+		String username=null;
 		ArrayList<String> names=new ArrayList<String>();
 		names= DatabaseProcess.getEmployeeNames();
-		for(int i =0;i<names.size();i++){
-			value= names.get(i);
-		manageEmp.getTable().setValueAt(value, i, 0);}
+		for(int i =0,j=0;i<names.size();i++,j++){
+			realname= names.get(i);
+			manageEmp.getTable().setValueAt(realname, j, 0);
+			username=names.get(++i);
+		manageEmp.getTable().setValueAt(username, j, 1);}
 	}
 }

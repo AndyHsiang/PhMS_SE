@@ -427,8 +427,10 @@ public class Gui extends JFrame implements ActionListener{
 
 	public static void main(String args[]) throws IOException{	   			
 		frame = new Gui();
+		frame.setLocationRelativeTo ( null );
 		frame.createPages();
 		frame.addFirstPage();
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}			 
 }
 

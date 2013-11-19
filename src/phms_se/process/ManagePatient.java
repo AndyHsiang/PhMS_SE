@@ -89,13 +89,15 @@ public class ManagePatient {
 		return false;
 	}
 	public static boolean addNewPatient(NewPatientPage newPatient){
-		String[] d = newPatient.getDoB().getText().split("[-\\s\\:,]");
+		String s=newPatient.getDob();
+		String[] d = s.split("[-\\s\\:,]");
+		
 		int year = Integer.parseInt(d[0]);
 		int month = Integer.parseInt(d[1]);
 		int day = Integer.parseInt(d[2]);
 		@SuppressWarnings("deprecation")
 		Date dob = new Date(year, month, day);
-		
+		System.out.println(dob);
 		Patient newPat = new Patient();
 		newPat.setFirstName(newPatient.getfName().getText());
 		newPat.setLastName(newPatient.getlName().getText());
@@ -111,6 +113,8 @@ public class ManagePatient {
 	 * @return
 	 */
 	public static boolean verifyNewPatient(NewPatientPage newPatient){
+		
+		
 		Patient patient = new Patient();
 		if(InputChecker.name(newPatient.getfName().getText())){
 			patient.setFirstName(newPatient.getfName().getText());
@@ -122,8 +126,8 @@ public class ManagePatient {
 						patient.setPhone(newPatient.getPhone().getText());
 						if(newPatient.getAddress().getText()!=null){
 							patient.setAddress(newPatient.getAddress().getText());
-							if(newPatient.getDoB().getText()!=null){
-								if(InputChecker.dob(newPatient.getDoB().getText()))
+						if(newPatient.getDob()!=null){
+								if(InputChecker.dob(newPatient.getDob()))
 									return true;
 								else System.out.println("invalid format for Dob");
 							}else
