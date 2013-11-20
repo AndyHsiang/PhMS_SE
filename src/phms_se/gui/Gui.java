@@ -3,7 +3,6 @@ package phms_se.gui;
 
 import javax.swing.*;
 
-import phms_se.database.DatabaseProcess;
 import phms_se.database.bean.Drug;
 import phms_se.database.bean.Employee;
 import phms_se.database.bean.Patient;
@@ -17,12 +16,12 @@ import phms_se.process.helper.InputChecker;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @SuppressWarnings("serial")
 public class Gui extends JFrame implements ActionListener{
 	public static Gui frame;
 	private static Employee currentUser;
+	private static Patient currentPatient;
 	
 	private JLabel picLabel;
 	private JButton login;
@@ -205,15 +204,14 @@ public class Gui extends JFrame implements ActionListener{
 		else if(e.getSource()==spatientP.getSearchButton()){
 			String fullName=spatientP.getEnterPatient().getText();
 			if(InputChecker.fullName(fullName)){
-				Patient patientFound = ManagePatient.searchPatient(fullName);
-				if(patientFound!=null){
-					System.out.println(patientFound);
+				Patient currentPatient = ManagePatient.searchPatient(fullName);
+				if(currentPatient!=null){
                     spatientP.getEnterPatient().setText("");
 					getContentPane().removeAll();
 					getContentPane().add(pProfileP);					
 					//This method has been added to populate the patient profile page to reflect the
 					//the patient that has been retrieved from the database
-					ManagePatient.setPatientProfilePage(patientFound, pProfileP);
+					ManagePatient.setPatientProfilePage(currentPatient, pProfileP);
 					revalidate();
 					repaint();
 				}
@@ -328,6 +326,7 @@ public class Gui extends JFrame implements ActionListener{
 			spatientP.setWarningLabel("");
 		}
 		else if(e.getSource()==pProfileP.getExitButton()){
+			currentPatient=null;
 			getContentPane().removeAll();
 			getContentPane().add(spatientP);
 			revalidate();
@@ -423,6 +422,20 @@ public class Gui extends JFrame implements ActionListener{
 
 	public JLabel getWarning() {
 		return warning;
+	}
+
+	/**
+	 * @return the currentPatient
+	 */
+	public static Patient getCurrentPatient() {
+		return currentPatient;
+	}
+
+	/**
+	 * @param currentPatient the currentPatient to set
+	 */
+	public static void setCurrentPatient(Patient currentPatient) {
+		Gui.currentPatient = currentPatient;
 	}
 
 	public static void main(String args[]) throws IOException{	   			

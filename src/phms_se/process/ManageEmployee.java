@@ -1,13 +1,10 @@
 package phms_se.process;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import phms_se.database.DatabaseProcess;
 import phms_se.database.bean.Employee;
 import phms_se.database.bean.Schedule;
 import phms_se.gui.ManageEmployeePage;
-
 
 /**
  * @author Andy Hsiang

@@ -2,7 +2,9 @@ package phms_se.process;
 
 import java.sql.Date;
 
+import phms_se.process.helper.HelperMethods;
 import phms_se.process.helper.InputChecker;
+import phms_se.gui.Gui;
 import phms_se.gui.NewPatientPage;
 import phms_se.gui.PatientProfilePage;
 import phms_se.database.DatabaseProcess;
@@ -12,16 +14,13 @@ import phms_se.database.bean.Patient;
  * @author Andy
  */
 public class ManagePatient {
-	private static String[] splitString(String s){
-		String[] stringArray = s.split("\\s");
-		return stringArray;
-	}
+	
 	/***
 	 * @param patientFullName
 	 * @return patient if found
 	 */
 	public static Patient searchPatient(String patientFullName){
-		String[] patientName = splitString(patientFullName);
+		String[] patientName = HelperMethods.splitString(patientFullName);
 		Patient bean = new Patient();
 		bean.setFirstName(patientName[0]);
 		bean.setLastName(patientName[1]);	
@@ -36,7 +35,7 @@ public class ManagePatient {
 	 * @return patient if found
 	 */
 	public static Patient searchPatient(String patientFullName, String phoneNum){
-		String[] patientName = splitString(patientFullName);
+		String[] patientName = HelperMethods.splitString(patientFullName);
 		Patient bean = new Patient();
 		bean.setFirstName(patientName[0]);
 		bean.setLastName(patientName[1]);
@@ -106,7 +105,11 @@ public class ManagePatient {
 		newPat.setAddress(newPatient.getAddress().getText());
 		newPat.setDob(dob);
 		
-		return DatabaseProcess.insert(newPat);
+		if(DatabaseProcess.insert(newPat)){
+			Gui.setCurrentPatient(newPat);
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * @param bean

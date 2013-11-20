@@ -78,10 +78,10 @@ public class DatabaseProcess {
 	
 	private static void displayPatients(ResultSet rs)throws SQLException{
 		
-		StringBuffer bf = new StringBuffer();
+		StringBuilder bf = new StringBuilder();
 		while (rs.next()){
-			bf.append(rs.getInt("pid")+": ");
-			bf.append(rs.getString("firstname")+" ");
+			bf.append(rs.getInt("pid")).append(": ");
+			bf.append(rs.getString("firstname")).append(" ");
 			bf.append(rs.getString("lastname"));
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
@@ -90,12 +90,12 @@ public class DatabaseProcess {
 	
 	private static void displayEmployees(ResultSet rs)throws SQLException{
 		
-		StringBuffer bf = new StringBuffer();
+		StringBuilder bf = new StringBuilder();
 		while (rs.next()){
-			bf.append(rs.getString("name")+" ");
-			bf.append(rs.getString("username")+" ");
-			bf.append(rs.getString("pass")+" ");
-			bf.append(rs.getDate("dob")+" ");
+			bf.append(rs.getString("name")).append(" ");
+			bf.append(rs.getString("username")).append(" ");
+			bf.append(rs.getString("pass")).append(" ");
+			bf.append(rs.getDate("dob")).append(" ");
 			bf.append(rs.getString("phone"));
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
@@ -109,14 +109,13 @@ public class DatabaseProcess {
       try {
         stmt =  conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);	
         rs = stmt.executeQuery(sql);
-		names= new ArrayList<String>();
+		names= new ArrayList<>();
 		int i=0;
 		while(rs.next()){		
 			names.add(i,rs.getString("name"));
 			names.add(++i,rs.getString("username"));
 			i++;
 		}  
-		System.out.println(names);
       } catch (SQLException ex) {
         Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
       }	finally{
@@ -132,10 +131,11 @@ public class DatabaseProcess {
 	
 	private static void displayDrugs(ResultSet rs) throws SQLException{
 
-		StringBuffer bf = new StringBuffer();
+		StringBuilder bf = new StringBuilder();
 		while (rs.next()){
-			bf.append(rs.getInt("drugid")+": ");
-			bf.append(rs.getString("drugname"));
+			bf.append(rs.getInt("drugid")).append(": ");
+			bf.append(rs.getString("drugname")).append(": ");
+            bf.append(rs.getBigDecimal("price"));
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
 		}
@@ -143,10 +143,10 @@ public class DatabaseProcess {
 	
 	private static void displayPrescriptions(ResultSet rs)throws SQLException{
 		
-		StringBuffer bf = new StringBuffer();
+		StringBuilder bf = new StringBuilder();
 		while (rs.next()){
-			bf.append(rs.getInt("presc_id")+": ");
-			bf.append(rs.getDate("start_date")+", ");
+			bf.append(rs.getInt("presc_id")).append(": ");
+			bf.append(rs.getDate("start_date")).append(", ");
 			bf.append(rs.getDate("this_day"));
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
@@ -155,13 +155,13 @@ public class DatabaseProcess {
 	
 	private static void displaySchedules(ResultSet rs)throws SQLException{
 		
-		StringBuffer bf = new StringBuffer();
+		StringBuilder bf = new StringBuilder();
 		while (rs.next()){
-			bf.append(rs.getDate("work_day")+", ");
-			bf.append(rs.getTime("work_from")+", ");
-			bf.append(rs.getTime("work_till")+", ");
-			bf.append(rs.getBigDecimal("hourly_rate")+", ");
-			bf.append(rs.getInt("vac_days")+", ");
+			bf.append(rs.getDate("work_day")).append(", ");
+			bf.append(rs.getTime("work_from")).append(", ");
+			bf.append(rs.getTime("work_till")).append(", ");
+			bf.append(rs.getBigDecimal("hourly_rate")).append(", ");
+			bf.append(rs.getInt("vac_days")).append(", ");
 			bf.append(rs.getString("username"));
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
@@ -192,7 +192,7 @@ public class DatabaseProcess {
 			}
 			if(bean instanceof Drug){
 				sql = "INSERT into drugs ("+Drug.getTableSchema()+") " +
-						"VALUES (?, ?, ?, ?, ?)";
+						"VALUES (?, ?, ?, ?, ?, ?)";
 				stmt=conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				return insertDrug((Drug)bean, stmt);
 			}
@@ -274,6 +274,7 @@ public class DatabaseProcess {
 		stmt.setInt(3, bean.getQuantity());
 		stmt.setBoolean(4, bean.isControlFlag());
 		stmt.setString(5, bean.getSideEffect());
+        stmt.setBigDecimal(6, bean.getPrice());
 
 		int affected = stmt.executeUpdate();
 		if(affected == 1){
@@ -591,6 +592,7 @@ public class DatabaseProcess {
 			newBean.setQuantity(rs.getInt("quantity"));
 			newBean.setControlFlag(rs.getBoolean("controlflag"));
 			newBean.setSideEffect(rs.getString("sideeffect"));
+            newBean.setPrice(rs.getBigDecimal("price"));
 			return newBean;
 		} else {
 			System.out.println("unable to retrieve drug info");

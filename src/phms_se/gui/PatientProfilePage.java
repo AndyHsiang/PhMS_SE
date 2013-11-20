@@ -25,6 +25,7 @@ public class PatientProfilePage extends JPanel{
 	private JButton modify;
 	private JButton remove;
 	private JScrollPane tablePane;
+	private JTable drugHistory;
 	 PatientProfilePage(Gui frame){
 		 GridBagConstraints c = new GridBagConstraints();
 			JLabel picLabel=new JLabel();
@@ -120,7 +121,7 @@ public class PatientProfilePage extends JPanel{
 				picLabel.add(drugHist,c);
 				String[] dcolumnName={"Drug History" };
 				Object[][] ddata={{1},{11},{1},{1},{1},{1},{1},{1}};
-				JTable drugHistory = new JTable(ddata, dcolumnName);
+				drugHistory = new JTable(ddata, dcolumnName);
 				drugHistory.setRowHeight(25);
 				drugHistory.setPreferredSize(new Dimension(200,200 ));
 				c.insets= new Insets(-25,100,0,0);

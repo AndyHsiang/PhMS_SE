@@ -1,10 +1,13 @@
 package phms_se.database.bean;
 
+import java.math.BigDecimal;
+
 public class Drug {
-	private final static String tableSchema ="DRUGNAME,DESCRIPTION,QUANTITY,CONTROLFLAG,SIDEEFFECT,INTERACTION";
+	private final static String tableSchema ="DRUGNAME,DESCRIPTION,QUANTITY,CONTROLFLAG,SIDEEFFECT,INTERACTION, PRICE";
 	private String drugName, description, sideEffect, interACtion;
 	private int drugId, quantity;
 	private boolean controlFlag;
+	private BigDecimal price;
 	
 	//empty constructor
 	public Drug(){
@@ -111,4 +114,10 @@ public class Drug {
 	public static String getTableSchema() {
 		return tableSchema;
 	}
+    public BigDecimal getPrice(){
+        return price;
+}
+    public void setPrice(BigDecimal price){
+        this.price=price;
+    }
 }
