@@ -1,5 +1,7 @@
 package phms_se.process;
 
+import java.util.ArrayList;
+
 import phms_se.gui.DrugInventoryPage;
 import phms_se.database.bean.Drug;
 import phms_se.database.DatabaseProcess;
@@ -60,6 +62,21 @@ public class ManageDrug {
 	 */
 	public static void restock(int DrugId){
 		
+	}
+	public static void setLowInventoryWarning(DrugInventoryPage drugInv){
+		String drugName="";
+		String drugCount="";
+		ArrayList<String> drug= null;
+		drug=DatabaseProcess.getDrugCount();
+		int i=0; 
+		int j=0;
+		while(i<drug.size()){
+			drugName=drug.get(i);
+			drugCount=drug.get(i+1);
+			if(Integer.parseInt(drugCount)<1000){
+				drugInv.getLowInventoryTable().setValueAt(drugName,j,0);j++;
+			}i=i+2;
+		}
 	}
 	/**
 	 * @param drugName

@@ -126,7 +126,7 @@ public class DrugInventoryPage extends JPanel {
 					picLabel.add(LIWarning,c);
 					
 				 String[] dcolumnName={"Low Inventory Warning" };
-				 Object[][] ddata={{1},{1},{1},{1},{1},{1},{1},{1}};
+				 Object[][] ddata={{""},{""},{""},{""},{""},{""},{""},{""}};
 				 lowInventory = new JTable(ddata, dcolumnName);
 				 lowInventory.setRowHeight(25);
 				 lowInventory.setPreferredSize(new Dimension(200,200 ));
@@ -201,6 +201,10 @@ public class DrugInventoryPage extends JPanel {
 	public JTable getTable(){
 		return this.table;
 	}
+	public JTable getLowInventoryTable(){
+		return this.lowInventory;
+	}
+
 	public void setDName(){
 		this.enterNameT.setText("Not Found");
 	}

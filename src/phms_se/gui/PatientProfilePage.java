@@ -132,22 +132,22 @@ public class PatientProfilePage extends JPanel{
 				 Border border = BorderFactory.createLineBorder(Color.black);
 				 drugHistory.setBorder(border);
 				 
-	String[] columnNames={"Prescription Number","Drug Name","Dose","Date Filled","Refills rm"};
-	Object[][] data={{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1},{1,11,1,1,1}};
-	JTable table = new JTable(data, columnNames);
-	table.setPreferredSize(new Dimension(650,500 ));
-	table.setRowHeight(20);
-	c.insets= new Insets(20,0,0,0);
-	c.gridx=0;
-	c.gridy=8;
-	c.gridwidth=4;
-	//picLabel.add(table,c);
-	 table.setBackground(Color.decode("#CCEEEE"));
-	 Border border2 = BorderFactory.createLineBorder(Color.black);
-	 table.setBorder(border2);
-	 this.tablePane=new JScrollPane(table);
-	 tablePane.setPreferredSize(new Dimension(650,150 ));
-	 picLabel.add(tablePane,c);
+				 String[] columnNames={"Prescription Number","Drug Name","Quantity","Dose","Date Filled","Refills rm"};
+					Object[][] data={{1,11,1,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1}};
+					JTable table = new JTable(data, columnNames);
+					table.setPreferredSize(new Dimension(750,500 ));
+					table.setRowHeight(20);
+					c.insets= new Insets(20,0,0,0);
+					c.gridx=0;
+					c.gridy=8;
+					c.gridwidth=4;
+					//picLabel.add(table,c);
+					 table.setBackground(Color.decode("#CCEEEE"));
+					 Border border2 = BorderFactory.createLineBorder(Color.black);
+					 table.setBorder(border2);
+					 this.tablePane=new JScrollPane(table);
+					 tablePane.setPreferredSize(new Dimension(750,150 ));
+					 picLabel.add(tablePane,c);
 	
 }
 	   JButton getfillButton() {

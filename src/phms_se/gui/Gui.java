@@ -262,6 +262,7 @@ public class Gui extends JFrame implements ActionListener{
 		 * manager and pharmacist can access the drug page
 		 */
 		else if(e.getSource()==menuP.getDrugButton()){
+			ManageDrug.setLowInventoryWarning(drugP);
 			String user=null, pass=null;	
     		String position = currentUser.getPosition().toLowerCase();
 			if(position.equals("manager")||position.equals("pharmacist")){
