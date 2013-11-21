@@ -77,8 +77,8 @@ public class ManagePatient {
 	 * @param patientFullName
 	 * @return
 	 */
-	public static boolean deletePatient(String patientFullName){
-		return false;
+	public static boolean deletePatient(Patient bean){
+		return DatabaseProcess.delete(bean);
 	}
 	/**
 	 * @param bean

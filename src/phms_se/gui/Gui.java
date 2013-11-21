@@ -204,7 +204,7 @@ public class Gui extends JFrame implements ActionListener{
 		else if(e.getSource()==spatientP.getSearchButton()){
 			String fullName=spatientP.getEnterPatient().getText();
 			if(InputChecker.fullName(fullName)){
-				Patient currentPatient = ManagePatient.searchPatient(fullName);
+				currentPatient = ManagePatient.searchPatient(fullName);
 				if(currentPatient!=null){
                     spatientP.getEnterPatient().setText("");
 					getContentPane().removeAll();
@@ -297,6 +297,7 @@ public class Gui extends JFrame implements ActionListener{
     		repaint();
     	}
 		else if(e.getSource()==spatientP.getBackButton()){
+			spatientP.getEnterPatient().setText("");
 			getContentPane().removeAll();
 			getContentPane().add(menuP);
 			revalidate();
@@ -333,6 +334,16 @@ public class Gui extends JFrame implements ActionListener{
 			revalidate();
 			repaint();
 			spatientP.setWarningLabel("");
+		}else if(e.getSource()==pProfileP.getRemove()){
+			if(ManagePatient.deletePatient(currentPatient)){
+				currentPatient=null;
+				getContentPane().removeAll();
+				getContentPane().add(spatientP);
+				revalidate();
+				repaint();
+			}else
+				System.out.println("unable to delete patient");
+			
 		}
 		else if(e.getSource()==fillP.getCancelButton()){
 			getContentPane().removeAll();

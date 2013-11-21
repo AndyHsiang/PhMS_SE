@@ -361,7 +361,7 @@ public class DatabaseProcess {
 	 * @return true if a row has been successfully removed from database
 	 */
 	public static boolean delete (Object bean) {
-		
+
 		String sql;
 		PreparedStatement stmt=null;
 		
@@ -408,7 +408,7 @@ public class DatabaseProcess {
 
 	/*handle the delete row in one of the following insert methods*/
 	private static boolean deletePatient(Patient bean, PreparedStatement stmt) throws SQLException{
-		
+
 		stmt.setInt(1, bean.getPid());
 		int affected=stmt.executeUpdate();	
 		

@@ -100,6 +100,7 @@ public class PatientProfilePage extends JPanel{
 				c.gridy=6;
 				c.gridwidth=1;
 				remove.setPreferredSize(new Dimension(155, 35));
+				remove.addActionListener(frame);
 				picLabel.add(remove, c);
 				this.removePrescription= new JButton("Remove Prescription");
 				c.gridy=6;
@@ -185,5 +186,8 @@ public class PatientProfilePage extends JPanel{
 	}
 	public void setpAddress(JTextField pAddress) {
 		this.pAddress = pAddress;
+	}
+	public JButton getRemove() {
+		return remove;
 	}
 	   }
