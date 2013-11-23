@@ -737,11 +737,16 @@ public class DatabaseProcess {
 			stmt.setString(1, bean.getState());
 		if(field.toLowerCase().equals("zip"))
 			stmt.setString(1, bean.getZip());
+		if(field.toLowerCase().equals("firstname"))
+			stmt.setString(1, bean.getFirstName());
+		if(field.toLowerCase().equals("lastname"))
+			stmt.setString(1, bean.getLastName());
+		if(field.toLowerCase().equals("dob"))
+			stmt.setDate(1, bean.getDob());
 		stmt.setInt(2, bean.getPid());
 			
 		int affected = stmt.executeUpdate();
 		if (affected == 1) {
-			System.out.println("patient info updated");
 			return true;
 		} else {
 			System.out.println("error: no update applied");

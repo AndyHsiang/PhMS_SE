@@ -100,7 +100,7 @@ public class NewPatientPage extends JPanel {
 			yearBox[i]=""+years;
 			years--;
 		}
-		System.out.println(yearBox[2]);
+//		System.out.println(yearBox[2]);
 		this.year=new JComboBox(yearBox);
 		c.insets= new Insets(0,130,20,0);
 		c.gridx=2;
@@ -210,7 +210,7 @@ public class NewPatientPage extends JPanel {
 	}
 	public String getDob(){
 		String year= getYear().getSelectedItem().toString();
-		System.out.println(year);
+		//System.out.println(year);
 		String month=getMonth().getSelectedItem().toString();
 		String day=getDay().getSelectedItem().toString();
 		

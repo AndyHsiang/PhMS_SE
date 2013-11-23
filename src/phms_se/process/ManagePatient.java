@@ -1,6 +1,7 @@
 package phms_se.process;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import phms_se.process.helper.HelperMethods;
 import phms_se.process.helper.InputChecker;
@@ -69,7 +70,7 @@ public class ManagePatient {
 
 		profilePage.getpName().setText(bean.getFirstName()+" "+bean.getLastName());
 		profilePage.getpAddress().setText(bean.getAddress());
-		profilePage.getpDob().setText(bean.getDob().getYear()+"-"+bean.getDob().getMonth()+"-"+bean.getDob().getDate());
+		profilePage.getpDob().setText(bean.getDob().getYear()+"-"+(bean.getDob().getMonth())+"-"+bean.getDob().getDate());
 		profilePage.getPhoneNumber().setText(bean.getPhone());
 		profilePage.getpDoctor().setText(bean.getPrimaryDoc());
 	}
@@ -84,21 +85,127 @@ public class ManagePatient {
 	 * @param bean
 	 * @return
 	 */
-	public static boolean modifyPatient(Patient bean){
-		return false;
+	public static boolean modifyPatient(PatientProfilePage pPage){
+		Patient modified = new Patient();
+		Patient original = Gui.getCurrentPatient();
+		
+		Date dob = HelperMethods.getDate(pPage.getpDob().getText());
+		String[] patientName = HelperMethods.splitString(pPage.getpName().getText());
+	
+		//set the modified patient info
+		modified.setPid(original.getPid());
+		modified.setAddress(pPage.getpAddress().getText());
+		modified.setDob(dob);
+		modified.setPhone(pPage.getPhoneNumber().getText());
+		//modified.setCity(pPage.);
+		modified.setPrimaryDoc(pPage.getpDoctor().getText());
+		//modified.setState(original.getState());
+		//modified.setZip(original.getZip());
+		modified.setFirstName(patientName[0]);
+		modified.setLastName(patientName[1]);
+		
+		//is phone modified?
+		if(!original.getPhone().equals(modified.getPhone())){
+			//does new number have correct phone number format?
+			if(InputChecker.phone(pPage.getPhoneNumber().getText())){
+				DatabaseProcess.modifyRow(modified, "phone");
+				System.out.println("phone field updated");
+			}
+			else {
+				System.out.println("wrong phone number format");
+				return false;
+			}
+			
+		//is primary doc field modified?
+		}if(!original.getPrimaryDoc().equals(modified.getPrimaryDoc())){
+			//check primary doc field format
+			if(InputChecker.fullName(modified.getPrimaryDoc())){
+				DatabaseProcess.modifyRow(modified, "PRIMARYDOC");
+				System.out.println("primary doctor field updated");
+			}
+			else {
+				System.out.println("wrong format for primary doctor");
+				return false;
+			}
+			
+		//is Address modified?
+		}if(!original.getAddress().equals(modified.getAddress())){
+			//check address field format
+//			if(InputChecker.streetAddress(modified.getAddress())){
+				DatabaseProcess.modifyRow(modified, "ADDRESS");
+				System.out.println("address updated");
+//			}
+//			else {
+//				System.out.println("wrong format for address");
+//				return false;
+//			}
+		
+		//is State modified?
+//		}if(!original.getState().equals(modified.getState())){
+//			//check State field format
+//			if(InputChecker.state(modified.getState())){
+//				DatabaseProcess.modifyRow(modified, "STATE");
+//				System.out.println("state updated");
+//			}
+//			else {
+//				System.out.println("wrong format for STATE");
+//				return false;
+//			}
+
+		//is zip modified?
+//		}if(!original.getZip().equals(modified.getZip())){
+//			//check zip field format
+//			if(InputChecker.state(modified.getZip())){
+//				DatabaseProcess.modifyRow(modified, "ZIP");
+//				System.out.println("zip updated");
+//			}
+//			else {
+//				System.out.println("wrong format for ZIP");
+//				return false;
+//			}
+		
+		//is last name modified?
+		}if(!original.getLastName().equals(modified.getLastName())){
+			//check lastname field format
+			if(InputChecker.name(modified.getLastName())){
+				DatabaseProcess.modifyRow(modified, "LASTNAME");
+				System.out.println("last name updated");
+			}
+			else {
+				System.out.println("wrong format for LASTNAME");
+				return false;
+			}
+		
+		//is first name modified?
+		}if(!original.getFirstName().equals(modified.getFirstName())){
+			//check lastname field format
+			if(InputChecker.name(modified.getFirstName())){
+				DatabaseProcess.modifyRow(modified, "FIRSTNAME");
+				System.out.println("first name updated");
+			}
+			else {
+				System.out.println("wrong format for FIRSTNAME");
+				return false;
+			}
+		
+		//is dob modified?
+		}if(!original.getDob().equals(modified.getDob())){
+			//check lastname field format
+			if(InputChecker.dob(pPage.getpDob().getText())){
+				DatabaseProcess.modifyRow(modified, "DOB");
+				System.out.println("DoB updated");
+			}
+			else {
+				System.out.println("wrong format for Dob");
+				return false;
+			}
+		}
+		System.out.println("all modified fields are updated");
+		return true;
 	}
 	public static boolean addNewPatient(NewPatientPage newPatient){
-		String s=newPatient.getDob();
-		String[] d = s.split("[-\\s\\:,]");
 		
-		int year = Integer.parseInt(d[0]);
-		
-		int month = Integer.parseInt(d[1]);
-		int day = Integer.parseInt(d[2]);
-		@SuppressWarnings("deprecation")
-		Date dob = new Date(year, month, day);
-		System.out.println(dob);
-		System.out.println(dob);
+		Date dob = HelperMethods.getDate(newPatient.getDob());
 		
 		Patient newPat = new Patient();
 		newPat.setFirstName(newPatient.getfName().getText());
@@ -119,8 +226,7 @@ public class ManagePatient {
 	 * @return
 	 */
 	public static boolean verifyNewPatient(NewPatientPage newPatient){
-		
-		
+				
 		Patient patient = new Patient();
 		if(InputChecker.name(newPatient.getfName().getText())){
 			patient.setFirstName(newPatient.getfName().getText());

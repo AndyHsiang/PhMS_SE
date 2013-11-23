@@ -1,5 +1,8 @@
 package phms_se.process.helper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author Andy Hsiang
  */
@@ -129,13 +132,43 @@ public class InputChecker {
 	}
 	public static boolean dob(String dob){
 		String[] d = dob.split("[-\\s\\:,]");
+		
+		Date date= new Date();
+		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
+		String[] today=modifiedDate.split("[-\\s\\:,]");
+		
 		if(d[0].length()!=4)
 			return false;
 		if(!digits(d[0]))
 			return false;
-		if(d[1].length()!=2 || d[2].length()!=2)
+		
+		if(Integer.parseInt(d[0])>Integer.parseInt(today[0]))
 			return false;
+		else if (Integer.parseInt(d[0])==Integer.parseInt(today[0])){
+			if(Integer.parseInt(d[1])>Integer.parseInt(today[1]))
+				return false;
+			else if (Integer.parseInt(d[1])==Integer.parseInt(today[1])){
+				if (Integer.parseInt(d[2])>Integer.parseInt(today[2]))
+					return false;
+			}
+		}
+		
+		if(d[1].length()==1 && Integer.parseInt(d[1])>9)
+			return false;
+		else if (d[1].length()>2)
+			return false;
+		if(d[2].length()==1 && Integer.parseInt(d[2])>9)
+			return false;
+		else if (d[2].length()>2)
+			return false;
+		
 		if(!digits(d[1])||!digits(d[2]))
+			return false;
+		if(Integer.parseInt(d[1])>11||Integer.parseInt(d[1])<0)
+			return false;
+		if(Integer.parseInt(d[2])>30||Integer.parseInt(d[2])<0)
+			return false;
+		if(Integer.parseInt(d[1])>Integer.parseInt(today[1]))
 			return false;
 		return true;
 	}

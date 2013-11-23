@@ -93,6 +93,7 @@ public class PatientProfilePage extends JPanel{
 				c.gridy=5;
 				c.gridwidth=1;
 				modify.setPreferredSize(new Dimension(155, 35));
+				modify.addActionListener(frame);
 				picLabel.add(modify, c);
 				this.remove= new JButton("Remove Patient");
 				c.insets= new Insets(20,0,0,0);
@@ -189,5 +190,11 @@ public class PatientProfilePage extends JPanel{
 	}
 	public JButton getRemove() {
 		return remove;
+	}
+	public JButton getModify() {
+		return modify;
+	}
+	public void setModify(JButton modify) {
+		this.modify = modify;
 	}
 	   }

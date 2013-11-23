@@ -347,6 +347,8 @@ public class Gui extends JFrame implements ActionListener{
 			}else
 				System.out.println("unable to delete patient");
 			
+		}else if(e.getSource()==pProfileP.getModify()){
+			ManagePatient.modifyPatient(pProfileP);
 		}
 		else if(e.getSource()==fillP.getCancelButton()){
 			getContentPane().removeAll();
