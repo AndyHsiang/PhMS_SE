@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,8 +33,12 @@ public class NewEmployeePage extends JPanel {
 	private JTextField positionT;
 	private JButton submit;
 	private JButton cancel;
+	private JComboBox day;
+	private JComboBox month;
+	private JComboBox year;
 	
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public NewEmployeePage(Gui frame){
 		GridBagConstraints c = new GridBagConstraints();
 		JLabel picLabel=new JLabel();
@@ -106,14 +111,41 @@ public class NewEmployeePage extends JPanel {
 		c.gridy=4;
 		c.gridwidth=1;
 		picLabel.add(DoBL,c);
-		this.DoBT= new JTextField(15);
+		/*this.DoBT= new JTextField(15);
 		c.insets= new Insets(0,0,20,0);
 		DoBT.setFont(new Font("Comic Sans",Font.BOLD, 15));
 		c.gridx=2;
 		c.gridy=4;
 		c.gridwidth=1;
-		picLabel.add(DoBT,c);
-				 
+		picLabel.add(DoBT,c);*/
+		String[] monthBox = {"January","February","March","April","May","June","July","August","September","October","November","December"};
+		this.month=new JComboBox(monthBox);
+		c.insets= new Insets(0,0,20,100);
+		c.gridx=2;
+		c.gridy=4;
+		c.gridwidth=1;
+		picLabel.add(month,c);
+		String[] dayBox={"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+		this.day=new JComboBox(dayBox);
+		c.insets= new Insets(0,35,20,0);
+		c.gridx=2;
+		c.gridy=4;
+		c.gridwidth=1;
+		picLabel.add(day,c);
+		String[] yearBox = new String[100];
+		
+		for(int i=0,years=2013;i<100;i++){
+			
+			yearBox[i]=""+years;
+			years--;
+		}
+		
+		this.year=new JComboBox(yearBox);
+		c.insets= new Insets(0,130,20,0);
+		c.gridx=2;
+		c.gridy=4;
+		c.gridwidth=1;
+		picLabel.add(year,c);		 
 		this.phoneL = new JLabel ("Phone Number:");
 		phoneL.setFont(new Font("Comic Sans",Font.BOLD, 15));
 		c.insets= new Insets(0,0,20,0);
@@ -190,10 +222,72 @@ public class NewEmployeePage extends JPanel {
 		c.gridy=9;
 		picLabel.add(cancel,c);   
 	}
+	public void presetText(){
+		
+	}
+	public JTextField getPassword(){
+		String pass=passT.getText();
+		String confirmedPass=confirmPassT.getText();
+		if(pass.equals(confirmedPass)){
+			return passT;
+		}else return null;
+	}
+	public JTextField getEmpName(){
+		return nameT;	
+		}
+		public JTextField getEmpUsername(){
+			return usernameT;
+			
+		}
+	
+		public JTextField getEmpPhone(){
+			return phoneT;
+			
+		}public JTextField getEmpAddress(){
+			return addressT;
+			
+		}public JTextField getEmpEmail(){
+			return emailT;
+		}public JTextField getEmpPosition(){
+			return positionT;
+		}
+		
 	JButton getCancel(){
 		return this.cancel;
 	}
 	JButton getSubmit(){
 		return this.submit;
+	}@SuppressWarnings("rawtypes")
+	public JComboBox getYear(){
+		return year;
+	}@SuppressWarnings("rawtypes")
+	public JComboBox getMonth(){
+		return month;
 	}
+	@SuppressWarnings("rawtypes")
+	public JComboBox getDay(){
+		return day;
+	}
+	public String getDob(){
+		String year= getYear().getSelectedItem().toString();
+		System.out.println(year);
+		String month=getMonth().getSelectedItem().toString();
+		String day=getDay().getSelectedItem().toString();
+		
+		switch(month){
+		 case "January": month="01";break;
+		 case "February": month="02";break;
+		 case "March": month="03";break;
+		 case "April": month="04";break;
+		 case "May": month="05";break;
+		 case "June": month="06";break;
+		 case "July": month="07";break;
+		 case "August": month="08";break;
+		 case "September": month="09";break;
+		 case "October": month="10";break;
+		 case "November": month="11";break;
+		 case "December": month="12";break;}
+		 String DoB= year+"-"+day +"-"+ month;
+	return DoB;
+}
 }

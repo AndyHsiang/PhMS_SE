@@ -140,8 +140,29 @@ public class NewDrugPage extends JPanel {
 			
 	   
 	}
-	JButton getCancelButton(){
-		return this.cancel;
-	}
+	public JTextField getdName(){
+		return drugNameT;	
+		}
+		public JTextField getdQuantity(){
+			return quantityT;
+			
+		}
+		public JTextArea getdGeneral(){
+			return generalT;
+			
+		}
+		public JTextArea getdSide(){
+			return sideT;
+			
+		}public JTextField getdControlled(){
+			return controlledT;
+			
+		}
+		JButton getCancelButton(){
+			return this.cancel;
+		}
+		JButton getSubmit(){
+			return this.submit;
+		}
 	
 }

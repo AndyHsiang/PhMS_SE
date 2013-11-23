@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,6 +17,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+
+
+
+import phms_se.process.ManageEmployee;
 
 @SuppressWarnings("serial")
 public class ManageEmployeePage extends JPanel {
@@ -136,6 +142,7 @@ private JScrollPane tablePane;
 		 currentEmployees = new JTable(ddata, dcolumnName);
 		 currentEmployees.setRowHeight(25);
 		 currentEmployees.setPreferredSize(new Dimension(280,250));
+		 currentEmployees.addMouseListener(adapter);
 		 c.insets= new Insets(0,0,0,0);
 		 c.gridx=0;
 		 c.gridy=1;
@@ -253,5 +260,38 @@ private JScrollPane tablePane;
 	public JTable getTable(){
 		return this.currentEmployees;
 	}
+	public JTextField getNameText(){
+	 return	this.nameText;
+	}
+	public JTextField getDobText(){
+		return this.DoBText;
+	}
+	public JTextField getPhoneText(){
+		return this.phoneText;
+	}
+	public JTextField getAddressText(){
+		return this.addressText;
+	}
+	public JTextField getPositionText(){
+		return this.positionText;
+	}
+	public JTextField getSalaryText(){
+		return this.salaryText;
+	}
+	
+	MouseAdapter adapter=new MouseAdapter(){
+		public void mousePressed(MouseEvent e) {
+	
+		if (e.getClickCount() == 2) {
+		      JTable target = (JTable)e.getSource();
+		      int row = target.getSelectedRow();
+		      //int column = target.getSelectedColumn();
+		    String username = currentEmployees.getValueAt(row,1).toString();
+		      ManageEmployee.populateEmployeeInfo(Gui.getPage(), username);
+		      System.out.println(row);}
+	}};
+
+
+	
 	
 }

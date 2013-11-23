@@ -42,6 +42,7 @@ public class RestockPage extends JPanel {
 			quantityT.setFont(new Font("Comic Sans",Font.BOLD, 15));
 			picLabel.add(quantityT,c);
 			this.restock=new JButton("Restock");
+			restock.addActionListener(frame);
 			c.insets= new Insets(20,15,0,0);
 			c.gridx=0;
 			c.gridy=2;
@@ -58,8 +59,19 @@ public class RestockPage extends JPanel {
 			picLabel.add(cancel,c);
 			
 	}
+		public JTextField getDname(){
+		return drugNameT;
+	}
+		public int getDquant(){
+		String q= quantityT.getText();
+		int addQ= Integer.parseInt(q);
+		return addQ;
+	}
 	JButton getCancelButton(){
 		return this.cancel;
+	}
+	JButton getRestock(){
+		return this.restock;
 	}
 
 }

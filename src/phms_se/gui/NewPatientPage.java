@@ -1,6 +1,7 @@
 package phms_se.gui;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -18,10 +19,14 @@ public class NewPatientPage extends JPanel {
 	private JLabel addressL;
 	private JButton cancel;
 	private JButton submit;
+	@SuppressWarnings("rawtypes")
 	private JComboBox day;
+	@SuppressWarnings("rawtypes")
 	private JComboBox month;
+	@SuppressWarnings("rawtypes")
 	private JComboBox year;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	NewPatientPage(Gui frame){
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -88,8 +93,8 @@ public class NewPatientPage extends JPanel {
 		c.gridwidth=1;
 		picLabel.add(day,c);
 		String[] yearBox = new String[100];
-		int years=2013;
-		for(int i=0;i<100;i++){
+		
+		for(int i=0,years=2013;i<100;i++){
 			
 			yearBox[i]=""+years;
 			years--;
@@ -185,18 +190,19 @@ public class NewPatientPage extends JPanel {
 
 	public JTextField getPhone() {
 		return phone;
-	}
+	}@SuppressWarnings("rawtypes")
 	public JComboBox getYear(){
 		return year;
-	}
+	}@SuppressWarnings("rawtypes")
 	public JComboBox getMonth(){
 		return month;
-	}
+	}@SuppressWarnings("rawtypes")
 	public JComboBox getDay(){
 		return day;
 	}
 	public String getDob(){
 		String year= getYear().getSelectedItem().toString();
+		System.out.println(year);
 		String month=getMonth().getSelectedItem().toString();
 		String day=getDay().getSelectedItem().toString();
 		
@@ -215,10 +221,7 @@ public class NewPatientPage extends JPanel {
 		 case "December": month="12";break;}
 		 String DoB= year+"-"+day +"-"+ month;
 	return DoB;
-
-		
-		
-	}
+}
 
 	public JTextField getAddress() {
 		return address;

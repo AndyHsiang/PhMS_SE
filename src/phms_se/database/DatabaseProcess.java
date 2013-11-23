@@ -791,7 +791,7 @@ public class DatabaseProcess {
 			
 		int affected = stmt.executeUpdate();
 		if (affected == 1) {
-			System.out.println("employee info updated");
+			System.out.println("drug info updated");
 			return true;
 		} else {
 			System.out.println("error: no update applied");

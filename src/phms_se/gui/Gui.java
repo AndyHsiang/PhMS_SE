@@ -22,7 +22,7 @@ public class Gui extends JFrame implements ActionListener{
 	public static Gui frame;
 	private static Employee currentUser;
 	private static Patient currentPatient;
-	
+	private static Drug currentDrug;
 	private JLabel picLabel;
 	private JButton login;
 	private JButton exit;
@@ -41,7 +41,7 @@ public class Gui extends JFrame implements ActionListener{
 	private NewDrugPage nDrugP;
 	private RestockPage restockP;
 	private SystemsPage systemP;
-	private ManageEmployeePage employeePage;
+	private static ManageEmployeePage employeePage;
 	private NewEmployeePage newEmployee;
 	final static boolean shouldFill=true;
 	final static boolean shouldWeightx=true;
@@ -150,6 +150,7 @@ public class Gui extends JFrame implements ActionListener{
 	}
 	
 	@SuppressWarnings("deprecation")
+	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==login){
 			warning.setText("");
@@ -296,6 +297,7 @@ public class Gui extends JFrame implements ActionListener{
     		revalidate();
     		repaint();
     	}
+		
 		else if(e.getSource()==spatientP.getBackButton()){
 			spatientP.getEnterPatient().setText("");
 			getContentPane().removeAll();
@@ -357,7 +359,21 @@ public class Gui extends JFrame implements ActionListener{
 			revalidate();
 			repaint();
 		}
+		else if(e.getSource()==restockP.getRestock()){
+			ManageDrug.restock(restockP);
+			getContentPane().removeAll();
+			getContentPane().add(drugP);
+			revalidate();
+			repaint();
+		}
 		else if(e.getSource()==nDrugP.getCancelButton()){
+			getContentPane().removeAll();
+			getContentPane().add(drugP);
+			revalidate();
+			repaint();
+		}
+		else if(e.getSource()==nDrugP.getSubmit()){
+			ManageDrug.addNewDrug(nDrugP);
 			getContentPane().removeAll();
 			getContentPane().add(drugP);
 			revalidate();
@@ -422,6 +438,13 @@ public class Gui extends JFrame implements ActionListener{
 			revalidate();
 			repaint();
 		}
+		else if(e.getSource()==newEmployee.getSubmit()){
+			ManageEmployee.addNewEmployee(newEmployee);
+			getContentPane().removeAll();
+			getContentPane().add(employeePage);
+			revalidate();
+			repaint();
+		}
     }
 
 	public static Employee getCurrentUser() {
@@ -442,6 +465,12 @@ public class Gui extends JFrame implements ActionListener{
 	public static Patient getCurrentPatient() {
 		return currentPatient;
 	}
+	public static Drug setCurrentDrug(Drug bean) {
+		return currentDrug;
+	}
+public static ManageEmployeePage getPage(){
+	return employeePage;
+}
 
 	/**
 	 * @param currentPatient the currentPatient to set
