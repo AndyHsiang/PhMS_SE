@@ -17,9 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-
-
-
 import phms_se.process.ManageEmployee;
 
 @SuppressWarnings("serial")
@@ -288,7 +285,7 @@ private JScrollPane tablePane;
 		      //int column = target.getSelectedColumn();
 		    String username = currentEmployees.getValueAt(row,1).toString();
 		      ManageEmployee.populateEmployeeInfo(Gui.getPage(), username);
-		      System.out.println(row);}
+		     }
 	}};
 
 
