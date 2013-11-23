@@ -139,4 +139,11 @@ public class InputChecker {
 			return false;
 		return true;
 	}
+	public static boolean position(String position){
+		 position=position.toLowerCase();
+		 if(!position.equals("tech")||!position.equals("manager")||!position.equals("pharmacist")){
+			 return false;}
+		 else return true;
+		 
+	}
 }

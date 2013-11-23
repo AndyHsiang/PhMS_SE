@@ -11,6 +11,7 @@ import phms_se.process.ManageEmployee;
 import phms_se.process.ManagePatient;
 import phms_se.process.ManageSystem;
 import phms_se.process.helper.Credentials;
+import phms_se.process.helper.DeleteConfirmation;
 import phms_se.process.helper.InputChecker;
 
 import java.awt.event.*;
@@ -426,6 +427,15 @@ public class Gui extends JFrame implements ActionListener{
 			revalidate();
 			repaint();
 		}
+		else if(e.getSource()==employeePage.getRemove()){	
+			if(DeleteConfirmation.Confirm(employeePage)){
+			ManageEmployee.deleteEmployee(employeePage);
+			ManageEmployee.fillEmployeeTable(employeePage);
+			getContentPane().removeAll();
+			getContentPane().add(employeePage);
+			revalidate();
+			repaint();}
+		}
 		else if(e.getSource()==employeePage.getAdd()){			
 			getContentPane().removeAll();
 			getContentPane().add(newEmployee);
@@ -439,11 +449,12 @@ public class Gui extends JFrame implements ActionListener{
 			repaint();
 		}
 		else if(e.getSource()==newEmployee.getSubmit()){
+			if(ManageEmployee.verifyNewEmployee(newEmployee)){
 			ManageEmployee.addNewEmployee(newEmployee);
 			getContentPane().removeAll();
 			getContentPane().add(employeePage);
 			revalidate();
-			repaint();
+			repaint();}
 		}
     }
 

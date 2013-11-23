@@ -17,6 +17,7 @@ public class NewPatientPage extends JPanel {
 	private JLabel doctorL;
 	private JLabel phoneL;
 	private JLabel addressL;
+	private JLabel warning;
 	private JButton cancel;
 	private JButton submit;
 	@SuppressWarnings("rawtypes")
@@ -167,6 +168,13 @@ public class NewPatientPage extends JPanel {
 		c.gridx=2;
 		c.gridy=6;
 		picLabel.add(cancel,c);   
+		this.warning=new JLabel("");
+		c.gridx=0;
+		c.gridy=7;
+		c.gridwidth=3;
+		warning.setForeground(Color.red);
+		picLabel.add(warning,c);
+		
 	}
     
     public void presetText(){
@@ -233,5 +241,8 @@ public class NewPatientPage extends JPanel {
 
 	public JButton getSubmit() {
 		return submit;
+	}
+	public JLabel getWarning(){
+		return warning;
 	}
 }

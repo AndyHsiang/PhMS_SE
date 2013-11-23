@@ -17,6 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+
+
+
 import phms_se.process.ManageEmployee;
 
 @SuppressWarnings("serial")
@@ -47,6 +50,7 @@ private JPanel currentpanel;
 private JPanel currentEmployeeP;
 private JPanel buttonPanel;
 private JScrollPane tablePane;
+private int rowSelected;
 
 	
 	public ManageEmployeePage(Gui frame){
@@ -112,6 +116,7 @@ private JScrollPane tablePane;
 		 buttonPanel.add(addNew, c);
 		 
 		 this.remove = new JButton("Remove Employee");
+		 remove.addActionListener(frame);
 		 c.gridx=2;
 		 c.gridy=3;
 		 buttonPanel.add(remove, c);
@@ -135,9 +140,10 @@ private JScrollPane tablePane;
 		currentEmployeeP.add(currentEmp,c);
 		
 		 String[] dcolumnName={"Current Employees","Username" };
-		 Object[][] ddata={{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""}};
+		 Object[][] ddata={{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""},{"",""}};
 		 currentEmployees = new JTable(ddata, dcolumnName);
 		 currentEmployees.setRowHeight(25);
+		
 		 currentEmployees.setPreferredSize(new Dimension(280,250));
 		 currentEmployees.addMouseListener(adapter);
 		 c.insets= new Insets(0,0,0,0);
@@ -254,6 +260,9 @@ private JScrollPane tablePane;
 	JButton getAdd(){
 		return this.addNew;
 	}
+	JButton getRemove(){
+		return this.remove;
+	}
 	public JTable getTable(){
 		return this.currentEmployees;
 	}
@@ -275,17 +284,20 @@ private JScrollPane tablePane;
 	public JTextField getSalaryText(){
 		return this.salaryText;
 	}
+	public int getRow(){
+		return rowSelected;
+	}
 	
 	MouseAdapter adapter=new MouseAdapter(){
 		public void mousePressed(MouseEvent e) {
 	
-		if (e.getClickCount() == 2) {
+		if (e.getClickCount() == 1) {
 		      JTable target = (JTable)e.getSource();
-		      int row = target.getSelectedRow();
+		       rowSelected = target.getSelectedRow();
 		      //int column = target.getSelectedColumn();
-		    String username = currentEmployees.getValueAt(row,1).toString();
+		    String username = currentEmployees.getValueAt(rowSelected,1).toString();
 		      ManageEmployee.populateEmployeeInfo(Gui.getPage(), username);
-		     }
+		      }
 	}};
 
 

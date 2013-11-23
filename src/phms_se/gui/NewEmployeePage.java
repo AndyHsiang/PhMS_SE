@@ -1,5 +1,6 @@
 package phms_se.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -22,6 +23,7 @@ public class NewEmployeePage extends JPanel {
 	private JLabel addressL;
 	private JLabel emailL;
 	private JLabel positionL;
+	private JLabel warning;
 	private JTextField nameT;
 	private JTextField usernameT;
 	private JTextField passT;
@@ -221,6 +223,13 @@ public class NewEmployeePage extends JPanel {
 		c.gridx=2;
 		c.gridy=9;
 		picLabel.add(cancel,c);   
+		this.warning=new JLabel("");
+		c.gridx=0;
+		c.gridy=10;
+		c.gridwidth=3;
+		warning.setForeground(Color.red);
+		picLabel.add(warning,c);
+		
 	}
 	public void presetText(){
 		
@@ -290,4 +299,7 @@ public class NewEmployeePage extends JPanel {
 		 String DoB= year+"-"+day +"-"+ month;
 	return DoB;
 }
+	public JLabel getWarning(){
+		return warning;
+	}
 }

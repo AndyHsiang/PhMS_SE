@@ -92,11 +92,14 @@ public class ManagePatient {
 		String[] d = s.split("[-\\s\\:,]");
 		
 		int year = Integer.parseInt(d[0]);
+		
 		int month = Integer.parseInt(d[1]);
 		int day = Integer.parseInt(d[2]);
 		@SuppressWarnings("deprecation")
 		Date dob = new Date(year, month, day);
 		System.out.println(dob);
+		System.out.println(dob);
+		
 		Patient newPat = new Patient();
 		newPat.setFirstName(newPatient.getfName().getText());
 		newPat.setLastName(newPatient.getlName().getText());
@@ -132,19 +135,26 @@ public class ManagePatient {
 						if(newPatient.getDob()!=null){
 								if(InputChecker.dob(newPatient.getDob()))
 									return true;
-								else System.out.println("invalid format for Dob");
-							}else
+								else{ System.out.println("invalid format for Dob");
+								newPatient.getWarning().setText("invalid format for Dob");}
+							}else{
 								System.out.println("wrong format for DoB");
-						}else
+								newPatient.getWarning().setText("wrong format for DoB");}
+						}else{
 						System.out.println("wrong format for address");
-					}else
+						newPatient.getWarning().setText("wrong format for address");}
+					}else{
 						System.out.println("wrong format for phone");
-				}else
+						newPatient.getWarning().setText("wrong format for phone");}
+				}else{
 					System.out.println("wrong format for doc name");
-			}else
+					newPatient.getWarning().setText("wrong format for doc name");}
+			}else{
 				System.out.println("wrong format for last name");
-		}else
+			    newPatient.getWarning().setText("wrong format for last name");}
+		}else{
 			System.out.println("wrong format for first name");
+		    newPatient.getWarning().setText("wrong format for first name");}
 		return false;
 	}
 	/**
