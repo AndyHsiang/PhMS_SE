@@ -205,7 +205,7 @@ public class Gui extends JFrame implements ActionListener{
 		}
 		else if(e.getSource()==spatientP.getSearchButton()){
 			String fullName=spatientP.getEnterPatient().getText();
-			if(InputChecker.fullName(fullName)){
+			if(InputChecker.fullNameIgnoreCase(fullName)){
 				currentPatient = ManagePatient.searchPatient(fullName);
 				if(currentPatient!=null){
                     spatientP.getEnterPatient().setText("");

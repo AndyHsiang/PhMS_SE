@@ -782,19 +782,20 @@ public class DatabaseProcess {
 	}
 	
 	private static boolean modifyDrug(Drug bean, PreparedStatement stmt, String field) throws SQLException{
-		
+
 		String sql = "UPDATE drugs SET "+field+"= ? WHERE drugname = ?";
 		stmt = conn.prepareStatement(sql);
 		
 		if(field.toLowerCase().equals("description"))
 			stmt.setString(1, bean.getDescription());
 		if(field.toLowerCase().equals("quantity"))
-			stmt.setInt(1, bean.getQuantity());
-		if(field.toLowerCase().equals("sideefect"));
-			stmt.setString(1, bean.getSideEffect());
-		stmt.setString(2, bean.getDrugName());
-			
+			stmt.setInt(1, bean.getQuantity());		
+		if(field.toLowerCase().equals("sideefect"))
+			stmt.setString(1, bean.getSideEffect());	
+
+		stmt.setString(2, bean.getDrugName());	
 		int affected = stmt.executeUpdate();
+
 		if (affected == 1) {
 			System.out.println("drug info updated");
 			return true;

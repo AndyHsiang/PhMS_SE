@@ -47,10 +47,10 @@ public class ManageEmployee {
 	 */
 	public static boolean deleteEmployee(ManageEmployeePage empPage){
 		int row= empPage.getRow();
-	String username=	empPage.getTable().getValueAt(row, 1).toString();
-	Employee bean=new Employee();
-	bean.setUsername(username);
-	DatabaseProcess.delete(bean);
+		String username=	empPage.getTable().getValueAt(row, 1).toString();
+		Employee bean=new Employee();
+		bean.setUsername(username);
+		DatabaseProcess.delete(bean);
 		return false;
 	}
 	/**
@@ -58,6 +58,7 @@ public class ManageEmployee {
 	 * @return
 	 */
 	public static boolean modifyEmployee(Employee bean){
+		
 		return false;
 	}
 	/**

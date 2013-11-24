@@ -39,6 +39,12 @@ public class InputChecker {
 			return true;
 		return false;
 	}
+	public static boolean fullNameIgnoreCase(String name){
+		String[] temp = name.split(" ");
+		if(nameIgnoreCase(temp[0])&&nameIgnoreCase(temp[1]))
+			return true;
+		return false;
+	}
 	/**
 	 * checks either fname or lname
 	 * @param name
@@ -46,6 +52,11 @@ public class InputChecker {
 	 */
 	public static boolean name(String name){
 		if(name.matches("[A-Z][a-z]{2,30}"))
+			return true;
+		return false;
+	}
+	public static boolean nameIgnoreCase(String name){
+		if(name.matches("[a-z]{2,30}"))
 			return true;
 		return false;
 	}
@@ -152,24 +163,23 @@ public class InputChecker {
 					return false;
 			}
 		}
-		
-		if(d[1].length()==1 && Integer.parseInt(d[1])>9)
+		if(d[1].length()==1 && (Integer.parseInt(d[1])>9||Integer.parseInt(d[1])<1))
 			return false;
 		else if (d[1].length()>2)
 			return false;
-		if(d[2].length()==1 && Integer.parseInt(d[2])>9)
+		if(d[2].length()==1 && (Integer.parseInt(d[2])>9||Integer.parseInt(d[2])<1))
 			return false;
 		else if (d[2].length()>2)
 			return false;
-		
+
 		if(!digits(d[1])||!digits(d[2]))
 			return false;
-		if(Integer.parseInt(d[1])>11||Integer.parseInt(d[1])<0)
+		if(Integer.parseInt(d[1])>12||Integer.parseInt(d[1])<1){
 			return false;
-		if(Integer.parseInt(d[2])>30||Integer.parseInt(d[2])<0)
+		}
+		if(Integer.parseInt(d[2])>31||Integer.parseInt(d[2])<1)
 			return false;
-		if(Integer.parseInt(d[1])>Integer.parseInt(today[1]))
-			return false;
+
 		return true;
 	}
 	public static boolean position(String position){

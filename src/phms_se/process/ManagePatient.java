@@ -70,7 +70,12 @@ public class ManagePatient {
 
 		profilePage.getpName().setText(bean.getFirstName()+" "+bean.getLastName());
 		profilePage.getpAddress().setText(bean.getAddress());
-		profilePage.getpDob().setText(bean.getDob().getYear()+"-"+(bean.getDob().getMonth())+"-"+bean.getDob().getDate());
+		int year = bean.getDob().getYear();
+		int month = bean.getDob().getMonth();
+		int day = bean.getDob().getDate();
+		if(month==0)month=1;
+		if(day==0)day=1;
+		profilePage.getpDob().setText(year+"-"+month+"-"+day);
 		profilePage.getPhoneNumber().setText(bean.getPhone());
 		profilePage.getpDoctor().setText(bean.getPrimaryDoc());
 	}
