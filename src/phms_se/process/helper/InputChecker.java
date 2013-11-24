@@ -39,12 +39,6 @@ public class InputChecker {
 			return true;
 		return false;
 	}
-	public static boolean fullNameIgnoreCase(String name){
-		String[] temp = name.split(" ");
-		if(nameIgnoreCase(temp[0])&&nameIgnoreCase(temp[1]))
-			return true;
-		return false;
-	}
 	/**
 	 * checks either fname or lname
 	 * @param name
@@ -52,11 +46,6 @@ public class InputChecker {
 	 */
 	public static boolean name(String name){
 		if(name.matches("[A-Z][a-z]{2,30}"))
-			return true;
-		return false;
-	}
-	public static boolean nameIgnoreCase(String name){
-		if(name.matches("[a-z]{2,30}"))
 			return true;
 		return false;
 	}

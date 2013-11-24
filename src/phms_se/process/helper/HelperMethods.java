@@ -18,7 +18,7 @@ public class HelperMethods {
 		int month = Integer.parseInt(d[1]);
 		int day = Integer.parseInt(d[2]);
 		@SuppressWarnings("deprecation")
-		Date dob = new Date(year, month, day);
+		Date dob = new Date(year-1900, month-1, day);
 		
 		return dob;
 	}

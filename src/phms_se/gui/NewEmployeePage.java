@@ -279,6 +279,7 @@ public class NewEmployeePage extends JPanel {
 	}
 	public String getDob(){
 		String year= getYear().getSelectedItem().toString();
+		System.out.println(year);
 		String month=getMonth().getSelectedItem().toString();
 		String day=getDay().getSelectedItem().toString();
 		
@@ -294,11 +295,10 @@ public class NewEmployeePage extends JPanel {
 		 case "September": month="09";break;
 		 case "October": month="10";break;
 		 case "November": month="11";break;
-		 case "December": month="12";break;
-		 }
+		 case "December": month="12";break;}
 		 String DoB= year+"-"+day +"-"+ month;
-		 return DoB;
-	}
+	return DoB;
+}
 	public JLabel getWarning(){
 		return warning;
 	}

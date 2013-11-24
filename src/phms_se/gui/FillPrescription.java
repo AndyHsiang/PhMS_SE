@@ -114,6 +114,7 @@ public class FillPrescription extends JPanel {
 				 picLabel.add(expirationT,c);
 				 
 				 this.submit = new JButton ("Submit");
+				 submit.addActionListener(frame);
 				  submit.setPreferredSize(new Dimension(100, 40));
 
 				 c.insets= new Insets(0,0,0,0);
@@ -132,5 +133,26 @@ public class FillPrescription extends JPanel {
 	}
 	JButton getCancelButton(){
 		return this.cancel;
+	}
+	public JTextField getDrugName(){
+		return this.dNameT;
+	}
+	public JTextField getPrescriber(){
+		return this.prescriberT;
+	}
+	public JTextField getQuantity(){
+		return this.quantityT;
+	}
+	public JTextField getRefillCount(){
+		return this.refillCountT;
+	}
+	public JTextField getFillDate(){
+		return this.fillDateT;
+	}
+	public JTextField getExpiration(){
+		return this.expirationT;
+	}
+	public JButton getSubmit(){
+		return this.submit;
 	}
 }

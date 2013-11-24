@@ -57,8 +57,8 @@ public class DrugInventoryPage extends JPanel {
 			 search.addActionListener(frame);
 			
 			 
-			 String[] columnNames={"Drug Name", "Quantity", "Controlled Flag" };
-				Object[][] data={{"Drug Name","Quantity","Controlled Flag"},{0,0,0}};
+			 String[] columnNames={"Drug Name", "Quantity", "Controlled Flag", "Price" };
+				Object[][] data={{"Drug Name","Quantity","Controlled Flag","Price"},{0,0,0,0}};
 				table = new JTable(data, columnNames);
 				table.setPreferredSize(new Dimension(650,100 ));
 				table.setRowHeight(50);

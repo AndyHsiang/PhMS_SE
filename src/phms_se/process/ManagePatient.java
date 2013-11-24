@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import phms_se.process.helper.HelperMethods;
 import phms_se.process.helper.InputChecker;
 import phms_se.gui.Gui;
+import phms_se.gui.ManageEmployeePage;
 import phms_se.gui.NewPatientPage;
 import phms_se.gui.PatientProfilePage;
 import phms_se.database.DatabaseProcess;
@@ -70,14 +71,13 @@ public class ManagePatient {
 
 		profilePage.getpName().setText(bean.getFirstName()+" "+bean.getLastName());
 		profilePage.getpAddress().setText(bean.getAddress());
-		int year = bean.getDob().getYear();
-		int month = bean.getDob().getMonth();
-		int day = bean.getDob().getDate();
-		if(month==0)month=1;
-		if(day==0)day=1;
-		profilePage.getpDob().setText(year+"-"+month+"-"+day);
+		
+		profilePage.getpDob().setText(bean.getDob().toString());
 		profilePage.getPhoneNumber().setText(bean.getPhone());
 		profilePage.getpDoctor().setText(bean.getPrimaryDoc());
+		profilePage.getZipT().setText(bean.getZip());
+		profilePage.getStateT().setText(bean.getState());
+		profilePage.getCityT().setText(bean.getCity());
 	}
 	/**
 	 * @param patientFullName
@@ -102,10 +102,10 @@ public class ManagePatient {
 		modified.setAddress(pPage.getpAddress().getText());
 		modified.setDob(dob);
 		modified.setPhone(pPage.getPhoneNumber().getText());
-		//modified.setCity(pPage.);
+		modified.setCity(pPage.getCityT().getText());
 		modified.setPrimaryDoc(pPage.getpDoctor().getText());
-		//modified.setState(original.getState());
-		//modified.setZip(original.getZip());
+		modified.setState(pPage.getStateT().getText());
+		modified.setZip(pPage.getZipT().getText());
 		modified.setFirstName(patientName[0]);
 		modified.setLastName(patientName[1]);
 		
@@ -136,38 +136,38 @@ public class ManagePatient {
 		//is Address modified?
 		}if(!original.getAddress().equals(modified.getAddress())){
 			//check address field format
-//			if(InputChecker.streetAddress(modified.getAddress())){
+			if(InputChecker.streetAddress(modified.getAddress())){
 				DatabaseProcess.modifyRow(modified, "ADDRESS");
 				System.out.println("address updated");
-//			}
-//			else {
-//				System.out.println("wrong format for address");
-//				return false;
-//			}
+			}
+			else {
+				System.out.println("wrong format for address");
+			return false;
+			}
 		
 		//is State modified?
-//		}if(!original.getState().equals(modified.getState())){
-//			//check State field format
-//			if(InputChecker.state(modified.getState())){
-//				DatabaseProcess.modifyRow(modified, "STATE");
-//				System.out.println("state updated");
-//			}
-//			else {
-//				System.out.println("wrong format for STATE");
-//				return false;
-//			}
+		}if(!original.getState().equals(modified.getState())){
+			//check State field format
+			if(InputChecker.state(modified.getState())){
+				DatabaseProcess.modifyRow(modified, "STATE");
+				System.out.println("state updated");
+			}
+			else {
+				System.out.println("wrong format for STATE");
+				return false;
+			}
 
 		//is zip modified?
-//		}if(!original.getZip().equals(modified.getZip())){
-//			//check zip field format
-//			if(InputChecker.state(modified.getZip())){
-//				DatabaseProcess.modifyRow(modified, "ZIP");
-//				System.out.println("zip updated");
-//			}
-//			else {
-//				System.out.println("wrong format for ZIP");
-//				return false;
-//			}
+		}if(!original.getZip().equals(modified.getZip())){
+			//check zip field format
+			if(InputChecker.state(modified.getZip())){
+				DatabaseProcess.modifyRow(modified, "ZIP");
+				System.out.println("zip updated");
+			}
+			else {
+				System.out.println("wrong format for ZIP");
+				return false;
+			}
 		
 		//is last name modified?
 		}if(!original.getLastName().equals(modified.getLastName())){
@@ -219,12 +219,30 @@ public class ManagePatient {
 		newPat.setPrimaryDoc(newPatient.getDoctor().getText());
 		newPat.setAddress(newPatient.getAddress().getText());
 		newPat.setDob(dob);
+		newPat.setCity(newPatient.getCity().getText());
+		newPat.setState(newPatient.getState().getText());
+		newPat.setZip(newPatient.getZip().getText());
 		
 		if(DatabaseProcess.insert(newPat)){
 			Gui.setCurrentPatient(newPat);
 			return true;
 		}
 		return false;
+	}
+	public static void clearTable(PatientProfilePage profileP){
+		int rows= profileP.getPrescriptionHistory().getRowCount();
+		int i=0;
+		while(i<rows){
+			profileP.getPrescriptionHistory().setValueAt("",i,0);
+			profileP.getPrescriptionHistory().setValueAt("",i,1);
+			profileP.getPrescriptionHistory().setValueAt("",i,2);
+			profileP.getPrescriptionHistory().setValueAt("",i,3);
+			profileP.getPrescriptionHistory().setValueAt("",i,4);
+			profileP.getPrescriptionHistory().setValueAt("",i,5);
+			profileP.getPrescriptionHistory().setValueAt("",i,6);
+			i++;
+		}
+		
 	}
 	/**
 	 * @param bean
@@ -239,6 +257,13 @@ public class ManagePatient {
 				patient.setLastName(newPatient.getlName().getText());
 				if(InputChecker.fullName(newPatient.getDoctor().getText())){
 					patient.setPrimaryDoc(newPatient.getDoctor().getText());
+					if(InputChecker.city(newPatient.getCity().getText())){
+					patient.setCity(newPatient.getCity().getText());
+					if(InputChecker.state(newPatient.getState().getText())){
+					patient.setState(newPatient.getState().getText());	
+					if(InputChecker.zip(newPatient.getZip().getText())){
+						patient.setZip(newPatient.getZip().getText());
+					
 					if(InputChecker.phone(newPatient.getPhone().getText())){
 						patient.setPhone(newPatient.getPhone().getText());
 						if(newPatient.getAddress().getText()!=null){
@@ -257,6 +282,10 @@ public class ManagePatient {
 					}else{
 						System.out.println("wrong format for phone");
 						newPatient.getWarning().setText("wrong format for phone");}
+					}else{newPatient.getWarning().setText("wrong format for zip code");}
+					}else{newPatient.getWarning().setText("wrong format for state");}
+				}else{newPatient.getWarning().setText("wrong format for city");
+				}
 				}else{
 					System.out.println("wrong format for doc name");
 					newPatient.getWarning().setText("wrong format for doc name");}

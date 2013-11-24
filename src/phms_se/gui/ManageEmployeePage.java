@@ -33,6 +33,7 @@ private JTextField phoneText;
 private JTextField addressText;
 private JTextField positionText;
 private JTextField salaryText;
+private JTextField scheduleT;
 private JLabel nameLabel;
 private JLabel DoBLabel;
 private JLabel phoneLabel;
@@ -40,11 +41,13 @@ private JLabel addressLabel;
 private JLabel positionLabel;
 private JLabel currentEmp;
 private JLabel salaryLabel;
+private JLabel scheduleL;
 private JTable currentEmployees;
 private JButton addNew;
 private JButton remove;
 private JButton back;
 private JButton modify;
+private JButton newSchedule;
 private JPanel subpanel;
 private JPanel currentpanel;
 private JPanel currentEmployeeP;
@@ -122,10 +125,19 @@ private int rowSelected;
 		 buttonPanel.add(remove, c);
 		
 		 this.back = new JButton("Return to Menu");
+		 c.gridx=0;
+		 c.gridy=2;
+		 c.gridwidth=1;
+		 back.addActionListener(frame);
+		 currentEmployeeP.add(back, c);
+		 this.newSchedule=new JButton("Add New Schedule");
+		 newSchedule.addActionListener(frame);
 		 c.gridx=3;
 		 c.gridy=3;
-		 back.addActionListener(frame);
-		 buttonPanel.add(back, c);
+		 c.gridwidth=1;
+		 buttonPanel.add(newSchedule,c);
+		 
+		 
 		 this.modify=new JButton("Modify");
 		 c.gridx=4;
 		 c.gridy=3;
@@ -253,6 +265,17 @@ private int rowSelected;
 		 c.gridy=6;
 	
 		 currentpanel.add(salaryText,c);
+		 this.scheduleL=new JLabel("Schedule:");
+		 scheduleL.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		 c.gridx=0;
+		 c.gridy=7;
+		 currentpanel.add(scheduleL,c);
+		 this.scheduleT=new JTextField(15);
+		 scheduleT.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		 c.insets= new Insets(2,20,0,0);
+		 c.gridx=1;
+		 c.gridy=7;
+		 currentpanel.add(scheduleT,c);
 	}
 	JButton getBack(){
 		return this.back;
@@ -286,6 +309,12 @@ private int rowSelected;
 	}
 	public int getRow(){
 		return rowSelected;
+	}
+	public JTextField getSchedule(){
+		return this.scheduleT;
+	}
+	public JButton getAddNewSchedule(){
+		return newSchedule;
 	}
 	
 	MouseAdapter adapter=new MouseAdapter(){

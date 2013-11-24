@@ -1,13 +1,15 @@
 package phms_se.database.bean;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Patient {
-	private final static String tableSchema = "FIRSTNAME,LASTNAME,DOB,PRIMARYDOC,PHONE,ADDRESS,CITY,STATE,ZIP";
+	private final static String tableSchema = "FIRSTNAME,LASTNAME,DOB,PRIMARYDOC,PHONE,ADDRESS,CITY,STATE,ZIP,CO_PAY";
 
 	private int pid;
 	private String firstName, lastName, primaryDoc, phone, address, city, state, zip;
 	private Date dob;
+	private BigDecimal coPay;
 	
 	//Constructor
 	public Patient(){
@@ -132,6 +134,12 @@ public class Patient {
 	 */
 	public void setDob(Date dob) {
 		this.dob = dob;
+	}
+	public BigDecimal getCoPay() {
+		return coPay;
+	}
+	public void setCoPay(BigDecimal coPay) {
+		this.coPay = coPay;
 	}
 	/**
 	 * @return

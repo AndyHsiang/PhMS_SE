@@ -1,5 +1,6 @@
 package phms_se.process;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import phms_se.gui.DrugInventoryPage;
@@ -44,7 +45,9 @@ public class ManageDrug {
 		boolean flag=bean.getControlFlag();
 		drugInv.getTable().setValueAt(flag, 1, 2);
 
-		
+		BigDecimal price=bean.getPrice();
+		String price2=price+"$";
+		drugInv.getTable().setValueAt(price2, 1, 3);
 	}
 	/**
 	 * @param drug

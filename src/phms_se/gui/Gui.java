@@ -9,6 +9,7 @@ import phms_se.database.bean.Patient;
 import phms_se.process.ManageDrug;
 import phms_se.process.ManageEmployee;
 import phms_se.process.ManagePatient;
+import phms_se.process.ManagePrescription;
 import phms_se.process.ManageSystem;
 import phms_se.process.helper.Credentials;
 import phms_se.process.helper.DeleteConfirmation;
@@ -17,6 +18,7 @@ import phms_se.process.helper.InputChecker;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
+import java.text.ParseException;
 
 @SuppressWarnings("serial")
 public class Gui extends JFrame implements ActionListener{
@@ -24,6 +26,7 @@ public class Gui extends JFrame implements ActionListener{
 	private static Employee currentUser;
 	private static Patient currentPatient;
 	private static Drug currentDrug;
+	private static Employee currentEmployee;
 	private JLabel picLabel;
 	private JButton login;
 	private JButton exit;
@@ -205,9 +208,10 @@ public class Gui extends JFrame implements ActionListener{
 		}
 		else if(e.getSource()==spatientP.getSearchButton()){
 			String fullName=spatientP.getEnterPatient().getText();
-			if(InputChecker.fullNameIgnoreCase(fullName)){
+			if(InputChecker.fullName(fullName)){
 				currentPatient = ManagePatient.searchPatient(fullName);
 				if(currentPatient!=null){
+					ManagePrescription.displayPrescription(pProfileP);
                     spatientP.getEnterPatient().setText("");
 					getContentPane().removeAll();
 					getContentPane().add(pProfileP);					
@@ -228,6 +232,7 @@ public class Gui extends JFrame implements ActionListener{
 			repaint();
 		}
 		else if(e.getSource()==menuP.getSystemButton()){
+			
 		    getContentPane().removeAll();
 		    getContentPane().add(systemP);
 		    revalidate();
@@ -332,6 +337,7 @@ public class Gui extends JFrame implements ActionListener{
 		}
 		else if(e.getSource()==pProfileP.getExitButton()){
 			currentPatient=null;
+			ManagePatient.clearTable(pProfileP);
 			getContentPane().removeAll();
 			getContentPane().add(spatientP);
 			revalidate();
@@ -351,6 +357,14 @@ public class Gui extends JFrame implements ActionListener{
 			ManagePatient.modifyPatient(pProfileP);
 		}
 		else if(e.getSource()==fillP.getCancelButton()){
+			getContentPane().removeAll();
+			getContentPane().add(pProfileP);
+			revalidate();
+			repaint();
+		}
+		else if(e.getSource()==fillP.getSubmit()){
+			ManagePrescription.addPrescription(fillP);
+			ManagePrescription.displayPrescription(pProfileP);
 			getContentPane().removeAll();
 			getContentPane().add(pProfileP);
 			revalidate();
@@ -444,6 +458,20 @@ public class Gui extends JFrame implements ActionListener{
 			revalidate();
 			repaint();
 		}
+		else if(e.getSource()==employeePage.getAddNewSchedule()){	
+			if(newSchedule.addNewSchedule()){
+				try {
+					ManageEmployee.addNewSchedule();
+				} catch (ParseException e1) {
+					
+					e1.printStackTrace();
+				}
+			}
+			getContentPane().removeAll();
+			getContentPane().add(employeePage);
+			revalidate();
+			repaint();
+		}
 		else if(e.getSource()==newEmployee.getCancel()){
 			getContentPane().removeAll();
 			getContentPane().add(employeePage);
@@ -453,6 +481,7 @@ public class Gui extends JFrame implements ActionListener{
 		else if(e.getSource()==newEmployee.getSubmit()){
 			if(ManageEmployee.verifyNewEmployee(newEmployee)){
 			ManageEmployee.addNewEmployee(newEmployee);
+			ManageEmployee.fillEmployeeTable(employeePage);
 			getContentPane().removeAll();
 			getContentPane().add(employeePage);
 			revalidate();
@@ -481,6 +510,9 @@ public class Gui extends JFrame implements ActionListener{
 	public static Drug setCurrentDrug(Drug bean) {
 		return currentDrug;
 	}
+	public static Employee getCurrentEmployee(){
+		return currentEmployee;
+	}
 public static ManageEmployeePage getPage(){
 	return employeePage;
 }
@@ -498,6 +530,10 @@ public static ManageEmployeePage getPage(){
 		frame.createPages();
 		frame.addFirstPage();
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	}
+
+	public static void setCurrentEmployee(Employee currentEmployee) {
+		Gui.currentEmployee= currentEmployee;
 	}			 
 }
 

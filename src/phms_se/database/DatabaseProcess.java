@@ -128,6 +128,37 @@ public class DatabaseProcess {
       }
 		return names;		
 	}
+	public static ArrayList<Integer> getPrescription(int pid ){
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql= "SELECT * FROM PRESCRIPTIONS";
+        ArrayList<Integer> presID=null;
+      try {
+        stmt =  conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);	
+        rs = stmt.executeQuery(sql);
+		presID= new ArrayList<Integer>();
+		int i=0;
+		while(rs.next()){		
+			int j=rs.getInt("pid");
+			if(pid== j){
+			presID.add(i,rs.getInt("presc_id"));
+			i++;
+			}
+			
+			
+		}  
+      } catch (SQLException ex) {
+        Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
+      }	finally{
+          try {
+            if(rs!=null) rs.close();
+            if(stmt!=null) stmt.close();
+          } catch (SQLException ex) {
+            Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }
+		return presID;		
+	}
 	
 	private static void displayDrugs(ResultSet rs) throws SQLException{
 
@@ -177,7 +208,9 @@ public class DatabaseProcess {
 		while (rs.next()){
 			bf.append(rs.getInt("presc_id")).append(": ");
 			bf.append(rs.getDate("start_date")).append(", ");
-			bf.append(rs.getDate("this_day"));
+			bf.append(rs.getDate("this_day")).append(", ");
+			bf.append(rs.getDate("expiration_date")).append(", ");
+			bf.append(rs.getBoolean("pay_status"));
 			System.out.println(bf.toString());
 			bf.delete(0, bf.length());
 		}
@@ -210,7 +243,7 @@ public class DatabaseProcess {
 		try{
 			if(bean instanceof Patient){
 				sql = "INSERT into patients ("+Patient.getTableSchema()+") " +
-					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				stmt=conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				return insertPatient((Patient)bean, stmt);
 			}
@@ -228,7 +261,7 @@ public class DatabaseProcess {
 			}
 			if(bean instanceof Prescription){
 				sql = "INSERT into prescriptions ("+Prescription.getTableSchema()+") " +
-						"VALUES (?, ?, ?, ?, ?, ?, ?)";
+						"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				stmt=conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				return insertPrescription((Prescription) bean, stmt);
 			}
@@ -265,6 +298,7 @@ public class DatabaseProcess {
 		stmt.setString(7, bean.getCity());
 		stmt.setString(8, bean.getState());
 		stmt.setString(9, bean.getZip());
+		stmt.setBigDecimal(10, bean.getCoPay());
 		
 		int affected = stmt.executeUpdate();
 		if(affected == 1){
@@ -318,13 +352,15 @@ public class DatabaseProcess {
 	
 	private static boolean insertPrescription(Prescription bean, PreparedStatement stmt) throws SQLException{
 		
-		stmt.setDate(1, bean.getStartDay());
+		stmt.setDate(1, bean.getStartDate());
 		stmt.setDate(2, bean.getThisDay());
 		stmt.setString(3, bean.getDose());
 		stmt.setInt(4, bean.getQuantity());
 		stmt.setInt(5, bean.getRefill());
-		stmt.setInt(6, bean.getDid());
-		stmt.setInt(7, bean.getPid());
+		stmt.setDate(6, bean.getExirationDate());
+		stmt.setBoolean(7, bean.getPayStatus());
+		stmt.setInt(8, bean.getDid());
+		stmt.setInt(9, bean.getPid());
 
 		int affected = stmt.executeUpdate();
 		if(affected == 1){
@@ -524,6 +560,7 @@ public class DatabaseProcess {
 			}
 			if(bean instanceof Schedule){
 				sql = "SELECT * FROM schedules WHERE work_day = ? and username = ?";
+
 				stmt = conn.prepareStatement(sql);
 				returnObj = getSchedule((Schedule)bean, stmt, rs);
 			}
@@ -549,7 +586,7 @@ public class DatabaseProcess {
 
 	/*handle the get row in one of the following insert methods*/
 	private static Patient getPatient(Patient bean, PreparedStatement stmt, ResultSet rs, int numOfObject) throws SQLException{
-		
+
 		if(bean.getPid()!=0)
 			stmt.setInt(1, bean.getPid());
 		else if(bean.getPhone()!=null){
@@ -563,7 +600,6 @@ public class DatabaseProcess {
 		}
 		
 		rs = stmt.executeQuery();
-		
 		if (rs.next()) {
 			Patient newBean = new Patient();
 			newBean.setPid(rs.getInt("pid"));
@@ -576,6 +612,7 @@ public class DatabaseProcess {
 			newBean.setCity(rs.getString("city"));
 			newBean.setState(rs.getString("state"));
 			newBean.setZip(rs.getString("zip"));
+			newBean.setCoPay(rs.getBigDecimal("co_pay"));
 			numOfObject++;
 			return newBean;
 		} else {
@@ -647,6 +684,8 @@ public class DatabaseProcess {
 			newBean.setDose(rs.getString("dose"));
 			newBean.setQuantity(rs.getInt("quantity"));
 			newBean.setRefill(rs.getInt("refill"));
+			newBean.setExirationDate(rs.getDate("expiration_date"));
+			newBean.setPayStatus(rs.getBoolean("pay_status"));
 			newBean.setDid(rs.getInt("did"));
 			newBean.setPid(rs.getInt("pid"));
 			return newBean;
@@ -743,6 +782,8 @@ public class DatabaseProcess {
 			stmt.setString(1, bean.getLastName());
 		if(field.toLowerCase().equals("dob"))
 			stmt.setDate(1, bean.getDob());
+		if(field.toLowerCase().equals("co_pay"))
+			stmt.setBigDecimal(1, bean.getCoPay());
 		stmt.setInt(2, bean.getPid());
 			
 		int affected = stmt.executeUpdate();
@@ -816,6 +857,10 @@ public class DatabaseProcess {
 			stmt.setInt(1, bean.getQuantity());
 		if(field.toLowerCase().equals("refill"));
 			stmt.setInt(1, bean.getRefill());
+		if(field.toLowerCase().equals("expiration_date"));
+			stmt.setDate(1, bean.getExirationDate());
+		if(field.toLowerCase().equals("pay_status"));
+			stmt.setBoolean(1, bean.getPayStatus());
 		stmt.setInt(2, bean.getPrescriptionID());
 			
 		int affected = stmt.executeUpdate();

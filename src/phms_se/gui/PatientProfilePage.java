@@ -13,19 +13,26 @@ public class PatientProfilePage extends JPanel{
 	private JLabel pDoctorLabel;
 	private JLabel phoneNumberLabel;
 	private JLabel pAddressLabel;
+	private JLabel stateL;
+	private JLabel zipL;
+	private JLabel cityL;
 	private JTextField pName;
 	private JTextField pDob;
 	private JTextField pDoctor;
 	private JTextField phoneNumber;
 	private JTextField pAddress;
-	private JLabel drugHist;
+	private JTextField stateT;
+	private JTextField zipT;
+	private JTextField cityT;
 	private JButton fillPrescription;
 	private JButton removePrescription;
 	private JButton exitProfile;
 	private JButton modify;
 	private JButton remove;
 	private JScrollPane tablePane;
-	private JTable drugHistory;
+	private JButton checkOut;
+	private JLabel prescriptionHistory;
+	private JTable prescriptionTable;
 	 PatientProfilePage(Gui frame){
 		 GridBagConstraints c = new GridBagConstraints();
 			JLabel picLabel=new JLabel();
@@ -58,7 +65,7 @@ public class PatientProfilePage extends JPanel{
 							c.gridy=4;								 
 								 picLabel.add(pAddressLabel,c);
 	
-				this.pName= new JTextField("David",15);
+				this.pName= new JTextField("",15);
 				c.gridy=0;
 								 c.gridx=1;
 								 picLabel.add(pName,c);
@@ -78,42 +85,91 @@ public class PatientProfilePage extends JPanel{
 							c.gridy=4;
 							c.gridx=1;
 							 picLabel.add(pAddress,c);
+				this.stateL = new JLabel("State:");
+				c.gridy=5;
+				c.gridx=0;
+				picLabel.add(stateL,c);
+				this.stateT = new JTextField(15);
+				c.gridy=5;
+				c.gridx=1;
+				picLabel.add(stateT,c);
+				this.zipL = new JLabel("Zip Code:");
+				c.gridy=6;
+				c.gridx=0;
+				picLabel.add(zipL,c);
+				this.zipT = new JTextField(15);
+				c.gridy=6;
+				c.gridx=1;
+				picLabel.add(zipT,c);
+				
+				this.cityL = new JLabel("City:");
+				c.gridy=7;
+				c.gridx=0;
+				picLabel.add(cityL,c);
+				
+				this.cityT = new JTextField(15);
+				c.gridy=7;
+				c.gridx=1;
+				picLabel.add(cityT,c);
+				
+
+				
+						
+				this.prescriptionHistory = new JLabel("Prescription History");
+				prescriptionHistory.setFont(new Font("Comic Sans",Font.BOLD, 28));
+				c.insets= new Insets(0,0,40,0);
+				c.gridx=2;
+				c.gridy=1;
+				c.gridheight=2;
+				
+				picLabel.add(prescriptionHistory,c);
+				
 	
 				this.fillPrescription= new JButton("Fill Prescription");
 				c.insets= new Insets(20,0,0,0);
 				c.gridx=0;
-				c.gridy=5;
+				c.gridy=8;
 				c.gridwidth=1;
-				fillPrescription.setPreferredSize(new Dimension(155, 35));
+				c.gridheight=1;
+				fillPrescription.setPreferredSize(new Dimension(150, 35));
 				picLabel.add(fillPrescription, c);
 				fillPrescription.addActionListener(frame);
 				this.modify= new JButton("Modify");
 				c.insets= new Insets(20,0,0,0);
 				c.gridx=1;
-				c.gridy=5;
+				c.gridy=8;
 				c.gridwidth=1;
-				modify.setPreferredSize(new Dimension(155, 35));
+				modify.setPreferredSize(new Dimension(150, 35));
 				modify.addActionListener(frame);
 				picLabel.add(modify, c);
 				this.remove= new JButton("Remove Patient");
 				c.insets= new Insets(20,0,0,0);
 				c.gridx=1;
-				c.gridy=6;
+				c.gridy=9;
 				c.gridwidth=1;
-				remove.setPreferredSize(new Dimension(155, 35));
+				remove.setPreferredSize(new Dimension(150, 35));
 				remove.addActionListener(frame);
 				picLabel.add(remove, c);
+				this.checkOut= new JButton("Checkout");
+				c.insets= new Insets(20,0,0,0);
+				c.gridx=1;
+				c.gridy=10;
+				c.gridwidth=1;
+				checkOut.setPreferredSize(new Dimension(150, 35));
+				checkOut.addActionListener(frame);
+				picLabel.add(checkOut, c);
 				this.removePrescription= new JButton("Remove Prescription");
-				c.gridy=6;
+				c.gridy=9;
 				c.gridx=0;
 				c.gridwidth=1;
-				removePrescription.setPreferredSize(new Dimension(155, 35));
+				removePrescription.setPreferredSize(new Dimension(150, 35));
 				picLabel.add(removePrescription, c);
 				this.exitProfile= new JButton("Exit Patient Profile");
 				exitProfile.addActionListener(frame);
-				exitProfile.setPreferredSize(new Dimension(155, 35));
-				c.gridy=7;
+				exitProfile.setPreferredSize(new Dimension(140, 35));
+				c.gridy=10;
 				picLabel.add(exitProfile, c);
+			/*	
 				this.drugHist=new JLabel("Drug History");
 				c.insets= new Insets(0,100,0,0);
 				drugHist.setFont(new Font("Comic Sans",Font.BOLD, 28));
@@ -133,21 +189,22 @@ public class PatientProfilePage extends JPanel{
 				 drugHistory.setBackground(Color.decode("#CCEEEE"));
 				 Border border = BorderFactory.createLineBorder(Color.black);
 				 drugHistory.setBorder(border);
-				 
-				 String[] columnNames={"Prescription Number","Drug Name","Quantity","Dose","Date Filled","Refills rm"};
-					Object[][] data={{1,11,1,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1},{1,1,11,1,1,1}};
-					JTable table = new JTable(data, columnNames);
-					table.setPreferredSize(new Dimension(750,500 ));
-					table.setRowHeight(20);
-					c.insets= new Insets(20,0,0,0);
-					c.gridx=0;
-					c.gridy=8;
-					c.gridwidth=4;
+				 */
+				 String[] columnNames={"Prescription ID","Drug Name","Quantity","Dose","Date Filled","Start Date","Refills rm"};
+					Object[][] data={{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""}};
+					prescriptionTable = new JTable(data, columnNames);
+					prescriptionTable.setPreferredSize(new Dimension(770,520 ));
+					prescriptionTable.setRowHeight(20);
+					c.insets= new Insets(0,30,0,0);
+					c.gridx=2;
+					c.gridy=2;
+					c.gridwidth=1;
+					c.gridheight=4;
 					//picLabel.add(table,c);
-					 table.setBackground(Color.decode("#CCEEEE"));
+					prescriptionTable.setBackground(Color.decode("#CCEEEE"));
 					 Border border2 = BorderFactory.createLineBorder(Color.black);
-					 table.setBorder(border2);
-					 this.tablePane=new JScrollPane(table);
+					 prescriptionTable.setBorder(border2);
+					 this.tablePane=new JScrollPane(prescriptionTable);
 					 tablePane.setPreferredSize(new Dimension(750,150 ));
 					 picLabel.add(tablePane,c);
 	
@@ -158,8 +215,20 @@ public class PatientProfilePage extends JPanel{
 	   JButton getExitButton(){
 		   return this.exitProfile;
 	   }
+	public JTable getPrescriptionHistory(){
+		return prescriptionTable;
+	}
 	public JTextField getpName() {
 		return pName;
+	}
+	public JTextField getZipT(){
+		return zipT;
+	}
+	public JTextField getCityT(){
+		return cityT;
+	}
+	public JTextField getStateT(){
+		return stateT;
 	}
 	public void setpName(JTextField pName) {
 		this.pName = pName;

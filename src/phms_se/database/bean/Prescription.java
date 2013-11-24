@@ -4,11 +4,12 @@ import java.sql.Date;
 
 public class Prescription {
 	
-	private final static String tableSchema ="START_DAY,THIS_DAY,DOSE,QUANTITY,REFILL,DID,PID";
+	private final static String tableSchema ="START_DATE,THIS_DAY,DOSE,QUANTITY,REFILL,EXIRATION_DATE, PAY_STATUS, DID,PID";
 	
-	private Date startDay, thisDay;
+	private Date startDate, thisDay, exirationDate;
 	private int prescriptionID, quantity, refill, did, pid;
 	private String dose;
+	private boolean payStatus;
 	
 	public Prescription(){}
 
@@ -20,12 +21,12 @@ public class Prescription {
 		this.prescriptionID = prescriptionID;
 	}
 
-	public Date getStartDay() {
-		return startDay;
+	public Date getStartDate() {
+		return startDate;
 	}
 
 	public void setStartDate(Date startDay) {
-		this.startDay = startDay;
+		this.startDate = startDay;
 	}
 
 	public Date getThisDay() {
@@ -76,13 +77,29 @@ public class Prescription {
 		this.pid = pid;
 	}
 
+	public Date getExirationDate() {
+		return exirationDate;
+	}
+
+	public void setExirationDate(Date exirationDate) {
+		this.exirationDate = exirationDate;
+	}
+
+	public boolean getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(boolean payStatus) {
+		this.payStatus = payStatus;
+	}
+
 	public static String getTableSchema() {
 		return tableSchema;
 	}
 
 	@Override
 	public String toString() {
-		return "Prescription [startDate=" + startDay + ", thisDay=" + thisDay
+		return "Prescription [startDate=" + startDate + ", thisDay=" + thisDay
 				+ ", quantity=" + quantity + ", refill=" + refill + ", did="
 				+ did + ", pid=" + pid + ", dose=" + dose + "]";
 	}

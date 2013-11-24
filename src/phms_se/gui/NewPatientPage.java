@@ -20,6 +20,12 @@ public class NewPatientPage extends JPanel {
 	private JLabel warning;
 	private JButton cancel;
 	private JButton submit;
+	private JLabel stateL;
+	private JLabel zipL;
+	private JLabel cityL;
+	private JTextField stateT;
+	private JTextField zipT;
+	private JTextField cityT;
 	@SuppressWarnings("rawtypes")
 	private JComboBox day;
 	@SuppressWarnings("rawtypes")
@@ -151,6 +157,38 @@ public class NewPatientPage extends JPanel {
 		c.gridy=5;
 		c.gridwidth=1;
 		picLabel.add(address,c);
+		this.stateL = new JLabel("State:");
+		stateL.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		c.gridy=6;
+		c.gridx=0;
+		picLabel.add(stateL,c);
+		this.stateT = new JTextField(15);
+		stateT.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		c.gridy=6;
+		c.gridx=2;
+		picLabel.add(stateT,c);
+		this.zipL = new JLabel("Zip Code:");
+		zipL.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		c.gridy=7;
+		c.gridx=0;
+		picLabel.add(zipL,c);
+		this.zipT = new JTextField(15);
+		zipT.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		c.gridy=7;
+		c.gridx=2;
+		picLabel.add(zipT,c);
+		
+		this.cityL = new JLabel("City:");
+		cityL.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		c.gridy=8;
+		c.gridx=0;
+		picLabel.add(cityL,c);
+		
+		this.cityT = new JTextField(15);
+		cityT.setFont(new Font("Comic Sans",Font.BOLD, 15));
+		c.gridy=8;
+		c.gridx=2;
+		picLabel.add(cityT,c);
 				 
 		this.submit = new JButton ("Submit");
 		submit.setPreferredSize(new Dimension(100, 40));
@@ -158,7 +196,7 @@ public class NewPatientPage extends JPanel {
 
 		c.insets= new Insets(0,0,0,0);
 		c.gridx=0;
-		c.gridy=6;
+		c.gridy=9;
 		picLabel.add(submit,c);
 				 
 		this.cancel = new JButton ("Cancel");
@@ -166,11 +204,11 @@ public class NewPatientPage extends JPanel {
 		cancel.addActionListener(frame);
 		c.insets= new Insets(0,0,0,0);
 		c.gridx=2;
-		c.gridy=6;
+		c.gridy=9;
 		picLabel.add(cancel,c);   
 		this.warning=new JLabel("");
 		c.gridx=0;
-		c.gridy=7;
+		c.gridy=10;
 		c.gridwidth=3;
 		warning.setForeground(Color.red);
 		picLabel.add(warning,c);
@@ -179,6 +217,15 @@ public class NewPatientPage extends JPanel {
     
     public void presetText(){
       
+    }
+    public JTextField getZip(){
+    	return zipT;
+    }
+    public JTextField getCity(){
+    	return cityT;
+    }
+    public JTextField getState(){
+    	return stateT;
     }
 	public JTextField getfName() {
 		return fName;
@@ -245,4 +292,5 @@ public class NewPatientPage extends JPanel {
 	public JLabel getWarning(){
 		return warning;
 	}
+	
 }
