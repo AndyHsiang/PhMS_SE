@@ -5,7 +5,7 @@ import java.sql.Date;
 public class HelperMethods {
 	
 	public static String[] splitString(String str){
-		String[] stringArray = str.split("[ :/,]");
+		String[] stringArray = str.split("[ :/,-]");
 		return stringArray;
 	}
 	
@@ -21,5 +21,10 @@ public class HelperMethods {
 		Date dob = new Date(year-1900, month-1, day);
 		
 		return dob;
+	}
+	
+	//cap first letter
+	public static String capFirst(String s){
+		return (s.charAt(0)+"").toUpperCase()+s.substring(1);
 	}
 }

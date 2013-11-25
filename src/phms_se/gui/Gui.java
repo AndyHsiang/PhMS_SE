@@ -207,20 +207,18 @@ public class Gui extends JFrame implements ActionListener{
 				}
 		}
 		else if(e.getSource()==spatientP.getSearchButton()){
-			String fullName=spatientP.getEnterPatient().getText();
-			if(InputChecker.fullName(fullName)){
-				currentPatient = ManagePatient.searchPatient(fullName);
-				if(currentPatient!=null){
-					ManagePrescription.displayPrescription(pProfileP);
-                    spatientP.getEnterPatient().setText("");
-					getContentPane().removeAll();
-					getContentPane().add(pProfileP);					
-					//This method has been added to populate the patient profile page to reflect the
-					//the patient that has been retrieved from the database
-					ManagePatient.setPatientProfilePage(currentPatient, pProfileP);
-					revalidate();
-					repaint();
-				}
+			String searchText=spatientP.getEnterPatient().getText();			
+			currentPatient = ManagePatient.searchPatient(searchText);
+			if(currentPatient!=null){
+				ManagePrescription.displayPrescription(pProfileP);
+                spatientP.getEnterPatient().setText("");
+				getContentPane().removeAll();
+				getContentPane().add(pProfileP);					
+				//This method has been added to populate the patient profile page to reflect the
+				//the patient that has been retrieved from the database
+				ManagePatient.setPatientProfilePage(currentPatient, pProfileP);
+				revalidate();
+				repaint();
 			}else{
 				spatientP.setWarningLabel("Patient not found.");
 			}

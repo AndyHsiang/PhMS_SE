@@ -521,7 +521,7 @@ public class DatabaseProcess {
 	 */
 	public static Object getRow (Object bean) {
 		int numOfObject=0;
-		String sql;	
+		String sql="";
 		PreparedStatement stmt=null;
 		ResultSet rs = null;
 		Object returnObj = null;
@@ -529,10 +529,16 @@ public class DatabaseProcess {
 			if(bean instanceof Patient){
 				if(((Patient) bean).getPid()!=0)
 					sql = "SELECT * FROM patients WHERE pid = ?";
-				else if(((Patient) bean).getPhone()!=null)
+				else if(((Patient) bean).getPhone()!=null && ((Patient) bean).getLastName()!=null && ((Patient) bean).getFirstName()!=null)
 					sql = "SELECT * FROM patients WHERE firstname = ? AND lastname = ? and phone = ?";
-				else
+				else if(((Patient)bean).getFirstName()!=null && ((Patient)bean).getLastName()!=null)
 					sql = "SELECT * FROM patients WHERE firstname = ? AND lastname = ?";
+				else if(((Patient)bean).getFirstName()!=null)
+					sql = "SELECT * FROM patients WHERE firstname = ? ";
+				else if(((Patient)bean).getLastName()!=null)
+					sql = "SELECT * FROM patients WHERE lastname = ? ";
+				else if (((Patient)bean).getPhone()!=null)
+					sql = "SELECT * FROM patients WHERE phone = ? ";
 				stmt = conn.prepareStatement(sql);
 				returnObj = getPatient((Patient)bean, stmt, rs, numOfObject);
 				if(numOfObject>1) returnObj=null;
@@ -586,19 +592,22 @@ public class DatabaseProcess {
 
 	/*handle the get row in one of the following insert methods*/
 	private static Patient getPatient(Patient bean, PreparedStatement stmt, ResultSet rs, int numOfObject) throws SQLException{
-
-		if(bean.getPid()!=0)
+		if(bean.getPid()!=0){
 			stmt.setInt(1, bean.getPid());
-		else if(bean.getPhone()!=null){
+		}else if(bean.getPhone()!=null && bean.getFirstName()!=null && bean.getLastName()!=null){
 			stmt.setString(1, bean.getFirstName());
 			stmt.setString(2, bean.getLastName());
 			stmt.setString(3, bean.getPhone());
-		}
-		else{
+		}else if(bean.getFirstName()!=null && bean.getLastName()!=null){
 			stmt.setString(1, bean.getFirstName());
 			stmt.setString(2, bean.getLastName());
-		}
-		
+		}else if(bean.getFirstName()!=null){
+			stmt.setString(1, bean.getFirstName());
+		}else if(bean.getLastName()!=null){
+			stmt.setString(1, bean.getLastName());
+		}else if(bean.getPhone()!=null){
+			stmt.setString(1, bean.getPhone());
+		}else System.out.println("no match");
 		rs = stmt.executeQuery();
 		if (rs.next()) {
 			Patient newBean = new Patient();

@@ -45,7 +45,7 @@ public class InputChecker {
 	 * @return true if valid
 	 */
 	public static boolean name(String name){
-		if(name.matches("[A-Z][a-z]{2,30}"))
+		if(name.matches("[a-zA-Z]{2,30}"))
 			return true;
 		return false;
 	}
@@ -79,7 +79,7 @@ public class InputChecker {
 	 * @return true if city is correctly formed
 	 */
 	public static boolean city(String city){
-		if(city.matches("[A-Z][a-z]+(\\s[A-Z][a-z]+(\\.)?)*")&&city.length()<30)
+		if(city.matches("[a-zA-Z]+(\\s[A-Z][a-z]+(\\.)?)*")&&city.length()<30)
 			return true;
 		return false;
 	}

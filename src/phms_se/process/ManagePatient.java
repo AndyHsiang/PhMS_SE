@@ -17,16 +17,40 @@ import phms_se.database.bean.Patient;
  */
 public class ManagePatient {
 	
-	/***
-	 * @param patientFullName
-	 * @return patient if found
+	/**
+	 * 
+	 * @param searchText
+	 * @return
 	 */
-	public static Patient searchPatient(String patientFullName){
-		String[] patientName = HelperMethods.splitString(patientFullName);
+	public static Patient searchPatient(String searchText){
+		String[] searchFields = HelperMethods.splitString(searchText);
 		Patient bean = new Patient();
-		bean.setFirstName(patientName[0]);
-		bean.setLastName(patientName[1]);	
-		bean=(Patient)DatabaseProcess.getRow(bean);
+		
+		if(searchFields.length==1){
+			if(InputChecker.name(searchFields[0])){
+				bean.setFirstName(HelperMethods.capFirst(searchFields[0]));
+				bean=(Patient)DatabaseProcess.getRow(bean);	
+				if(bean==null){
+					bean = new Patient();
+					bean.setLastName(HelperMethods.capFirst(searchFields[0]));
+				}
+			}else if(InputChecker.phone(searchFields[0])){
+				bean.setPhone(searchFields[0]);
+			}else if(searchFields[0].length()==5){
+				if(InputChecker.digits(searchFields[0]))
+					return searchPatient(Integer.parseInt(searchFields[0]));
+			}
+		}else if(searchFields.length==2){
+			if(InputChecker.fullName(searchText)){
+				bean.setFirstName(HelperMethods.capFirst(searchFields[0]));
+				bean.setLastName(HelperMethods.capFirst(searchFields[1]));
+			}
+		//assuming user input full name and phone
+		}else if(searchFields.length==3){
+			return searchPatient((HelperMethods.capFirst(searchFields[0])+" "+HelperMethods.capFirst(searchFields[1])), searchFields[2]);
+		}
+		bean=(Patient)DatabaseProcess.getRow(bean);	
+			
 		if(bean!=null)
 			return bean;
 		else return null;
