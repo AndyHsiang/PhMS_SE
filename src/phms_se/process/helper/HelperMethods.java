@@ -1,9 +1,9 @@
 package phms_se.process.helper;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class HelperMethods {
-	
 	public static String[] splitString(String str){
 		String[] stringArray = str.split("[ :/,-]");
 		return stringArray;
@@ -26,5 +26,16 @@ public class HelperMethods {
 	//cap first letter
 	public static String capFirst(String s){
 		return (s.charAt(0)+"").toUpperCase()+s.substring(1);
+	}
+	
+	//multiply bigdecimal values
+	public static BigDecimal multiplyCost(int itemQuantity, BigDecimal itemPrice)
+	{
+		BigDecimal x = itemPrice.multiply(new BigDecimal(itemQuantity));
+		return x;
+	}
+	public static BigDecimal totalCost(BigDecimal cost, BigDecimal currentCost){
+		
+		return currentCost.add(cost);
 	}
 }

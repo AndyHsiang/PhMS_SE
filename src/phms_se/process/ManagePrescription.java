@@ -2,6 +2,7 @@ package phms_se.process;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -22,18 +23,30 @@ import phms_se.process.helper.HelperMethods;
  * @author Andy
  */
 public class ManagePrescription {
+	private static BigDecimal totalPrescriptionCost;
 	/**
 	 * @param drug
 	 * @param patient
 	 * @param prescription
 	 * @return
 	 */
-	public static boolean refillDrug(Drug drug, Prescription prescription){
-		if(drug.getInterACtion()!=null){
-			if(checkInteraction(drug.getDrugName(), drug.getInterACtion()))
-				return false;
-		}
-		return true;
+	public static boolean refillDrug(DeleteConfirmation refillP){
+		Prescription bean=new Prescription();
+		bean.setPrescriptionID(Integer.parseInt(DeleteConfirmation.getPrescriptionID().getText()));
+		bean=(Prescription)DatabaseProcess.getRow(bean);
+		int count = bean.getRefill();
+		count=count-1;
+		bean.setRefill(count);
+		DatabaseProcess.modifyRow(bean, "refill");
+		int SubQuantity = bean.getQuantity();
+		Drug derp = new Drug();
+		int dID = bean.getDid();
+		derp.setDrugId(dID);
+		derp=(Drug)DatabaseProcess.getRow(derp);
+		derp.setQuantity(derp.getQuantity()-SubQuantity);
+		DatabaseProcess.modifyRow(derp, "quantity");
+		
+		return false;
 	}
 	/**
 	 * @param prescription
@@ -46,6 +59,9 @@ public class ManagePrescription {
 		Prescription perp = new Prescription();
 		derp.setDrugName(drugName);
 		derp=(Drug)DatabaseProcess.getRow(derp);
+		int SubQuantity = Integer.parseInt(fillP.getQuantity().getText());
+		derp.setQuantity(derp.getQuantity()-SubQuantity);
+		DatabaseProcess.modifyRow(derp, "quantity");
 		int id = derp.getDrugId();
 		perp.setDid(id);
 		int patient = Gui.getCurrentPatient().getPid();
@@ -72,7 +88,6 @@ public class ManagePrescription {
 	public static boolean removePrescription(DeleteConfirmation removeP){
 
 		Prescription bean=new Prescription();
-		DeleteConfirmation.getPrescriptionID().getText().toString();
 		bean.setPrescriptionID(Integer.parseInt(DeleteConfirmation.getPrescriptionID().getText()));
 		DatabaseProcess.delete(bean);
 		return false;
@@ -99,6 +114,7 @@ public class ManagePrescription {
 		}
 		return false;
 	}
+	
 	public static void displayPrescription(PatientProfilePage profileP){
 		clearTable(profileP);
 		Patient p = Gui.getCurrentPatient();
@@ -108,27 +124,44 @@ public class ManagePrescription {
 		ArrayList<Integer> paid=new ArrayList<Integer>();
 		ArrayList<Integer> expired=new ArrayList<Integer>();
 		int j=0;
-		System.out.println(prescID);
+		boolean flag=true;
 		for(int i=0;i<prescID.size();i++){
 			Prescription bean =new Prescription();
 			bean.setPrescriptionID(prescID.get(i));
-		bean=(Prescription)DatabaseProcess.getRow(bean);
-		if(!bean.getPayStatus()){
-			profileP.getPrescriptionHistory().setValueAt(prescID.get(i),j,0);
-			profileP.getPrescriptionHistory().setValueAt(bean.getQuantity(),j,2);
-			profileP.getPrescriptionHistory().setValueAt(bean.getDose(),j,3);
-			profileP.getPrescriptionHistory().setValueAt(bean.getThisDay().toString(),j,4);
-			profileP.getPrescriptionHistory().setValueAt(bean.getRefill(),j,6);
-			Drug d=new Drug();
-			d.setDrugId(bean.getDid());
-			d=(Drug)DatabaseProcess.getRow(d);
-			profileP.getPrescriptionHistory().setValueAt(d.getDrugName(),j,1);
-			profileP.getPrescriptionHistory().setValueAt(bean.getStartDate().toString(), j, 5);
-			profileP.getPrescriptionHistory().setValueAt(bean.getPayStatus(),j,7);j++;}
-		else if(bean.getRefill()!=0)
-			paid.add(bean.getPrescriptionID());
-		else expired.add(bean.getPrescriptionID());}
-		System.out.println(paid);
+			bean=(Prescription)DatabaseProcess.getRow(bean);
+			if(!bean.getPayStatus()){
+				profileP.getPrescriptionHistory().setValueAt(prescID.get(i),j,0);
+				profileP.getPrescriptionHistory().setValueAt(bean.getQuantity(),j,2);
+				profileP.getPrescriptionHistory().setValueAt(bean.getDose(),j,3);
+				profileP.getPrescriptionHistory().setValueAt(bean.getThisDay().toString(),j,4);
+				profileP.getPrescriptionHistory().setValueAt(bean.getRefill(),j,6);
+				Drug d=new Drug();
+				d.setDrugId(bean.getDid());
+				d=(Drug)DatabaseProcess.getRow(d);
+				profileP.getPrescriptionHistory().setValueAt(d.getDrugName(),j,1);
+				profileP.getPrescriptionHistory().setValueAt(bean.getStartDate().toString(), j, 5);
+				profileP.getPrescriptionHistory().setValueAt(bean.getPayStatus(),j,7);j++;
+				
+				BigDecimal x = HelperMethods.multiplyCost(bean.getQuantity(),d.getPrice());
+				if(flag){
+					totalPrescriptionCost=x;
+					flag=false;
+				}
+				if(totalPrescriptionCost!=null)
+					totalPrescriptionCost = HelperMethods.totalCost(x, totalPrescriptionCost);
+				
+				String s = bean.getPrescriptionID()+": "+d.getDrugName()+" quantity: "+bean.getQuantity()
+						+" $"+x+"\n";
+				String a="";
+				a+=s;
+				System.out.println(a);
+				System.out.println(totalPrescriptionCost);
+				profileP.getPrescriptionList().setText(a);
+			}
+			else if(bean.getRefill()!=0)
+				paid.add(bean.getPrescriptionID());
+			else expired.add(bean.getPrescriptionID());
+		}
 		for(int i=0;i<paid.size();i++){
 			Prescription paidBean =new Prescription();
 			paidBean.setPrescriptionID(paid.get(i));
@@ -176,6 +209,52 @@ public class ManagePrescription {
 		}
 		
 	}
+	public static void Checkout(Patient currentP,PatientProfilePage profileP){
+		BigDecimal subtotal = BigDecimal.ZERO;
+		BigDecimal actualCost=BigDecimal.ZERO;
+		BigDecimal coPay=currentP.getCoPay();
+		int drugCount=0;
+		ArrayList<Integer> prescriptions= new ArrayList<Integer>();
+		ArrayList<Integer> unpaid= new ArrayList<Integer>();
+		int Pid= currentP.getPid();
+		Prescription bean= new Prescription();
+		bean.setPid(Pid);
+		prescriptions= DatabaseProcess.getPrescription(Pid);
+		for(int i=0;i<prescriptions.size();i++){
+			Prescription presc=new Prescription();
+			presc.setPrescriptionID(prescriptions.get(i));
+			presc=(Prescription)DatabaseProcess.getRow(presc);
+			if(presc.getPayStatus()==false){
+				drugCount++;
+				int DID= presc.getDid();
+				Drug drugbean=new Drug();
+				drugbean.setDrugId(DID);
+				drugbean= (Drug)DatabaseProcess.getRow(drugbean);
+				BigDecimal price= drugbean.getPrice();
+				BigDecimal totalPrice= price.multiply(new BigDecimal(presc.getQuantity()));
+				subtotal=subtotal.add(totalPrice);
+				unpaid.add(presc.getPrescriptionID());
+				
+				}
+			}
+
+		if (coPay.compareTo(BigDecimal.ZERO) > 0){
+			actualCost=coPay.multiply(new BigDecimal(drugCount));
+		
+		}
+		
+	if(DeleteConfirmation.CheckoutWindow(coPay, subtotal, actualCost)){
+		for(int j=0;j<unpaid.size();j++){
+			Prescription paid=new Prescription();
+			paid.setPrescriptionID(unpaid.get(j));
+			paid=(Prescription)DatabaseProcess.getRow(paid);
+			paid.setPayStatus(true);
+			DatabaseProcess.modifyRow(paid, "pay_status");
+		}
+		displayPrescription(profileP);
+	}
+		
+	}
 		
 	
 		
@@ -184,6 +263,8 @@ public class ManagePrescription {
 		boolean paid= bean.getPayStatus();
 		return paid;
 	}
-	
-	
+	public static BigDecimal getTotalPrescriptionCost() {
+		return totalPrescriptionCost;
+	}
+		
 }

@@ -35,12 +35,146 @@ public class PatientProfilePage extends JPanel{
 	private JButton exitProfile;
 	private JButton modify;
 	private JButton remove;
-	private JScrollPane tablePane;
+	private JScrollPane tablePane, expandList;
 	private JButton checkOut;
 	private JLabel prescriptionHistory;
 	final JTable prescriptionTable;
-	 PatientProfilePage(Gui frame){
-		 GridBagConstraints c = new GridBagConstraints();
+	private JButton refillP;
+	
+	private JTextArea prescriptionList;
+	private JPanel checkOutPane,listPane;
+	private JLabel insuranceCoPay, subTotal, tax, total,
+					coPayAmt, subAmt, taxAmt, totalAmt;
+	private JRadioButton credit, cash, check;
+	private ButtonGroup paymentMethod;
+	
+	
+	PatientProfilePage(Gui frame){
+		
+		GridBagLayout checkOutLayout = new GridBagLayout();
+		this.checkOutPane=new JPanel();
+		checkOutPane.setLayout(checkOutLayout);
+		GridBagConstraints cc = new GridBagConstraints();
+		listPane=new JPanel(new FlowLayout());
+		
+		cc.insets= new Insets(0,10,10,0);
+		prescriptionList=new JTextArea("unpaid prescription list");
+		prescriptionList.setColumns(100);
+		prescriptionList.setRows(100);
+		prescriptionList.setLineWrap(true);
+		expandList=new JScrollPane(prescriptionList);
+		expandList.setPreferredSize(new Dimension(350,100));	
+		cc.gridx=0;
+		cc.gridy=2;
+		cc.gridwidth=5;
+		cc.gridheight=2;
+		checkOutPane.add(expandList, cc);
+		
+		cc.insets= new Insets(0,0,0,0);
+		insuranceCoPay=new JLabel("co pay");
+		cc.gridx=4;
+		cc.gridy=5;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(insuranceCoPay, cc);
+		
+		coPayAmt=new JLabel("$ 0");
+		cc.gridx=5;
+		cc.gridy=5;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(coPayAmt, cc);
+		
+		subTotal=new JLabel("subtotal");
+		cc.gridx=4;
+		cc.gridy=6;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(subTotal, cc);
+		
+		subAmt=new JLabel("$ 0");
+		cc.gridx=5;
+		cc.gridy=6;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(subAmt, cc);
+		
+		tax=new JLabel("tax");
+		cc.gridx=4;
+		cc.gridy=7;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(tax, cc);
+		
+		taxAmt=new JLabel("$ 0");
+		cc.gridx=5;
+		cc.gridy=7;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(taxAmt, cc);
+		
+		total=new JLabel("total");
+		cc.gridx=4;
+		cc.gridy=8;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(total, cc);
+		
+		totalAmt=new JLabel("$ 0");
+		cc.gridx=5;
+		cc.gridy=8;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(totalAmt, cc);
+		
+		cc.insets= new Insets(0,0,0,0);
+		credit=new JRadioButton("Credit");
+		cc.gridx=0;
+		cc.gridy=5;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(credit, cc);
+		
+		cash=new JRadioButton("cash");
+		cc.gridx=0;
+		cc.gridy=6;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(cash, cc);
+		
+		check=new JRadioButton("check");
+		cc.gridx=0;
+		cc.gridy=7;
+		cc.gridwidth=1;
+		cc.gridheight=1;
+		checkOutPane.add(check, cc);
+		
+		paymentMethod=new ButtonGroup();
+		paymentMethod.add(credit);
+		paymentMethod.add(cash);
+		paymentMethod.add(check);
+		
+		prescriptionList.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		insuranceCoPay.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		subTotal.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		tax.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		total.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		credit.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		cash.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		check.setFont(new Font("Comic Sans",Font.BOLD, 14));
+		prescriptionList.setOpaque(false);
+		insuranceCoPay.setOpaque(false);
+		expandList.setOpaque(false);
+		subTotal.setOpaque(false);
+		tax.setOpaque(false);
+		total.setOpaque(false);
+		credit.setOpaque(false);
+		cash.setOpaque(false);
+		check.setOpaque(false);
+		checkOutPane.setOpaque(false);
+		listPane.setOpaque(false);		
+		
+		GridBagConstraints c = new GridBagConstraints();
 			JLabel picLabel=new JLabel();
             picLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/phms_se/resources/img/bg.jpg")));
 			   this.add(picLabel);
@@ -117,10 +251,7 @@ public class PatientProfilePage extends JPanel{
 				c.gridy=7;
 				c.gridx=1;
 				picLabel.add(cityT,c);
-				
-
-				
-						
+					
 				this.prescriptionHistory = new JLabel("Prescription History");
 				prescriptionHistory.setFont(new Font("Comic Sans",Font.BOLD, 28));
 				c.insets= new Insets(0,0,40,0);
@@ -157,6 +288,7 @@ public class PatientProfilePage extends JPanel{
 				remove.addActionListener(frame);
 				picLabel.add(remove, c);
 				this.checkOut= new JButton("Checkout");
+				checkOut.addActionListener(frame);
 				c.insets= new Insets(20,0,0,0);
 				c.gridx=1;
 				c.gridy=10;
@@ -173,9 +305,14 @@ public class PatientProfilePage extends JPanel{
 				picLabel.add(removePrescription, c);
 				this.exitProfile= new JButton("Exit Patient Profile");
 				exitProfile.addActionListener(frame);
-				exitProfile.setPreferredSize(new Dimension(140, 35));
+				exitProfile.setPreferredSize(new Dimension(150, 35));
 				c.gridy=10;
 				picLabel.add(exitProfile, c);
+				this.refillP = new JButton ("Refill Prescription");
+				refillP.addActionListener(frame);
+				refillP.setPreferredSize(new Dimension(150, 35));
+				c.gridy=11;
+				picLabel.add(refillP,c);
 			/*	
 				this.drugHist=new JLabel("Drug History");
 				c.insets= new Insets(0,100,0,0);
@@ -262,6 +399,12 @@ public class PatientProfilePage extends JPanel{
 					 tablePane.setPreferredSize(new Dimension(750,150 ));
 					 picLabel.add(tablePane,c);
 	
+	c.insets= new Insets(20,20,0,0);
+	c.gridx=2;
+	c.gridy=4;
+	c.gridwidth=50;
+	c.gridheight=50;	
+	picLabel.add(checkOutPane,c);
 }
 	   JButton getfillButton() {
 			return this.fillPrescription;
@@ -322,6 +465,78 @@ public class PatientProfilePage extends JPanel{
 	}
 	public JButton getRemovePrescription() {
 		return this.removePrescription;
+	}
+	public JButton getRefill(){
+		return this.refillP;
+	}
+	 public JButton getCheckOut(){
+		 return checkOut;
+	 }
+	public JTextArea getPrescriptionList() {
+		return prescriptionList;
+	}
+	public void setPrescriptionList(JTextArea prescriptionList) {
+		this.prescriptionList = prescriptionList;
+	}
+	public JLabel getInsuranceCoPay() {
+		return insuranceCoPay;
+	}
+	public void setInsuranceCoPay(JLabel insuranceCoPay) {
+		this.insuranceCoPay = insuranceCoPay;
+	}
+	public JLabel getSubTotal() {
+		return subTotal;
+	}
+	public void setSubTotal(JLabel subTotal) {
+		this.subTotal = subTotal;
+	}
+	public JLabel getTax() {
+		return tax;
+	}
+	public void setTax(JLabel tax) {
+		this.tax = tax;
+	}
+	public JLabel getTotal() {
+		return total;
+	}
+	public void setTotal(JLabel total) {
+		this.total = total;
+	}
+	public JPanel getCheckOutPane() {
+		return checkOutPane;
+	}
+	public JRadioButton getCredit() {
+		return credit;
+	}
+	public JRadioButton getCash() {
+		return cash;
+	}
+	public JRadioButton getCheck() {
+		return check;
+	}
+	public JLabel getCoPayAmt() {
+		return coPayAmt;
+	}
+	public void setCoPayAmt(JLabel coPayAmt) {
+		this.coPayAmt = coPayAmt;
+	}
+	public JLabel getSubAmt() {
+		return subAmt;
+	}
+	public void setSubAmt(JLabel subAmt) {
+		this.subAmt = subAmt;
+	}
+	public JLabel getTaxAmt() {
+		return taxAmt;
+	}
+	public void setTaxAmt(JLabel taxAmt) {
+		this.taxAmt = taxAmt;
+	}
+	public JLabel getTotalAmt() {
+		return totalAmt;
+	}
+	public void setTotalAmt(JLabel totalAmt) {
+		this.totalAmt = totalAmt;
 	}
 	
 	   }

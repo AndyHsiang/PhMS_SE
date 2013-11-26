@@ -198,6 +198,15 @@ public class Gui extends JFrame implements ActionListener{
 			revalidate();
 			repaint();
 		}
+else if(e.getSource()==pProfileP.getCheckOut()){
+			
+			ManagePrescription.Checkout(currentPatient,pProfileP);
+			getContentPane().removeAll();
+			getContentPane().add(pProfileP);
+			revalidate();
+			repaint();
+
+		}
 		else if(e.getSource()==newPatientP.getSubmit()){
 			if(ManagePatient.verifyNewPatient(newPatientP))
 				if(ManagePatient.addNewPatient(newPatientP)){
@@ -212,14 +221,12 @@ public class Gui extends JFrame implements ActionListener{
 			String searchText=spatientP.getEnterPatient().getText();			
 			currentPatient = ManagePatient.searchPatient(searchText);
 			if(currentPatient!=null){
+				ManagePatient.setPatientProfilePage(currentPatient, pProfileP);
 				ManagePrescription.clearTable(pProfileP);
 				ManagePrescription.displayPrescription(pProfileP);
                 spatientP.getEnterPatient().setText("");
 				getContentPane().removeAll();
 				getContentPane().add(pProfileP);					
-				//This method has been added to populate the patient profile page to reflect the
-				//the patient that has been retrieved from the database
-				ManagePatient.setPatientProfilePage(currentPatient, pProfileP);
 				revalidate();
 				repaint();
 			}else{
@@ -360,6 +367,15 @@ public class Gui extends JFrame implements ActionListener{
 		else if(e.getSource()==pProfileP.getRemovePrescription()){	
 			if(DeleteConfirmation.Confirm(pProfileP)){
 			ManagePrescription.removePrescription(deleteP);
+			ManagePrescription.displayPrescription(pProfileP);
+			getContentPane().removeAll();
+			getContentPane().add(pProfileP);
+			revalidate();
+			repaint();}
+		}
+		else if(e.getSource()==pProfileP.getRefill()){	
+			if(DeleteConfirmation.Confirm(pProfileP)){
+			ManagePrescription.refillDrug(deleteP);
 			ManagePrescription.displayPrescription(pProfileP);
 			getContentPane().removeAll();
 			getContentPane().add(pProfileP);
