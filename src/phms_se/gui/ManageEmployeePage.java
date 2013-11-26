@@ -142,6 +142,7 @@ private int rowSelected;
 		 c.gridx=4;
 		 c.gridy=3;
 		 buttonPanel.add(modify, c);
+		 modify.addActionListener(frame);
 		this.currentEmp=new JLabel("Current Employees");
 		currentEmp.setFont(new Font("Comic Sans",Font.BOLD, 18));
 		c.insets= new Insets(0,0,10,0);
@@ -317,6 +318,10 @@ private int rowSelected;
 		return newSchedule;
 	}
 	
+	public JButton getModify() {
+		return modify;
+	}
+
 	MouseAdapter adapter=new MouseAdapter(){
 		public void mousePressed(MouseEvent e) {
 	

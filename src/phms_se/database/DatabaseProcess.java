@@ -811,11 +811,11 @@ public class DatabaseProcess {
 		
 		if(field.toLowerCase().equals("pass"))
 			stmt.setString(1, bean.getPass());
-		if(field.toLowerCase().equals("phone"))
+		else if(field.toLowerCase().equals("phone"))
 			stmt.setString(1, bean.getPhone());
-		if(field.toLowerCase().equals("address"))
+		else if(field.toLowerCase().equals("address"))
 			stmt.setString(1, bean.getAddress());
-		if(field.toLowerCase().equals("email"))
+		else if(field.toLowerCase().equals("email"))
 			stmt.setString(1, bean.getEmail());
 		if(field.toLowerCase().equals("position"))
 			stmt.setString(1, bean.getPosition());

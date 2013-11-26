@@ -469,6 +469,11 @@ public class Gui extends JFrame implements ActionListener{
 			getContentPane().add(employeePage);
 			revalidate();
 			repaint();
+		}else if(e.getSource()==employeePage.getModify()){
+			if(ManageEmployee.modifyEmployee(employeePage, currentEmployee))
+				System.out.println("employee information updated");
+			else
+				System.out.println("unable to update employee information");
 		}
 		else if(e.getSource()==newEmployee.getCancel()){
 			getContentPane().removeAll();

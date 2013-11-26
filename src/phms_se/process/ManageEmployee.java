@@ -60,8 +60,54 @@ public class ManageEmployee {
 	 * @param bean
 	 * @return
 	 */
-	public static boolean modifyEmployee(Employee bean){
-		return false;
+	public static boolean modifyEmployee(ManageEmployeePage empPage, Employee bean){
+		//check if phone number has changed
+		if(!empPage.getPhoneText().getText().equals(bean.getPhone())){
+			//check if the field formatted correctly
+			if(InputChecker.phone(empPage.getPhoneText().getText())){
+				bean.setPhone(empPage.getPhoneText().getText());
+				DatabaseProcess.modifyRow(bean, "phone");
+			}else {
+				System.out.println("wrong phone field format");
+				return false;
+			}
+		}
+		//check if address has changed
+		if(!empPage.getAddressText().getText().equals(bean.getAddress())){
+			//check if the field formatted correctly
+			if(InputChecker.streetAddress(empPage.getAddressText().getText())){
+				bean.setAddress(empPage.getAddressText().getText());
+				DatabaseProcess.modifyRow(bean, "address");
+			}else {
+				System.out.println("wrong address format");
+				return false;
+			}
+		}
+		//check if position has changed
+		if(!empPage.getPositionText().getText().equals(bean.getPosition())){
+			//check if the field formatted correctly
+			if(InputChecker.position(empPage.getPositionText().getText())){
+				bean.setPosition(empPage.getPositionText().getText());
+				DatabaseProcess.modifyRow(bean, "position");
+			}else {
+				System.out.println("wrong position field format");
+				return false;
+			}
+		}
+//		//check if email has changed
+//		if(!empPage.getEmailText().getText().equals(bean.getEmail())){
+//			//check if the field formatted correctly
+//			if(InputChecker.email(empPage.getEmailText().getText())){
+//				bean.setEmail(empPage.getEmailText().getText());
+//				DatabaseProcess.modifyRow(bean, "email");
+//			}else {
+//				System.out.println("wrong email field format");
+//				return false;
+//			}
+//		}
+		
+		//i didnt not do this for salary and work hours because these are supposed to be handled seperately in schedules
+		return true;
 	}
 	/**
 	 * @param username
@@ -166,11 +212,9 @@ public class ManageEmployee {
 		int day = 22;
 		int month = 04;
 		Date work = new Date(year,month,day);
-		System.out.println(work);
 		s.setWorkDay(work);
 		if(DatabaseProcess.getRow(s) != null){
 			s=(Schedule)DatabaseProcess.getRow(s);
-		System.out.println(s);
 		String str = s.getHourRate().toString();
 		String str2 = "$"+str;
 		emp.getSalaryText().setText(str2);
