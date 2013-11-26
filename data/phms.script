@@ -62,7 +62,7 @@ INSERT INTO PATIENTS VALUES(10008,'Jamie','Friday','1989-04-05','George Black','
 INSERT INTO PATIENTS VALUES(10024,'Jack','Stone','2009-02-01','Jane Doe','7704568794','321 Abcc drive','Duluth','GA','30096',50.00)
 INSERT INTO PATIENTS VALUES(10026,'Jack','Johnson','2009-02-01','Jane Doe','7894561234','123123','Duluth','GA','30096',50.00)
 INSERT INTO PATIENTS VALUES(10027,'Jack','Jones','1990-02-01','Jane Doe','7703456213','123','Duluth','GA','30096',50.00)
-INSERT INTO EMPLOYEES VALUES('David Kelley','123','123','2009-02-01','7894561234','123 abc street ','123','manager')
+INSERT INTO EMPLOYEES VALUES('David Kelley','123','123','2009-02-01','7894561234','123 abc','123','manager')
 INSERT INTO EMPLOYEES VALUES('Yuki Yatsu','manager','manager','1980-02-15','7701425516','15501 turnaround dr., Alberta, GA, 00433','44erw@gmail.com','manager')
 INSERT INTO EMPLOYEES VALUES('Jin Brave','pharmacist','pharmacist','1982-03-11','7706692222','511 waterfall street, Atlanta, GA, 00433','44erw@gmail.com','pharmacist')
 INSERT INTO EMPLOYEES VALUES('Tammie Benson','tammie999','iLovePie','1989-09-14','4046616294','999 red rose parkway, Izlude, GA, 00433','44erw@gmail.com','tech')
