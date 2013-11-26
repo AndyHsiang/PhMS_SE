@@ -6,6 +6,7 @@ import javax.swing.*;
 import phms_se.database.bean.Drug;
 import phms_se.database.bean.Employee;
 import phms_se.database.bean.Patient;
+import phms_se.database.bean.Prescription;
 import phms_se.process.ManageDrug;
 import phms_se.process.ManageEmployee;
 import phms_se.process.ManagePatient;
@@ -27,14 +28,13 @@ public class Gui extends JFrame implements ActionListener{
 	private static Patient currentPatient;
 	private static Drug currentDrug;
 	private static Employee currentEmployee;
+	private static Prescription currentPrescription;
 	private JLabel picLabel;
 	private JButton login;
 	private JButton exit;
 	private JTextField userField;
 	private JPasswordField passField;
-	
 	private JLabel warning;
-	
 	static JPanel loginPanel;		
 	private menuPanel menuP;
 	private spatientPanel spatientP;
@@ -45,6 +45,7 @@ public class Gui extends JFrame implements ActionListener{
 	private NewDrugPage nDrugP;
 	private RestockPage restockP;
 	private SystemsPage systemP;
+	private DeleteConfirmation deleteP;
 	private static ManageEmployeePage employeePage;
 	private NewEmployeePage newEmployee;
 	final static boolean shouldFill=true;
@@ -200,6 +201,7 @@ public class Gui extends JFrame implements ActionListener{
 		else if(e.getSource()==newPatientP.getSubmit()){
 			if(ManagePatient.verifyNewPatient(newPatientP))
 				if(ManagePatient.addNewPatient(newPatientP)){
+					
 					getContentPane().removeAll();
 					getContentPane().add(spatientP);
 					revalidate();
@@ -210,6 +212,7 @@ public class Gui extends JFrame implements ActionListener{
 			String searchText=spatientP.getEnterPatient().getText();			
 			currentPatient = ManagePatient.searchPatient(searchText);
 			if(currentPatient!=null){
+				ManagePrescription.clearTable(pProfileP);
 				ManagePrescription.displayPrescription(pProfileP);
                 spatientP.getEnterPatient().setText("");
 				getContentPane().removeAll();
@@ -350,9 +353,18 @@ public class Gui extends JFrame implements ActionListener{
 				repaint();
 			}else
 				System.out.println("unable to delete patient");
-			
+		
 		}else if(e.getSource()==pProfileP.getModify()){
 			ManagePatient.modifyPatient(pProfileP);
+		}
+		else if(e.getSource()==pProfileP.getRemovePrescription()){	
+			if(DeleteConfirmation.Confirm(pProfileP)){
+			ManagePrescription.removePrescription(deleteP);
+			ManagePrescription.displayPrescription(pProfileP);
+			getContentPane().removeAll();
+			getContentPane().add(pProfileP);
+			revalidate();
+			repaint();}
 		}
 		else if(e.getSource()==fillP.getCancelButton()){
 			getContentPane().removeAll();
@@ -512,6 +524,12 @@ public class Gui extends JFrame implements ActionListener{
 	}
 	public static Drug setCurrentDrug(Drug bean) {
 		return currentDrug;
+	}
+	public static void setCurrentPrescription(Prescription bean){
+		currentPrescription=bean;
+	}
+	public static Prescription getCurrentPrescription(){
+		return currentPrescription;
 	}
 	public static Employee getCurrentEmployee(){
 		return currentEmployee;

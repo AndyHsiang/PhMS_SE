@@ -4,6 +4,12 @@ import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+
+import phms_se.process.ManagePrescription;
+
+
 
 
 @SuppressWarnings("serial")
@@ -32,7 +38,7 @@ public class PatientProfilePage extends JPanel{
 	private JScrollPane tablePane;
 	private JButton checkOut;
 	private JLabel prescriptionHistory;
-	private JTable prescriptionTable;
+	final JTable prescriptionTable;
 	 PatientProfilePage(Gui frame){
 		 GridBagConstraints c = new GridBagConstraints();
 			JLabel picLabel=new JLabel();
@@ -159,6 +165,7 @@ public class PatientProfilePage extends JPanel{
 				checkOut.addActionListener(frame);
 				picLabel.add(checkOut, c);
 				this.removePrescription= new JButton("Remove Prescription");
+				removePrescription.addActionListener(frame);
 				c.gridy=9;
 				c.gridx=0;
 				c.gridwidth=1;
@@ -189,12 +196,59 @@ public class PatientProfilePage extends JPanel{
 				 drugHistory.setBackground(Color.decode("#CCEEEE"));
 				 Border border = BorderFactory.createLineBorder(Color.black);
 				 drugHistory.setBorder(border);
-				 */
-				 String[] columnNames={"Prescription ID","Drug Name","Quantity","Dose","Date Filled","Start Date","Refills rm"};
-					Object[][] data={{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""}};
-					prescriptionTable = new JTable(data, columnNames);
+				 */class MyTableModel extends AbstractTableModel{
+					 private  String[] columnNames={"Prescription ID","Drug Name","Quantity","Dose","Date Filled","Start Date","Refills rm","paid"};
+					 private Object[][] data={{"asdasdasd","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""}/*,{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""}*/};
+					 public int getColumnCount() {
+				            return columnNames.length;
+				        }
+					 	
+				        public int getRowCount() {
+				            return data.length;
+				        }
+
+				        public String getColumnName(int col) {
+				            return columnNames[col];
+				        }
+				       public void setValueAt(Object value, int row, int column){
+				        	data[row][column]= value;
+				        	
+				       }
+
+				        public Object getValueAt(int row, int col) {
+				            return data[row][col];
+				        }
+				 }
+				
+				    class MyRenderer implements TableCellRenderer {
+
+				        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+				                boolean hasFocus, int row, int column) {
+				            JTextField editor = new JTextField();
+				            if (value != null) {
+				                editor.setText(value.toString());
+				            }
+				         
+				            //if(Gui.getCurrentPrescription().getPayStatus()){
+				            editor.setFont(new Font("Comic Sans",Font.BOLD, 13));
+				            if(!table.getValueAt(row,6).toString().equals("0")){
+				            if(table.getValueAt(row,7).equals(true))
+				            editor.setBackground(Color.green);
+				            else if(table.getValueAt(row,7).equals(false))
+				            	editor.setBackground(Color.red);}
+				            else editor.setBackground(Color.GRAY);
+				            
+				            return editor;
+				        }
+				    }
+			
+					prescriptionTable = new JTable(new MyTableModel());
+					prescriptionTable.getColumnModel().getColumn(7).setMinWidth(0);
+					prescriptionTable.getColumnModel().getColumn(7).setMaxWidth(0);
 					prescriptionTable.setPreferredSize(new Dimension(770,520 ));
 					prescriptionTable.setRowHeight(20);
+			
+					prescriptionTable.setDefaultRenderer(Object.class, new MyRenderer());
 					c.insets= new Insets(0,30,0,0);
 					c.gridx=2;
 					c.gridy=2;
@@ -266,4 +320,8 @@ public class PatientProfilePage extends JPanel{
 	public void setModify(JButton modify) {
 		this.modify = modify;
 	}
+	public JButton getRemovePrescription() {
+		return this.removePrescription;
+	}
+	
 	   }

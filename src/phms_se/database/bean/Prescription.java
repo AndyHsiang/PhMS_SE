@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Prescription {
 	
-	private final static String tableSchema ="START_DATE,THIS_DAY,DOSE,QUANTITY,REFILL,EXIRATION_DATE, PAY_STATUS, DID,PID";
+	private final static String tableSchema ="START_DATE,THIS_DAY,DOSE,QUANTITY,REFILL,EXPIRATION_DATE, PAY_STATUS, DID,PID";
 	
 	private Date startDate, thisDay, exirationDate;
 	private int prescriptionID, quantity, refill, did, pid;
