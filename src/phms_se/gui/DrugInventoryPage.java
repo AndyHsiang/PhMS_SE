@@ -22,6 +22,7 @@ public class DrugInventoryPage extends JPanel {
 	private JTextArea effects;
 	private JScrollPane i;
 	private JScrollPane j;
+	private JScrollPane lowInvScroll;
 	private JLabel generalL;
 	private JLabel effectsL;
 	DrugInventoryPage(Gui frame){
@@ -126,15 +127,18 @@ public class DrugInventoryPage extends JPanel {
 					picLabel.add(LIWarning,c);
 					
 				 String[] dcolumnName={"Low Inventory Warning" };
-				 Object[][] ddata={{""},{""},{""},{""},{""},{""},{""},{""}};
+//				 Object[][] ddata={{""},{""},{""},{""},{""},{""},{""},{""}};
+				 Object[][] ddata=new Object[20][1];
 				 lowInventory = new JTable(ddata, dcolumnName);
 				 lowInventory.setRowHeight(25);
-				 lowInventory.setPreferredSize(new Dimension(200,200 ));
+				 
+				 lowInvScroll = new JScrollPane(lowInventory);
+				 lowInvScroll.setPreferredSize(new Dimension(200, 200));
 				 c.insets= new Insets(0,0,0,0);
 				 c.gridx=3;
 				 c.gridy=4;
 				 c.gridheight=7;
-				 picLabel.add(lowInventory,c);
+				 picLabel.add(lowInvScroll,c);
 				 lowInventory.setGridColor(Color.black);
 				 lowInventory.setBackground(Color.decode("#CCEEEE"));
 				 Border border1 = BorderFactory.createLineBorder(Color.black);
@@ -214,5 +218,11 @@ public void setGeneralText(String general){
 }
 public void setEffectsText(String effects){
 	this.effects.setText(effects);
+}
+public JScrollPane getLowInvScroll() {
+	return lowInvScroll;
+}
+public void setLowInvScroll(JScrollPane lowInvScroll) {
+	this.lowInvScroll = lowInvScroll;
 }
 }

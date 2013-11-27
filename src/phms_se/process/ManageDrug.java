@@ -10,6 +10,7 @@ import phms_se.gui.Gui;
 import phms_se.gui.NewDrugPage;
 import phms_se.gui.PatientProfilePage;
 import phms_se.gui.RestockPage;
+import phms_se.process.helper.HelperMethods;
 import phms_se.database.bean.Drug;
 import phms_se.database.DatabaseProcess;
 
@@ -118,15 +119,48 @@ public static Drug restock(RestockPage rstock){
 			}i=i+2;
 		}
 	}
-	public static void checkQuantity(Drug bean){
+	public static void checkDrugWarnings(Drug bean){
 		bean=(Drug)DatabaseProcess.getRow(bean);
+		String status = "";
+		
 		if(bean.getQuantity()<1000){
-			JOptionPane.showMessageDialog(null, "OMG LOW INVENTORY\n"+					
-					bean.getDrugName()+" is running low! "
-					+"\nQuantity remaining: "+bean.getQuantity());
-		}if(bean.getControlFlag()){
-			JOptionPane.showMessageDialog(null, "OMG CONTROLLED SUBSTANCE!\n"+					
-					"Drug name: "+bean.getDrugName());
+			status = "low";
+			if(bean.getControlFlag()){
+				status = "low and control";
+				//add code here if it also has interaction
+				if(false)
+					status="low and control and interaction";
+			}else{
+				status = "low and interaction";
+			}
+		}else if(bean.getControlFlag()){
+			status = "control";
+			//add code here if it has interaction with other active drugs
+			if(false)
+				status = "control and interaction";
+		}else{
+			status = "interaction";
+		}
+		
+		if(status.equals("low")){
+			HelperMethods.warning(bean.getDrugName()+" is running low\nQuantity remaining: "+bean.getQuantity());
+		}else if(status.equals("control")){
+			HelperMethods.warning(bean.getDrugName()+" is a controlled substance");
+		}else if(status.equals("interaction")){
+//			HelperMethods.warning(bean.getDrugName()+" will interact with \n"+drugs);
+		}else if(status.equals("low and control")){
+			HelperMethods.warning(bean.getDrugName()+" is running low\nQuantity remaining: "+bean.getQuantity()
+			+"\n"+bean.getDrugName()+" is a controlled substance");
+		}else if(status.equals("low and interaction")){
+			HelperMethods.warning(bean.getDrugName()+" is running low\nQuantity remaining: "+bean.getQuantity()
+					+"\n"+bean.getDrugName()+" is interacting with : ");
+		}else if(status.equals("control and interaction")){
+			HelperMethods.warning(bean.getDrugName()+" is a controlled substance"
+					+"\n"+bean.getDrugName()+" is interacting with : ");
+		}else if(status.equals("low and control and interaction")){
+			HelperMethods.warning(bean.getDrugName()+" is running low\nQuantity remaining: "+bean.getQuantity()
+					+"\n"+bean.getDrugName()+" is a controllled substance"
+					+"\n"+bean.getDrugName()+" is interacting with : ");
 		}
 	}
 	/**

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.NumberFormat;
 
+import javax.swing.JOptionPane;
+
 public class HelperMethods {
 	public static String[] splitString(String str){
 		String[] stringArray = str.split("[ :/,-]");
@@ -49,5 +51,10 @@ public class HelperMethods {
 	}
 	public static String currencyFormat(BigDecimal n) {
 	    return NumberFormat.getCurrencyInstance().format(n);
+	}
+	
+	public static void warning(String msg) {
+
+	    JOptionPane.showMessageDialog(null, "Attention!\n"+msg);
 	}
 }

@@ -404,7 +404,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			getContentPane().add(pProfileP);
 			revalidate();
 			repaint();}
-			ManageDrug.checkQuantity(checkQuantity);
+			ManageDrug.checkDrugWarnings(checkQuantity);
 		}
 		else if(e.getSource()==restockP.getCancelButton()){
 			restockP.getDname().setText("");
