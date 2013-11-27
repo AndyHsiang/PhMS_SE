@@ -27,7 +27,7 @@ public class Gui extends JFrame implements ActionListener{
 	private static Employee currentUser;
 	private static Patient currentPatient;
 	private static Drug currentDrug;
-	private static Drug checkQuantity;
+	private static Drug checkDrug;
 	private static Employee currentEmployee;
 	private static Prescription currentPrescription;
 	private JLabel picLabel;
@@ -153,7 +153,7 @@ public class Gui extends JFrame implements ActionListener{
 		this.systemP=new SystemsPage(this);
 		this.employeePage=new ManageEmployeePage(this);
 		this.newEmployee=new NewEmployeePage(this);
-		checkQuantity=new Drug();
+		checkDrug=new Drug();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -396,15 +396,15 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 		}
 		else if(e.getSource()==fillP.getSubmit()){
 			if(ManagePrescription.verifyPrescription(fillP)){
+				checkDrug.setDrugName(fillP.getDrugName().getText());
 			ManagePrescription.addPrescription(fillP);
 			ManagePrescription.displayPrescription(pProfileP);
-			checkQuantity.setDrugName(fillP.getDrugName().getText());
 			ManagePrescription.clearFillPrescription(fillP);
 			getContentPane().removeAll();
 			getContentPane().add(pProfileP);
 			revalidate();
 			repaint();}
-			ManageDrug.checkDrugWarnings(checkQuantity);
+			ManageDrug.checkDrugWarnings(checkDrug);
 		}
 		else if(e.getSource()==restockP.getCancelButton()){
 			restockP.getDname().setText("");
@@ -594,11 +594,11 @@ public static ManageEmployeePage getPage(){
 	}
 
 	public static Drug getCheckQuantity() {
-		return checkQuantity;
+		return checkDrug;
 	}
 
 	public static void setCheckQuantity(Drug checkQuantity) {
-		Gui.checkQuantity = checkQuantity;
+		Gui.checkDrug = checkQuantity;
 	}			 
 }
 

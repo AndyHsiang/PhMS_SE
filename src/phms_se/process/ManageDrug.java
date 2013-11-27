@@ -3,12 +3,9 @@ package phms_se.process;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import phms_se.gui.DrugInventoryPage;
 import phms_se.gui.Gui;
 import phms_se.gui.NewDrugPage;
-import phms_se.gui.PatientProfilePage;
 import phms_se.gui.RestockPage;
 import phms_se.process.helper.HelperMethods;
 import phms_se.database.bean.Drug;
@@ -119,26 +116,26 @@ public static Drug restock(RestockPage rstock){
 			}i=i+2;
 		}
 	}
-	public static void checkDrugWarnings(Drug bean){
+	public static boolean checkDrugWarnings(Drug bean){
 		bean=(Drug)DatabaseProcess.getRow(bean);
 		String status = "";
-		
+		String conflictDrug=ManagePrescription.checkInteraction(bean.getDrugName(), bean.getInterACtion());
 		if(bean.getQuantity()<1000){
 			status = "low";
 			if(bean.getControlFlag()){
 				status = "low and control";
 				//add code here if it also has interaction
-				if(false)
+				if(conflictDrug!=null){
 					status="low and control and interaction";
-			}else{
+				}
+			}else if(conflictDrug!=null){
 				status = "low and interaction";
 			}
 		}else if(bean.getControlFlag()){
 			status = "control";
-			//add code here if it has interaction with other active drugs
-			if(false)
+			if(conflictDrug!=null)
 				status = "control and interaction";
-		}else{
+		}else if(conflictDrug!=null){
 			status = "interaction";
 		}
 		
@@ -147,21 +144,23 @@ public static Drug restock(RestockPage rstock){
 		}else if(status.equals("control")){
 			HelperMethods.warning(bean.getDrugName()+" is a controlled substance");
 		}else if(status.equals("interaction")){
-//			HelperMethods.warning(bean.getDrugName()+" will interact with \n"+drugs);
+			HelperMethods.warning(bean.getDrugName()+" will interact with \n"+conflictDrug);
 		}else if(status.equals("low and control")){
 			HelperMethods.warning(bean.getDrugName()+" is running low\nQuantity remaining: "+bean.getQuantity()
-			+"\n"+bean.getDrugName()+" is a controlled substance");
+			+"\n\n"+bean.getDrugName()+" is a controlled substance");
 		}else if(status.equals("low and interaction")){
 			HelperMethods.warning(bean.getDrugName()+" is running low\nQuantity remaining: "+bean.getQuantity()
-					+"\n"+bean.getDrugName()+" is interacting with : ");
+					+"\n\n"+bean.getDrugName()+" is interacting with : "+conflictDrug);
 		}else if(status.equals("control and interaction")){
 			HelperMethods.warning(bean.getDrugName()+" is a controlled substance"
-					+"\n"+bean.getDrugName()+" is interacting with : ");
+					+"\n\n"+bean.getDrugName()+" is interacting with : "+conflictDrug);
 		}else if(status.equals("low and control and interaction")){
 			HelperMethods.warning(bean.getDrugName()+" is running low\nQuantity remaining: "+bean.getQuantity()
-					+"\n"+bean.getDrugName()+" is a controllled substance"
-					+"\n"+bean.getDrugName()+" is interacting with : ");
+					+"\n\n"+bean.getDrugName()+" is a controllled substance"
+					+"\n\n"+bean.getDrugName()+" is interacting with : "+conflictDrug);
 		}
+		System.out.println(status);
+		return true;
 	}
 	/**
 	 * @param drugName

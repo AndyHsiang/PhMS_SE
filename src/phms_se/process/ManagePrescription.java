@@ -25,7 +25,7 @@ import phms_se.process.helper.InputChecker;
  */
 public class ManagePrescription {
 	private static BigDecimal totalPrescriptionCost;
-	
+	private static String currentActive;
 	/**
 	 * @param drug
 	 * @param patient
@@ -108,13 +108,19 @@ public class ManagePrescription {
 	 * @param drugInList
 	 * @return true if drug names match
 	 */
-	private static boolean checkInteraction(String drugFilling, String drugInList){
-		String[] activeDrugs = HelperMethods.splitString(drugInList);
-		for(int i = 0; i<activeDrugs.length; i++){
-			if(drugFilling.toLowerCase().equals(drugInList.toLowerCase()))
-				return true;
+	public static String checkInteraction(String drugFilling, String drugInList){
+		String[] interactingDrugs = HelperMethods.splitString(drugInList);
+		String[] activeDrugList = HelperMethods.splitString(currentActive);
+		String conflictFound="";
+		for(int i = 0; i<interactingDrugs.length; i++){
+			for(int j = 0; j<activeDrugList.length; j++){
+				if(!activeDrugList[j].equals(drugFilling) && interactingDrugs[i].equals(activeDrugList[j]))
+					conflictFound+=activeDrugList[j].toString()+" ";
+			}
 		}
-		return false;
+		if(conflictFound=="")
+			return null;
+		return conflictFound;
 	}
 	
 	public static void displayPrescription(PatientProfilePage profileP){
@@ -126,6 +132,7 @@ public class ManagePrescription {
 		
 		int pid=p.getPid();
 		ArrayList<Integer> prescID=new ArrayList<Integer>();
+		currentActive="";
 		prescID=DatabaseProcess.getPrescription(pid);
 		ArrayList<Integer> paid=new ArrayList<Integer>();
 		ArrayList<Integer> expired=new ArrayList<Integer>();
@@ -135,6 +142,13 @@ public class ManagePrescription {
 			Prescription bean =new Prescription();
 			bean.setPrescriptionID(prescID.get(i));
 			bean=(Prescription)DatabaseProcess.getRow(bean);
+			
+			Drug active=new Drug();
+			active.setDrugId(bean.getDid());
+			active=(Drug)DatabaseProcess.getRow(active);
+			if(Gui.getCurrentPatient().getPid()==bean.getPid()&&bean.getDid()==active.getDrugId())
+				currentActive+=active.getDrugName()+" ";
+		
 			if(!bean.getPayStatus()){
 				profileP.getPrescriptionHistory().setValueAt(prescID.get(i),j,0);
 				profileP.getPrescriptionHistory().setValueAt(bean.getQuantity(),j,2);
@@ -162,11 +176,11 @@ public class ManagePrescription {
 				a+=s;
 				profileP.getPrescriptionList().append(a);
 				
-			}
-			
+			}		
 			else if(bean.getRefill()!=0)
 				paid.add(bean.getPrescriptionID());
-			else expired.add(bean.getPrescriptionID());
+			else 
+				expired.add(bean.getPrescriptionID());
 		}
 		profileP.getCoPayAmt().setText("%"+coPay);
 		totalPrescriptionCost=HelperMethods.patientCost(coPay,totalPrescriptionCost);
@@ -281,6 +295,12 @@ public class ManagePrescription {
 		fillP.getRefillCount().setText("");
 		fillP.getFillDate().setText("");
 		fillP.getExpiration().setText("");
+	}
+	public static String getCurrentActive() {
+		return currentActive;
+	}
+	public static void setCurrentActive(String currentActive) {
+		ManagePrescription.currentActive = currentActive;
 	}
 		
 }

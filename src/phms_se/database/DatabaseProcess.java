@@ -669,6 +669,7 @@ public class DatabaseProcess {
 			newBean.setControlFlag(rs.getBoolean("controlflag"));
 			newBean.setSideEffect(rs.getString("sideeffect"));
             newBean.setPrice(rs.getBigDecimal("price"));
+            newBean.setInterACtion(rs.getString("interaction"));
 			return newBean;
 		} else {
 			System.out.println("unable to retrieve drug info");

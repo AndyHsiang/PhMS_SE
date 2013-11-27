@@ -120,4 +120,11 @@ public class Drug {
     public void setPrice(BigDecimal price){
         this.price=price;
     }
+	@Override
+	public String toString() {
+		return "Drug [drugName=" + drugName + ", description=" + description
+				+ ", sideEffect=" + sideEffect + ", interACtion=" + interACtion
+				+ ", drugId=" + drugId + ", quantity=" + quantity
+				+ ", controlFlag=" + controlFlag + ", price=" + price + "]";
+	}
 }
