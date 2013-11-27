@@ -263,4 +263,16 @@ public class ManageEmployee {
 			newEmp.getWarning().setText("wrong format for name");}
 		return false;
 	}
+	public static void clearNewEmployee(NewEmployeePage newEmp){
+		newEmp.getEmpName().setText("");
+		newEmp.getEmpUsername().setText("");
+		newEmp.getPasswordForClear().setText("");
+		newEmp.getEmpPhone().setText("");
+		newEmp.getEmpAddress().setText("");
+		newEmp.getEmpEmail().setText("");
+		newEmp.getEmpPosition().setText("");
+		newEmp.getConfirmPassword().setText("");
+		newEmp.getWarning().setText("");
+		
+	}
 }

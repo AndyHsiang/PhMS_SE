@@ -6,7 +6,7 @@ public class Prescription {
 	
 	private final static String tableSchema ="START_DATE,THIS_DAY,DOSE,QUANTITY,REFILL,EXPIRATION_DATE, PAY_STATUS, DID,PID";
 	
-	private Date startDate, thisDay, exirationDate;
+	private Date startDate, thisDay, expirationDate;
 	private int prescriptionID, quantity, refill, did, pid;
 	private String dose;
 	private boolean payStatus;
@@ -77,12 +77,12 @@ public class Prescription {
 		this.pid = pid;
 	}
 
-	public Date getExirationDate() {
-		return exirationDate;
+	public Date getExpirationDate() {
+		return expirationDate;
 	}
 
-	public void setExirationDate(Date exirationDate) {
-		this.exirationDate = exirationDate;
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 
 	public boolean getPayStatus() {
@@ -100,7 +100,7 @@ public class Prescription {
 	@Override
 	public String toString() {
 		return "Prescription [startDate=" + startDate + ", thisDay=" + thisDay
-				+ ", quantity=" + quantity + ", refill=" + refill + ", did="
-				+ did + ", pid=" + pid + ", dose=" + dose + "]";
+				+ ", quantity=" + quantity + ", refill=" + refill + ", expirationDate="+expirationDate+
+				", payStatus="+payStatus+", did="+ did + ", pid=" + pid + ", dose=" + dose + "]";
 	}
 }

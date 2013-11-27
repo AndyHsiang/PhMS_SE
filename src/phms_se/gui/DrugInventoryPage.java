@@ -195,7 +195,7 @@ public class DrugInventoryPage extends JPanel {
 	JButton getSearch(){
 		return this.search;
 	}
-	JTextField getDName(){
+	public JTextField getDName(){
 		return this.enterNameT;
 	}
 	public JTable getTable(){

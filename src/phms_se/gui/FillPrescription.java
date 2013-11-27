@@ -1,5 +1,6 @@
 package phms_se.gui;
 import java.awt.*;
+
 import javax.swing.*;
 @SuppressWarnings("serial")
 public class FillPrescription extends JPanel {
@@ -15,6 +16,7 @@ public class FillPrescription extends JPanel {
 	private JLabel refillCountTL;
 	private JLabel fillDateTL;
 	private JLabel expirationTL;
+	private JLabel warning;
 	private JButton cancel;
 	private JButton submit;
 	FillPrescription(Gui frame){
@@ -130,6 +132,12 @@ public class FillPrescription extends JPanel {
 				 c.gridx=2;
 				 c.gridy=6;
 				 picLabel.add(cancel,c);
+				 this.warning= new JLabel("");
+				 warning.setForeground(Color.red);
+				 c.gridx=0;
+				 c.gridy=7;
+				 c.gridwidth=3;
+				 picLabel.add(warning,c);
 	}
 	JButton getCancelButton(){
 		return this.cancel;
@@ -154,5 +162,8 @@ public class FillPrescription extends JPanel {
 	}
 	public JButton getSubmit(){
 		return this.submit;
+	}
+	public JLabel getWarning(){
+		return warning;
 	}
 }

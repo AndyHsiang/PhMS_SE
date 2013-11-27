@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import phms_se.process.helper.HelperMethods;
 
 import phms_se.gui.ManageEmployeePage;
 import phms_se.gui.PatientProfilePage;
@@ -73,21 +74,14 @@ private static JLabel subtotalLabel;
 	          return false;
 	       }
 	}
-		public static boolean CheckoutWindow(BigDecimal copay,BigDecimal subtotal,BigDecimal actualCost){
-		subtotalLabel=new JLabel("Subtotal: "+subtotal);
+		/*public static boolean CheckoutWindow(BigDecimal total){
 		
-		copayLabel= new JLabel("Copay: "+ copay);
-		totalLabel= new JLabel("Total: "+actualCost);
-		String[] method={"Cash", "CreditCard", "Check"};
-		paymentMethod=new JComboBox<String>(method);
+		totalLabel= new JLabel("Total: "+HelperMethods.currencyFormat(total));
+		
 		 JPanel myPanel = new JPanel();
-		myPanel.add(subtotalLabel);
-		myPanel.add(Box.createHorizontalStrut(15));
-		myPanel.add(copayLabel);
-		myPanel.add(Box.createHorizontalStrut(15));
+	
 		myPanel.add(totalLabel);
-		myPanel.add(Box.createHorizontalStrut(15));
-		myPanel.add(paymentMethod);
+		
 		
 		int n = JOptionPane.showConfirmDialog(
 	           null,myPanel,
@@ -98,6 +92,6 @@ private static JLabel subtotalLabel;
 	       else {
 	          return false;}
 		
-	}
+	}*/
 	
 }

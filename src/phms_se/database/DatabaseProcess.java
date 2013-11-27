@@ -357,7 +357,7 @@ public class DatabaseProcess {
 		stmt.setString(3, bean.getDose());
 		stmt.setInt(4, bean.getQuantity());
 		stmt.setInt(5, bean.getRefill());
-		stmt.setDate(6, bean.getExirationDate());
+		stmt.setDate(6, bean.getExpirationDate());
 		stmt.setBoolean(7, bean.getPayStatus());
 		stmt.setInt(8, bean.getDid());
 		stmt.setInt(9, bean.getPid());
@@ -693,7 +693,7 @@ public class DatabaseProcess {
 			newBean.setDose(rs.getString("dose"));
 			newBean.setQuantity(rs.getInt("quantity"));
 			newBean.setRefill(rs.getInt("refill"));
-			newBean.setExirationDate(rs.getDate("expiration_date"));
+			newBean.setExpirationDate(rs.getDate("expiration_date"));
 			newBean.setPayStatus(rs.getBoolean("pay_status"));
 			newBean.setDid(rs.getInt("did"));
 			newBean.setPid(rs.getInt("pid"));
@@ -856,7 +856,7 @@ public class DatabaseProcess {
 	}
 	
 	private static boolean modifyPrescription(Prescription bean, PreparedStatement stmt, String field) throws SQLException{
-		
+		System.out.println("just inside the method");
 		String sql = "UPDATE prescriptions SET "+field+"= ? WHERE presc_id = ?";
 		stmt = conn.prepareStatement(sql);
 		
@@ -864,11 +864,11 @@ public class DatabaseProcess {
 			stmt.setString(1, bean.getDose());
 		if(field.toLowerCase().equals("quantity"))
 			stmt.setInt(1, bean.getQuantity());
-		if(field.toLowerCase().equals("refill"));
+		if(field.toLowerCase().equals("refill"))
 			stmt.setInt(1, bean.getRefill());
-		if(field.toLowerCase().equals("expiration_date"));
-			stmt.setDate(1, bean.getExirationDate());
-		if(field.toLowerCase().equals("pay_status"));
+		if(field.toLowerCase().equals("expiration_date"))
+			stmt.setDate(1, bean.getExpirationDate());
+		if(field.toLowerCase().equals("pay_status"))
 			stmt.setBoolean(1, bean.getPayStatus());
 		stmt.setInt(2, bean.getPrescriptionID());
 			

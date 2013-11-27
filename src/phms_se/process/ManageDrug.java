@@ -3,9 +3,12 @@ package phms_se.process;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import phms_se.gui.DrugInventoryPage;
 import phms_se.gui.Gui;
 import phms_se.gui.NewDrugPage;
+import phms_se.gui.PatientProfilePage;
 import phms_se.gui.RestockPage;
 import phms_se.database.bean.Drug;
 import phms_se.database.DatabaseProcess;
@@ -89,13 +92,14 @@ public class ManageDrug {
 	 * @param DrugId
 	 */
 
-public static void restock(RestockPage rstock){
+public static Drug restock(RestockPage rstock){
 				Drug d = new Drug();
 				d.setDrugName(rstock.getDname().getText());
 				int AddQuantity = rstock.getDquant();
 				d=(Drug)DatabaseProcess.getRow(d);
 				d.setQuantity(d.getQuantity()+AddQuantity);
 				DatabaseProcess.modifyRow(d, "quantity");
+				return d;
 				//not sure what to put as the field
 				
 			}
@@ -114,11 +118,44 @@ public static void restock(RestockPage rstock){
 			}i=i+2;
 		}
 	}
+	public static void checkQuantity(Drug bean){
+		bean=(Drug)DatabaseProcess.getRow(bean);
+		if(bean.getQuantity()<1000){
+			JOptionPane.showMessageDialog(null, "OMG LOW INVENTORY\n"+					
+					bean.getDrugName()+" is running low! "
+					+"\nQuantity remaining: "+bean.getQuantity());
+		}if(bean.getControlFlag()){
+			JOptionPane.showMessageDialog(null, "OMG CONTROLLED SUBSTANCE!\n"+					
+					"Drug name: "+bean.getDrugName());
+		}
+	}
 	/**
 	 * @param drugName
 	 * @param quantity
 	 */
 	public static void lowStockWarning(String drugName, int quantity){
 		System.out.println(drugName+" is running low\ncurrent quantity on hand: "+quantity);
+	}
+	public static void clearDrugPage(DrugInventoryPage drugP){
+		for(int i=0;i<2;i++){
+			drugP.getTable().setValueAt("Drug Name",0,0);
+			drugP.getTable().setValueAt("Quantity",0,1);
+			drugP.getTable().setValueAt("Controlled Flag",0,2);
+			drugP.getTable().setValueAt("Price",0,3);
+			drugP.getTable().setValueAt("",1,0);
+			drugP.getTable().setValueAt("",1,1);
+			drugP.getTable().setValueAt("",1,2);
+			drugP.getTable().setValueAt("",1,3);
+		}
+		drugP.getDName().setText("");
+		drugP.setGeneralText("");
+		drugP.setEffectsText("");
+	}
+	public static void clearNewDrugPage(NewDrugPage newDrug){
+		newDrug.getdName().setText("");
+		newDrug.getdGeneral().setText("");
+		newDrug.getdSide().setText("");
+		newDrug.getdQuantity().setText("");
+		
 	}
 }

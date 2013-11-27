@@ -67,6 +67,9 @@ public class RestockPage extends JPanel {
 		int addQ= Integer.parseInt(q);
 		return addQ;
 	}
+		public JTextField getQuantity(){
+			return quantityT;
+		}
 	JButton getCancelButton(){
 		return this.cancel;
 	}

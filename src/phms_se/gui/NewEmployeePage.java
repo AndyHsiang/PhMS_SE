@@ -260,6 +260,12 @@ public class NewEmployeePage extends JPanel {
 		}public JTextField getEmpPosition(){
 			return positionT;
 		}
+		public JTextField getConfirmPassword(){
+			return confirmPassT;
+		}
+		public JTextField getPasswordForClear(){
+			return passT;
+		}
 		
 	JButton getCancel(){
 		return this.cancel;

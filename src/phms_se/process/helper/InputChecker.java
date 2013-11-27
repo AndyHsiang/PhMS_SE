@@ -171,6 +171,36 @@ public class InputChecker {
 
 		return true;
 	}
+	public static boolean expiration(String dob){
+		String[] d = dob.split("[-\\s\\:,]");
+		
+		Date date= new Date();
+		
+		if(d[0].length()!=4)
+			return false;
+		if(!digits(d[0]))
+			return false;
+		
+	
+		if(d[1].length()==1 && (Integer.parseInt(d[1])>9||Integer.parseInt(d[1])<1))
+			return false;
+		else if (d[1].length()>2)
+			return false;
+		if(d[2].length()==1 && (Integer.parseInt(d[2])>9||Integer.parseInt(d[2])<1))
+			return false;
+		else if (d[2].length()>2)
+			return false;
+
+		if(!digits(d[1])||!digits(d[2]))
+			return false;
+		if(Integer.parseInt(d[1])>12||Integer.parseInt(d[1])<1){
+			return false;
+		}
+		if(Integer.parseInt(d[2])>31||Integer.parseInt(d[2])<1)
+			return false;
+
+		return true;
+	}
 	public static boolean position(String position){
 		 position=position.toLowerCase();
 		 if(!position.equals("tech")||!position.equals("manager")||!position.equals("pharmacist")){

@@ -40,7 +40,6 @@ public class PatientProfilePage extends JPanel{
 	private JLabel prescriptionHistory;
 	final JTable prescriptionTable;
 	private JButton refillP;
-	
 	private JTextArea prescriptionList;
 	private JPanel checkOutPane,listPane;
 	private JLabel insuranceCoPay, subTotal, tax, total,
@@ -58,7 +57,7 @@ public class PatientProfilePage extends JPanel{
 		listPane=new JPanel(new FlowLayout());
 		
 		cc.insets= new Insets(0,10,10,0);
-		prescriptionList=new JTextArea("unpaid prescription list");
+		prescriptionList=new JTextArea("Unpaid Prescription List: \n");
 		prescriptionList.setColumns(100);
 		prescriptionList.setRows(100);
 		prescriptionList.setLineWrap(true);
@@ -71,7 +70,7 @@ public class PatientProfilePage extends JPanel{
 		checkOutPane.add(expandList, cc);
 		
 		cc.insets= new Insets(0,0,0,0);
-		insuranceCoPay=new JLabel("co pay");
+		insuranceCoPay=new JLabel("Co Pay:");
 		cc.gridx=4;
 		cc.gridy=5;
 		cc.gridwidth=1;
@@ -85,7 +84,7 @@ public class PatientProfilePage extends JPanel{
 		cc.gridheight=1;
 		checkOutPane.add(coPayAmt, cc);
 		
-		subTotal=new JLabel("subtotal");
+		subTotal=new JLabel("Subtotal:");
 		cc.gridx=4;
 		cc.gridy=6;
 		cc.gridwidth=1;
@@ -99,7 +98,7 @@ public class PatientProfilePage extends JPanel{
 		cc.gridheight=1;
 		checkOutPane.add(subAmt, cc);
 		
-		tax=new JLabel("tax");
+		tax=new JLabel("Tax:");
 		cc.gridx=4;
 		cc.gridy=7;
 		cc.gridwidth=1;
@@ -113,7 +112,7 @@ public class PatientProfilePage extends JPanel{
 		cc.gridheight=1;
 		checkOutPane.add(taxAmt, cc);
 		
-		total=new JLabel("total");
+		total=new JLabel("Total:");
 		cc.gridx=4;
 		cc.gridy=8;
 		cc.gridwidth=1;
@@ -128,6 +127,7 @@ public class PatientProfilePage extends JPanel{
 		checkOutPane.add(totalAmt, cc);
 		
 		cc.insets= new Insets(0,0,0,0);
+		
 		credit=new JRadioButton("Credit");
 		cc.gridx=0;
 		cc.gridy=5;
@@ -135,14 +135,16 @@ public class PatientProfilePage extends JPanel{
 		cc.gridheight=1;
 		checkOutPane.add(credit, cc);
 		
-		cash=new JRadioButton("cash");
+		cash=new JRadioButton("Cash");
+		cc.insets= new Insets(0,0,0,10);
 		cc.gridx=0;
 		cc.gridy=6;
 		cc.gridwidth=1;
 		cc.gridheight=1;
 		checkOutPane.add(cash, cc);
 		
-		check=new JRadioButton("check");
+		check=new JRadioButton("Check");
+		cc.insets= new Insets(0,0,0,0);
 		cc.gridx=0;
 		cc.gridy=7;
 		cc.gridwidth=1;
@@ -399,12 +401,16 @@ public class PatientProfilePage extends JPanel{
 					 tablePane.setPreferredSize(new Dimension(750,150 ));
 					 picLabel.add(tablePane,c);
 	
-	c.insets= new Insets(20,20,0,0);
+	c.insets= new Insets(80,20,0,0);
 	c.gridx=2;
 	c.gridy=4;
 	c.gridwidth=50;
 	c.gridheight=50;	
+	Border border= BorderFactory.createLineBorder(Color.black);
+	Border border1 = BorderFactory.createTitledBorder(border,"Checkout");
+	checkOutPane.setBorder(border1);
 	picLabel.add(checkOutPane,c);
+	checkOutPane.setPreferredSize((new java.awt.Dimension(450, 250)));
 }
 	   JButton getfillButton() {
 			return this.fillPrescription;

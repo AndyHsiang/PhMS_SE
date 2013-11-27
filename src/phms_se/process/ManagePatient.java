@@ -327,4 +327,23 @@ public class ManagePatient {
 	public static void getPatientHistory(Patient patient){
 		
 	}
+	public static void resetUnpaid(PatientProfilePage patientP){
+		patientP.getPrescriptionList().setText("Unpaid Prescription List: \n");
+		patientP.getTaxAmt().setText("");
+		patientP.getCoPayAmt().setText("");
+		patientP.getTotalAmt().setText("");
+		patientP.getSubAmt().setText("");
+	}
+	public static void clearNewPatient(NewPatientPage newp){
+		newp.getfName().setText("");
+		newp.getlName().setText("");
+		newp.getDoctor().setText("");
+		newp.getPhone().setText("");
+		newp.getAddress().setText("");
+		newp.getCity().setText("");
+		newp.getZip().setText("");
+		newp.getState().setText("");
+		newp.getWarning().setText("");
+		
+	}
 }

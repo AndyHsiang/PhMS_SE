@@ -27,6 +27,7 @@ public class Gui extends JFrame implements ActionListener{
 	private static Employee currentUser;
 	private static Patient currentPatient;
 	private static Drug currentDrug;
+	private static Drug checkQuantity;
 	private static Employee currentEmployee;
 	private static Prescription currentPrescription;
 	private JLabel picLabel;
@@ -152,6 +153,7 @@ public class Gui extends JFrame implements ActionListener{
 		this.systemP=new SystemsPage(this);
 		this.employeePage=new ManageEmployeePage(this);
 		this.newEmployee=new NewEmployeePage(this);
+		checkQuantity=new Drug();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -199,7 +201,7 @@ public class Gui extends JFrame implements ActionListener{
 			repaint();
 		}
 else if(e.getSource()==pProfileP.getCheckOut()){
-			
+			ManagePatient.resetUnpaid(pProfileP);
 			ManagePrescription.Checkout(currentPatient,pProfileP);
 			getContentPane().removeAll();
 			getContentPane().add(pProfileP);
@@ -210,7 +212,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 		else if(e.getSource()==newPatientP.getSubmit()){
 			if(ManagePatient.verifyNewPatient(newPatientP))
 				if(ManagePatient.addNewPatient(newPatientP)){
-					
+					ManagePatient.clearNewPatient(newPatientP);
 					getContentPane().removeAll();
 					getContentPane().add(spatientP);
 					revalidate();
@@ -321,6 +323,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			spatientP.setWarningLabel("");
 		}
 		else if(e.getSource()==drugP.getBackButton()){
+			ManageDrug.clearDrugPage(drugP);
 			getContentPane().removeAll();
 			getContentPane().add(menuP);
 			revalidate();
@@ -337,6 +340,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			}
 		}
 		else if(e.getSource()==newPatientP.getCancel()){
+			ManagePatient.clearNewPatient(newPatientP);
 			getContentPane().removeAll();
 			getContentPane().add(spatientP);
 			revalidate();
@@ -346,6 +350,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 		else if(e.getSource()==pProfileP.getExitButton()){
 			currentPatient=null;
 			ManagePatient.clearTable(pProfileP);
+			ManagePatient.resetUnpaid(pProfileP);
 			getContentPane().removeAll();
 			getContentPane().add(spatientP);
 			revalidate();
@@ -383,33 +388,45 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			repaint();}
 		}
 		else if(e.getSource()==fillP.getCancelButton()){
+			ManagePrescription.clearFillPrescription(fillP);
 			getContentPane().removeAll();
 			getContentPane().add(pProfileP);
 			revalidate();
 			repaint();
 		}
 		else if(e.getSource()==fillP.getSubmit()){
+			if(ManagePrescription.verifyPrescription(fillP)){
 			ManagePrescription.addPrescription(fillP);
 			ManagePrescription.displayPrescription(pProfileP);
+			checkQuantity.setDrugName(fillP.getDrugName().getText());
+			ManagePrescription.clearFillPrescription(fillP);
 			getContentPane().removeAll();
 			getContentPane().add(pProfileP);
 			revalidate();
-			repaint();
+			repaint();}
+			ManageDrug.checkQuantity(checkQuantity);
 		}
 		else if(e.getSource()==restockP.getCancelButton()){
+			restockP.getDname().setText("");
+			restockP.getQuantity().setText("");
 			getContentPane().removeAll();
 			getContentPane().add(drugP);
 			revalidate();
 			repaint();
 		}
 		else if(e.getSource()==restockP.getRestock()){
-			ManageDrug.restock(restockP);
+			Drug drugbean=ManageDrug.restock(restockP);
+			ManageDrug.setDrugInventory(drugbean, drugP);
+			drugP.getDName().setText(drugbean.getDrugName());
+			restockP.getDname().setText("");
+			restockP.getQuantity().setText("");
 			getContentPane().removeAll();
 			getContentPane().add(drugP);
 			revalidate();
 			repaint();
 		}
 		else if(e.getSource()==nDrugP.getCancelButton()){
+			ManageDrug.clearNewDrugPage(nDrugP);
 			getContentPane().removeAll();
 			getContentPane().add(drugP);
 			revalidate();
@@ -417,6 +434,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 		}
 		else if(e.getSource()==nDrugP.getSubmit()){
 			ManageDrug.addNewDrug(nDrugP);
+			ManageDrug.clearNewDrugPage(nDrugP);
 			getContentPane().removeAll();
 			getContentPane().add(drugP);
 			revalidate();
@@ -504,6 +522,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 				System.out.println("unable to update employee information");
 		}
 		else if(e.getSource()==newEmployee.getCancel()){
+			ManageEmployee.clearNewEmployee(newEmployee);
 			getContentPane().removeAll();
 			getContentPane().add(employeePage);
 			revalidate();
@@ -513,6 +532,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			if(ManageEmployee.verifyNewEmployee(newEmployee)){
 			ManageEmployee.addNewEmployee(newEmployee);
 			ManageEmployee.fillEmployeeTable(employeePage);
+			ManageEmployee.clearNewEmployee(newEmployee);
 			getContentPane().removeAll();
 			getContentPane().add(employeePage);
 			revalidate();
@@ -571,6 +591,14 @@ public static ManageEmployeePage getPage(){
 
 	public static void setCurrentEmployee(Employee currentEmployee) {
 		Gui.currentEmployee= currentEmployee;
+	}
+
+	public static Drug getCheckQuantity() {
+		return checkQuantity;
+	}
+
+	public static void setCheckQuantity(Drug checkQuantity) {
+		Gui.checkQuantity = checkQuantity;
 	}			 
 }
 

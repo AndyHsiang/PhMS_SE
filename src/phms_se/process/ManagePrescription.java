@@ -18,12 +18,14 @@ import phms_se.gui.ManageEmployeePage;
 import phms_se.gui.PatientProfilePage;
 import phms_se.process.helper.DeleteConfirmation;
 import phms_se.process.helper.HelperMethods;
+import phms_se.process.helper.InputChecker;
 
 /**
  * @author Andy
  */
 public class ManagePrescription {
 	private static BigDecimal totalPrescriptionCost;
+	
 	/**
 	 * @param drug
 	 * @param patient
@@ -74,8 +76,8 @@ public class ManagePrescription {
 		perp.setThisDay(Start);
 		perp.setStartDate(Start);
 		perp.setDose("3/DAY");
-		perp.setExirationDate(Exp);
-		System.out.println(perp);
+		perp.setExpirationDate(Exp);
+		
 		DatabaseProcess.insert(perp);
 		//perp.fillP.getExpiration()
 		return false;
@@ -116,8 +118,12 @@ public class ManagePrescription {
 	}
 	
 	public static void displayPrescription(PatientProfilePage profileP){
+		BigDecimal tax = new BigDecimal(.07);
+		totalPrescriptionCost=BigDecimal.ZERO;
 		clearTable(profileP);
 		Patient p = Gui.getCurrentPatient();
+		BigDecimal coPay=p.getCoPay().divide(new BigDecimal(100));
+		
 		int pid=p.getPid();
 		ArrayList<Integer> prescID=new ArrayList<Integer>();
 		prescID=DatabaseProcess.getPrescription(pid);
@@ -144,7 +150,7 @@ public class ManagePrescription {
 				
 				BigDecimal x = HelperMethods.multiplyCost(bean.getQuantity(),d.getPrice());
 				if(flag){
-					totalPrescriptionCost=x;
+					totalPrescriptionCost=BigDecimal.ZERO;
 					flag=false;
 				}
 				if(totalPrescriptionCost!=null)
@@ -154,14 +160,20 @@ public class ManagePrescription {
 						+" $"+x+"\n";
 				String a="";
 				a+=s;
-				System.out.println(a);
-				System.out.println(totalPrescriptionCost);
-				profileP.getPrescriptionList().setText(a);
+				profileP.getPrescriptionList().append(a);
+				
 			}
+			
 			else if(bean.getRefill()!=0)
 				paid.add(bean.getPrescriptionID());
 			else expired.add(bean.getPrescriptionID());
 		}
+		profileP.getCoPayAmt().setText("%"+coPay);
+		totalPrescriptionCost=HelperMethods.patientCost(coPay,totalPrescriptionCost);
+		profileP.getSubAmt().setText("$"+HelperMethods.currencyFormat(totalPrescriptionCost));
+		profileP.getTaxAmt().setText("%7.00");
+		totalPrescriptionCost=HelperMethods.patientCost(HelperMethods.addOne(tax), totalPrescriptionCost);
+		profileP.getTotalAmt().setText(HelperMethods.currencyFormat(totalPrescriptionCost));
 		for(int i=0;i<paid.size();i++){
 			Prescription paidBean =new Prescription();
 			paidBean.setPrescriptionID(paid.get(i));
@@ -210,10 +222,7 @@ public class ManagePrescription {
 		
 	}
 	public static void Checkout(Patient currentP,PatientProfilePage profileP){
-		BigDecimal subtotal = BigDecimal.ZERO;
-		BigDecimal actualCost=BigDecimal.ZERO;
-		BigDecimal coPay=currentP.getCoPay();
-		int drugCount=0;
+		
 		ArrayList<Integer> prescriptions= new ArrayList<Integer>();
 		ArrayList<Integer> unpaid= new ArrayList<Integer>();
 		int Pid= currentP.getPid();
@@ -225,25 +234,9 @@ public class ManagePrescription {
 			presc.setPrescriptionID(prescriptions.get(i));
 			presc=(Prescription)DatabaseProcess.getRow(presc);
 			if(presc.getPayStatus()==false){
-				drugCount++;
-				int DID= presc.getDid();
-				Drug drugbean=new Drug();
-				drugbean.setDrugId(DID);
-				drugbean= (Drug)DatabaseProcess.getRow(drugbean);
-				BigDecimal price= drugbean.getPrice();
-				BigDecimal totalPrice= price.multiply(new BigDecimal(presc.getQuantity()));
-				subtotal=subtotal.add(totalPrice);
 				unpaid.add(presc.getPrescriptionID());
-				
 				}
 			}
-
-		if (coPay.compareTo(BigDecimal.ZERO) > 0){
-			actualCost=coPay.multiply(new BigDecimal(drugCount));
-		
-		}
-		
-	if(DeleteConfirmation.CheckoutWindow(coPay, subtotal, actualCost)){
 		for(int j=0;j<unpaid.size();j++){
 			Prescription paid=new Prescription();
 			paid.setPrescriptionID(unpaid.get(j));
@@ -254,17 +247,40 @@ public class ManagePrescription {
 		displayPrescription(profileP);
 	}
 		
-	}
-		
-	
-		
-	
 	public static boolean isPaid(Prescription bean){
 		boolean paid= bean.getPayStatus();
 		return paid;
 	}
 	public static BigDecimal getTotalPrescriptionCost() {
 		return totalPrescriptionCost;
+	}
+	public static boolean verifyPrescription(FillPrescription fillP){
+		
+		if(!fillP.getDrugName().getText().equals("")){
+			if(InputChecker.digits(fillP.getQuantity().getText())){
+				if(InputChecker.digits(fillP.getRefillCount().getText())){
+					if(InputChecker.dob(fillP.getFillDate().getText())){
+						if(InputChecker.expiration(fillP.getExpiration().getText()))
+							return true;
+								else{ 
+								fillP.getWarning().setText("invalid format for start date");}
+							}else{fillP.getWarning().setText("wrong format for fill date");}
+						}else{fillP.getWarning().setText("wrong format for refill count");}
+					}else{
+						
+						fillP.getWarning().setText("wrong format for qauantity");}
+				}else{
+						
+						fillP.getWarning().setText("wrong format for drug name");}
+		return false;
+	}
+	public static void clearFillPrescription(FillPrescription fillP){
+		fillP.getDrugName().setText("");
+		fillP.getPrescriber().setText("");
+		fillP.getQuantity().setText("");
+		fillP.getRefillCount().setText("");
+		fillP.getFillDate().setText("");
+		fillP.getExpiration().setText("");
 	}
 		
 }

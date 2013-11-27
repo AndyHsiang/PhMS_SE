@@ -2,6 +2,7 @@ package phms_se.process.helper;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.NumberFormat;
 
 public class HelperMethods {
 	public static String[] splitString(String str){
@@ -37,5 +38,16 @@ public class HelperMethods {
 	public static BigDecimal totalCost(BigDecimal cost, BigDecimal currentCost){
 		
 		return currentCost.add(cost);
+	}
+	public static BigDecimal addOne(BigDecimal num){
+		BigDecimal x = num.add(new BigDecimal(1));
+		return x;
+	}
+	public static BigDecimal patientCost(BigDecimal a,BigDecimal total){
+		BigDecimal patientCost= total.multiply(a);
+		return patientCost;
+	}
+	public static String currencyFormat(BigDecimal n) {
+	    return NumberFormat.getCurrencyInstance().format(n);
 	}
 }
