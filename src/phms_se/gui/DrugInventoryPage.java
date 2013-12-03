@@ -1,10 +1,18 @@
 package phms_se.gui;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import phms_se.database.DatabaseProcess;
+import phms_se.database.bean.Drug;
+import phms_se.process.ManageDrug;
+import phms_se.process.ManageEmployee;
 @SuppressWarnings("serial")
+//DRUG INVENTORY PAGE
 public class DrugInventoryPage extends JPanel {
 	private JLabel enterNameL;
 	private JLabel LIWarning;
@@ -25,6 +33,7 @@ public class DrugInventoryPage extends JPanel {
 	private JScrollPane lowInvScroll;
 	private JLabel generalL;
 	private JLabel effectsL;
+	private int rowSelected;
 	DrugInventoryPage(Gui frame){
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -131,6 +140,7 @@ public class DrugInventoryPage extends JPanel {
 				 Object[][] ddata=new Object[20][1];
 				 lowInventory = new JTable(ddata, dcolumnName);
 				 lowInventory.setRowHeight(25);
+				 lowInventory.addMouseListener(adapter);
 				 
 				 lowInvScroll = new JScrollPane(lowInventory);
 				 lowInvScroll.setPreferredSize(new Dimension(200, 200));
@@ -225,4 +235,18 @@ public JScrollPane getLowInvScroll() {
 public void setLowInvScroll(JScrollPane lowInvScroll) {
 	this.lowInvScroll = lowInvScroll;
 }
+MouseAdapter adapter=new MouseAdapter(){
+	public void mousePressed(MouseEvent e) {
+
+	if (e.getClickCount() == 1) {
+	      JTable target = (JTable)e.getSource();
+	       rowSelected = target.getSelectedRow();
+	      //int column = target.getSelectedColumn();
+	    String drugName = lowInventory.getValueAt(rowSelected,0).toString();
+	    Drug DrugBean= new Drug();
+	    DrugBean.setDrugName(drugName);
+	    DrugBean=(Drug)DatabaseProcess.getRow(DrugBean);
+	      ManageDrug.setDrugInventory(DrugBean, Gui.getDrugPage());
+	      }
+}};
 }

@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+//NEW SCHEDULE JPANE
 public class newSchedule {
 	private static JLabel startL;
 	private static JLabel endL;

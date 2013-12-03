@@ -15,6 +15,7 @@ import phms_se.database.DatabaseProcess;
 /**
  * @author Andy
  */
+//MANAGE DRUG PROCCESS
 public class ManageDrug {
 	/**
 	 * @param drugName
@@ -98,10 +99,11 @@ public static Drug restock(RestockPage rstock){
 				d.setQuantity(d.getQuantity()+AddQuantity);
 				DatabaseProcess.modifyRow(d, "quantity");
 				return d;
-				//not sure what to put as the field
+				
 				
 			}
 	public static void setLowInventoryWarning(DrugInventoryPage drugInv){
+		clearLowInventoryTable(Gui.getDrugPage());
 		String drugName="";
 		String drugCount="";
 		ArrayList<String> drug= null;
@@ -190,5 +192,11 @@ public static Drug restock(RestockPage rstock){
 		newDrug.getdSide().setText("");
 		newDrug.getdQuantity().setText("");
 		
+	}
+	public static void clearLowInventoryTable(DrugInventoryPage drugP){
+		int rows= drugP.getLowInventoryTable().getRowCount();
+		for(int i=0;i<rows;i++){
+			drugP.getLowInventoryTable().setValueAt("",i,0);
+		}
 	}
 }

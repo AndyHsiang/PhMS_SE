@@ -23,6 +23,7 @@ import javax.swing.border.Border;
 import phms_se.process.ManageEmployee;
 
 @SuppressWarnings("serial")
+//MANAGE EMPLOYEE PAGE
 public class ManageEmployeePage extends JPanel {
 	
 private JLabel title;

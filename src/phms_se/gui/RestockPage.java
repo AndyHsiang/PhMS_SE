@@ -7,7 +7,7 @@ import java.awt.Insets;
 
 import javax.swing.*;
 
-
+//RESTOCK PAGE
 @SuppressWarnings("serial")
 public class RestockPage extends JPanel {
 	private JTextField drugNameT;

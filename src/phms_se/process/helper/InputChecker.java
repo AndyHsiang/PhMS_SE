@@ -6,6 +6,7 @@ import java.util.Date;
 /**
  * @author Andy Hsiang
  */
+//INPUT CHEKCER
 public class InputChecker {
 	
 	/**username should be in all lowercase letters

@@ -20,7 +20,7 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
 import java.text.ParseException;
-
+//This is our main gui class where our JFrame is created and where our main actionPerformer is
 @SuppressWarnings("serial")
 public class Gui extends JFrame implements ActionListener{
 	public static Gui frame;
@@ -42,7 +42,7 @@ public class Gui extends JFrame implements ActionListener{
 	private NewPatientPage newPatientP;
 	private PatientProfilePage pProfileP;
 	private FillPrescription fillP;
-	private DrugInventoryPage drugP;
+	private static DrugInventoryPage drugP;
 	private NewDrugPage nDrugP;
 	private RestockPage restockP;
 	private SystemsPage systemP;
@@ -157,7 +157,7 @@ public class Gui extends JFrame implements ActionListener{
 	}
 	
 	@SuppressWarnings("deprecation")
-	
+	//Main controller for all buttons in our GUI
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==login){
 			warning.setText("");
@@ -379,7 +379,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			repaint();}
 		}
 		else if(e.getSource()==pProfileP.getRefill()){	
-			if(DeleteConfirmation.Confirm(pProfileP)){
+			if(DeleteConfirmation.Refill(pProfileP)){
 			ManagePrescription.refillDrug(deleteP);
 			ManagePrescription.displayPrescription(pProfileP);
 			getContentPane().removeAll();
@@ -420,6 +420,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			drugP.getDName().setText(drugbean.getDrugName());
 			restockP.getDname().setText("");
 			restockP.getQuantity().setText("");
+			ManageDrug.setLowInventoryWarning(drugP);
 			getContentPane().removeAll();
 			getContentPane().add(drugP);
 			revalidate();
@@ -573,6 +574,9 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 public static ManageEmployeePage getPage(){
 	return employeePage;
 }
+public static DrugInventoryPage getDrugPage(){
+	return drugP;
+}
 
 	/**
 	 * @param currentPatient the currentPatient to set
@@ -580,7 +584,7 @@ public static ManageEmployeePage getPage(){
 	public static void setCurrentPatient(Patient currentPatient) {
 		Gui.currentPatient = currentPatient;
 	}
-
+//MAIN METHOD
 	public static void main(String args[]) throws IOException{	   			
 		frame = new Gui();
 		frame.setLocationRelativeTo ( null );

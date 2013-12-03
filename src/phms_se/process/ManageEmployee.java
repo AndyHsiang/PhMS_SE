@@ -23,6 +23,7 @@ import phms_se.process.helper.InputChecker;
 /**
  * @author Andy Hsiang
  */
+//MANAGE EMPLOYEE PROCESS
 public class ManageEmployee {
 	/**
 	 * @param bean

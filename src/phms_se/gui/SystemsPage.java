@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
+//SYSTEMS PAGE
 @SuppressWarnings("serial")
 public class SystemsPage extends JPanel {
 

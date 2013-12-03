@@ -3,6 +3,7 @@ import java.awt.*;
 
 import javax.swing.*;
 @SuppressWarnings("serial")
+//NEW DRUG PAGE
 public class NewDrugPage extends JPanel {
 	private JTextField drugNameT;
 	private JTextField quantityT;

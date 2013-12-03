@@ -23,6 +23,7 @@ import phms_se.process.helper.InputChecker;
 /**
  * @author Andy
  */
+//MANAGE PRESCRIPTION PROCESS
 public class ManagePrescription {
 	private static BigDecimal totalPrescriptionCost;
 	private static String currentActive;
@@ -124,6 +125,7 @@ public class ManagePrescription {
 	}
 	
 	public static void displayPrescription(PatientProfilePage profileP){
+		profileP.getPrescriptionList().setText("Unpaid Prescription List: \n");
 		BigDecimal tax = new BigDecimal(.07);
 		totalPrescriptionCost=BigDecimal.ZERO;
 		clearTable(profileP);

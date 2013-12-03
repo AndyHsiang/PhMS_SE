@@ -3,6 +3,7 @@ import java.awt.*;
 
 import javax.swing.*;
 @SuppressWarnings("serial")
+//SEARCH PATIENT PAGE
 public class spatientPanel extends JPanel{
 	private JButton newPatient;
 	private JButton back;

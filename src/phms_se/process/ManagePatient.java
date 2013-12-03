@@ -15,6 +15,7 @@ import phms_se.database.bean.Patient;
 /***
  * @author Andy
  */
+//MANAGE PATIENT PROCESS
 public class ManagePatient {
 	
 	/**

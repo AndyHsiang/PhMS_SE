@@ -11,7 +11,7 @@ import phms_se.process.ManagePrescription;
 
 
 
-
+//PATIENT PROFILE PAGE
 @SuppressWarnings("serial")
 public class PatientProfilePage extends JPanel{
 	private JLabel pNameLabel;
@@ -281,14 +281,14 @@ public class PatientProfilePage extends JPanel{
 				modify.setPreferredSize(new Dimension(150, 35));
 				modify.addActionListener(frame);
 				picLabel.add(modify, c);
-				this.remove= new JButton("Remove Patient");
+			/*	this.remove= new JButton("Remove Patient");
 				c.insets= new Insets(20,0,0,0);
 				c.gridx=1;
 				c.gridy=9;
 				c.gridwidth=1;
 				remove.setPreferredSize(new Dimension(150, 35));
 				remove.addActionListener(frame);
-				picLabel.add(remove, c);
+				picLabel.add(remove, c);*/
 				this.checkOut= new JButton("Checkout");
 				checkOut.addActionListener(frame);
 				c.insets= new Insets(20,0,0,0);
@@ -313,7 +313,8 @@ public class PatientProfilePage extends JPanel{
 				this.refillP = new JButton ("Refill Prescription");
 				refillP.addActionListener(frame);
 				refillP.setPreferredSize(new Dimension(150, 35));
-				c.gridy=11;
+				c.gridy=9;
+				c.gridx=1;
 				picLabel.add(refillP,c);
 			/*	
 				this.drugHist=new JLabel("Drug History");
@@ -359,7 +360,7 @@ public class PatientProfilePage extends JPanel{
 				        }
 				 }
 				
-				    class MyRenderer implements TableCellRenderer {
+				 class MyRenderer implements TableCellRenderer {
 
 				        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 				                boolean hasFocus, int row, int column) {
@@ -367,19 +368,22 @@ public class PatientProfilePage extends JPanel{
 				            if (value != null) {
 				                editor.setText(value.toString());
 				            }
-				         
+				            editor.setForeground(Color.BLACK);
 				            //if(Gui.getCurrentPrescription().getPayStatus()){
 				            editor.setFont(new Font("Comic Sans",Font.BOLD, 13));
 				            if(!table.getValueAt(row,6).toString().equals("0")){
-				            if(table.getValueAt(row,7).equals(true))
+				            if(table.getValueAt(row,7).equals(true)){
 				            editor.setBackground(Color.green);
-				            else if(table.getValueAt(row,7).equals(false))
-				            	editor.setBackground(Color.red);}
+				            editor.setForeground(Color.BLACK);}
+				            else if(table.getValueAt(row,7).equals(false)){
+				            editor.setBackground(Color.red);
+				            editor.setForeground(Color.WHITE);}}
 				            else editor.setBackground(Color.GRAY);
 				            
 				            return editor;
 				        }
 				    }
+
 			
 					prescriptionTable = new JTable(new MyTableModel());
 					prescriptionTable.getColumnModel().getColumn(7).setMinWidth(0);

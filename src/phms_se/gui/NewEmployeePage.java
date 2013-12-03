@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 @SuppressWarnings("serial")
+//NEW EMPLOYEE PAGE
 public class NewEmployeePage extends JPanel {
 	private JLabel nameL;
 	private JLabel usernameL;

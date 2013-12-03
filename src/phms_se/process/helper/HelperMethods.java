@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.text.NumberFormat;
 
 import javax.swing.JOptionPane;
-
+//HELPER METHODS
 public class HelperMethods {
 	public static String[] splitString(String str){
 		String[] stringArray = str.split("[\\s:/,-]");

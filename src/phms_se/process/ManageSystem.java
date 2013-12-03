@@ -7,6 +7,7 @@ import phms_se.database.bean.Employee;
 /**
  * @author Andy
  */
+//MANAGE SYSTEM PROCESS
 public class ManageSystem {
 	
 	/**

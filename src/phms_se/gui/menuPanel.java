@@ -3,8 +3,10 @@ import java.awt.*;
 import java.io.IOException;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
+//MAIN NAVIGATION PAGE
 public class menuPanel extends JPanel{
 	
 	private JButton patient;
@@ -12,6 +14,7 @@ public class menuPanel extends JPanel{
 	private JLabel menu;
 	private JButton drug;
 	private JButton system;
+	private JPanel borderMenu;
 	
 	menuPanel(Gui frame) throws IOException{
 		
@@ -32,9 +35,6 @@ public class menuPanel extends JPanel{
 		this.employee = new JButton ("Employee");
 		employee.setPreferredSize(new Dimension(170, 120));
 		employee.addActionListener(frame);
-
-					
-		
 		picLabel.add(employee,c);
 		this.drug = new JButton ("Drug Inventory");
 		drug.setPreferredSize(new Dimension(170, 120));
@@ -44,14 +44,19 @@ public class menuPanel extends JPanel{
 		system.addActionListener(frame);
 		system.setPreferredSize(new Dimension(170, 120));
 		picLabel.add(system,c);
+		this.borderMenu=new JPanel();
 		this.menu= new JLabel("Main Menu");
 		menu.setFont(new Font("Comic Sans",Font.BOLD, 48));
-		menu.setForeground(Color.BLUE);
+		menu.setForeground(Color.BLACK);
 		c.insets = new Insets(0,10,100,0);
 		c.gridx=1;
 		c.gridy=0;
 		c.gridwidth=2;
-		picLabel.add(menu,c);}
+		borderMenu.setOpaque(false);
+		
+		picLabel.add(borderMenu,c);
+		borderMenu.add(menu);
+	}
 			
 		JButton getPatientButton() {
 			return this.patient;

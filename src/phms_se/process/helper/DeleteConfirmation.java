@@ -12,7 +12,7 @@ import phms_se.process.helper.HelperMethods;
 
 import phms_se.gui.ManageEmployeePage;
 import phms_se.gui.PatientProfilePage;
-
+//Several JOptionPanes
 public class DeleteConfirmation {
 	private static JPanel MyPanel;
 	private static JTextField prescID;

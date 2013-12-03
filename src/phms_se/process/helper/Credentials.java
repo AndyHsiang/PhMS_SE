@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+//CREDENTIALS CHECKER
 public class Credentials {
 	private static JTextField user;
 	private static JPasswordField pass;

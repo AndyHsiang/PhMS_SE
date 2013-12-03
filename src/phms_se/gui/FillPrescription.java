@@ -3,6 +3,7 @@ import java.awt.*;
 
 import javax.swing.*;
 @SuppressWarnings("serial")
+//FILL PRESCRIPTION PAGE
 public class FillPrescription extends JPanel {
 	private JTextField dNameT;
 	private JTextField prescriberT;
