@@ -121,6 +121,7 @@ public static Drug restock(RestockPage rstock){
 	public static boolean checkDrugWarnings(Drug bean){
 		bean=(Drug)DatabaseProcess.getRow(bean);
 		String status = "";
+		System.out.println(bean.getDrugName());
 		String conflictDrug=ManagePrescription.checkInteraction(bean.getDrugName(), bean.getInterACtion());
 		if(bean.getQuantity()<1000){
 			status = "low";

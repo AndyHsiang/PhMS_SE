@@ -57,7 +57,7 @@ public class ManagePrescription {
 	 * @return
 	 */
 	public static boolean addPrescription(FillPrescription fillP){
-		String drugName = fillP.getDrugName().getText();
+		String drugName = capitalize(fillP.getDrugName().getText());
 		Drug derp = new Drug();
 		Prescription perp = new Prescription();
 		derp.setDrugName(drugName);
@@ -72,8 +72,8 @@ public class ManagePrescription {
 		//fillP.getPrescriber()
 		perp.setQuantity(Integer.parseInt(fillP.getQuantity().getText()));
 		perp.setRefill(Integer.parseInt(fillP.getRefillCount().getText()));
-		Date Start=HelperMethods.getDate(fillP.getFillDate().getText());
-		Date Exp=HelperMethods.getDate(fillP.getExpiration().getText());
+		Date Start=HelperMethods.getDate(fillP.getFillDate());
+		Date Exp=HelperMethods.getDate(fillP.getExpiration());
 		perp.setThisDay(Start);
 		perp.setStartDate(Start);
 		perp.setDose("3/DAY");
@@ -115,7 +115,7 @@ public class ManagePrescription {
 		String conflictFound="";
 		for(int i = 0; i<interactingDrugs.length; i++){
 			for(int j = 0; j<activeDrugList.length; j++){
-				if(!activeDrugList[j].equals(drugFilling) && interactingDrugs[i].equals(activeDrugList[j]))
+				if(!activeDrugList[j].equals(capitalize(drugFilling)) && interactingDrugs[i].equals(activeDrugList[j]))
 					conflictFound+=activeDrugList[j].toString()+" ";
 			}
 		}
@@ -123,7 +123,10 @@ public class ManagePrescription {
 			return null;
 		return conflictFound;
 	}
-	
+	public static String capitalize(String line)
+	{
+	  return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+	}
 	public static void displayPrescription(PatientProfilePage profileP){
 		profileP.getPrescriptionList().setText("Unpaid Prescription List: \n");
 		BigDecimal tax = new BigDecimal(.07);
@@ -220,6 +223,7 @@ public class ManagePrescription {
 			profileP.getPrescriptionHistory().setValueAt(d.getDrugName(),j,1);
 			profileP.getPrescriptionHistory().setValueAt(expiredBean.getStartDate().toString(), j, 5);
 			profileP.getPrescriptionHistory().setValueAt(expiredBean.getPayStatus(),j,7);j++;}
+		profileP.getPrescriptionHistory().repaint();
 	}
 	public static void clearTable(PatientProfilePage profileP){
 		int rows= profileP.getPrescriptionHistory().getRowCount();
@@ -271,12 +275,12 @@ public class ManagePrescription {
 		return totalPrescriptionCost;
 	}
 	public static boolean verifyPrescription(FillPrescription fillP){
+		if(DatabaseProcess.getDrugNames().contains(fillP.getDrugName().getText().toLowerCase())){
 		
-		if(!fillP.getDrugName().getText().equals("")){
 			if(InputChecker.digits(fillP.getQuantity().getText())){
 				if(InputChecker.digits(fillP.getRefillCount().getText())){
-					if(InputChecker.dob(fillP.getFillDate().getText())){
-						if(InputChecker.expiration(fillP.getExpiration().getText()))
+					if(InputChecker.dob(fillP.getFillDate())){
+						if(InputChecker.expiration(fillP.getExpiration()))
 							return true;
 								else{ 
 								fillP.getWarning().setText("invalid format for start date");}
@@ -295,8 +299,8 @@ public class ManagePrescription {
 		fillP.getPrescriber().setText("");
 		fillP.getQuantity().setText("");
 		fillP.getRefillCount().setText("");
-		fillP.getFillDate().setText("");
-		fillP.getExpiration().setText("");
+		
+		fillP.getWarning().setText("");
 	}
 	public static String getCurrentActive() {
 		return currentActive;

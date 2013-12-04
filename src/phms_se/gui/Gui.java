@@ -36,6 +36,7 @@ public class Gui extends JFrame implements ActionListener{
 	private JTextField userField;
 	private JPasswordField passField;
 	private JLabel warning;
+	private JLabel PhMS;
 	static JPanel loginPanel;		
 	private menuPanel menuP;
 	private spatientPanel spatientP;
@@ -67,7 +68,13 @@ public class Gui extends JFrame implements ActionListener{
 		if (shouldFill){
 			c.fill=GridBagConstraints.HORIZONTAL;
 		}
-		
+		PhMS=new JLabel("PhMS");
+		PhMS.setFont(new Font("Comic Sans",Font.BOLD, 60));
+		c.gridx=0;
+		c.gridy=0;
+		c.gridwidth=3;
+		c.insets= new Insets(0,65,100,20);
+	picLabel.add(PhMS,c);
 		JLabel username;
 		username = new JLabel("Username:");
 		username.setFont(new Font("Comic Sans",Font.BOLD, 14));
@@ -75,7 +82,8 @@ public class Gui extends JFrame implements ActionListener{
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridx=0;
 		c.insets= new Insets(0,20,0,20);
-		c.gridy=0; 
+		c.gridy=1; 
+		c.gridwidth=1;
 		picLabel.add(username,c);
 		JLabel password;
 		password = new JLabel("Password:");
@@ -83,7 +91,7 @@ public class Gui extends JFrame implements ActionListener{
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridx=0;
 		c.insets= new Insets(0,20,0,20);
-		c.gridy=1;
+		c.gridy=2;
 		picLabel.add(password, c);
 		loginPanel.setBackground(Color.gray);
 
@@ -91,12 +99,12 @@ public class Gui extends JFrame implements ActionListener{
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridx=1;
 		c.insets= new Insets(0,0,0,0);
-		c.gridy=0;
+		c.gridy=1;
 		picLabel.add(userField, c);
 		passField =new JPasswordField("",10);
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.gridx=1;
-		c.gridy=1;
+		c.gridy=2;
 		picLabel.add(passField, c);
 		
 		warning = new JLabel(" ");
@@ -116,13 +124,13 @@ public class Gui extends JFrame implements ActionListener{
 		c.insets= new Insets(10,0,0,0);
 		c.gridwidth=2;
 		c.gridx=0;
-		c.gridy=3;
+		c.gridy=4;
 		picLabel.add(login,c);
 
 		exit = new JButton ("Exit");
 		exit.setFont(new Font("Comic Sans",Font.BOLD, 16));
 		c.gridx=0;
-		c.gridy=4;
+		c.gridy=5;
 		c.anchor=GridBagConstraints.LAST_LINE_END;
 		picLabel.add(exit,c);
 		
@@ -330,7 +338,7 @@ else if(e.getSource()==pProfileP.getCheckOut()){
 			repaint();
 		}
 		else if(e.getSource()==drugP.getSearch()){
-			String drugName= drugP.getDName().getText();
+			String drugName= ManagePrescription.capitalize(drugP.getDName().getText());
 			Drug drugFound=ManageDrug.searchDrug(drugName);
 			if(drugFound != null){
 			ManageDrug.setDrugInventory(drugFound, drugP);

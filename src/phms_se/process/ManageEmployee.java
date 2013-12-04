@@ -50,10 +50,13 @@ public class ManageEmployee {
 	 * @return
 	 */
 	public static boolean deleteEmployee(ManageEmployeePage empPage){
+	
 		int row= empPage.getRow();
 	String username=	empPage.getTable().getValueAt(row, 1).toString();
 	Employee bean=new Employee();
 	bean.setUsername(username);
+	
+	
 	DatabaseProcess.delete(bean);
 		return false;
 	}
@@ -276,4 +279,16 @@ public class ManageEmployee {
 		newEmp.getWarning().setText("");
 		
 	}
+/*	public static void clearEmployee(ManageEmployeePage newEmp){
+		newEmp.getName().setText("");
+		newEmp.getEmpUsername().setText("");
+		newEmp.getPasswordForClear().setText("");
+		newEmp.getEmpPhone().setText("");
+		newEmp.getEmpAddress().setText("");
+		newEmp.getEmpEmail().setText("");
+		newEmp.getEmpPosition().setText("");
+		newEmp.getConfirmPassword().setText("");
+		newEmp.getWarning().setText("");
+		
+	}*/
 }

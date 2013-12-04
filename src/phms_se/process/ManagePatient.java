@@ -1,5 +1,6 @@
 package phms_se.process;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
@@ -247,6 +248,7 @@ public class ManagePatient {
 		newPat.setCity(newPatient.getCity().getText());
 		newPat.setState(newPatient.getState().getText());
 		newPat.setZip(newPatient.getZip().getText());
+		newPat.setCoPay(new BigDecimal(9));
 		
 		if(DatabaseProcess.insert(newPat)){
 			Gui.setCurrentPatient(newPat);

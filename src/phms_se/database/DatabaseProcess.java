@@ -199,6 +199,34 @@ public class DatabaseProcess {
       }
 		return count;		
 	}
+	public static ArrayList<String> getDrugNames(){
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql= "SELECT * FROM DRUGS";
+        ArrayList<String> count=null;
+      try {
+        stmt =  conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);	
+        rs = stmt.executeQuery(sql);
+		count= new ArrayList<String>();
+		int i=0;
+		while(rs.next()){		
+			count.add(i,rs.getString("drugname").toLowerCase());
+			
+			i++;
+		}  
+		System.out.println(count);
+      } catch (SQLException ex) {
+        Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
+      }	finally{
+          try {
+            if(rs!=null) rs.close();
+            if(stmt!=null) stmt.close();
+          } catch (SQLException ex) {
+            Logger.getLogger(DatabaseProcess.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }
+		return count;		
+	}
 
 
 	
@@ -423,7 +451,7 @@ public class DatabaseProcess {
 				return deletePrescription((Prescription) bean, stmt);
 			}
 			if(bean instanceof Schedule){
-				sql = "DELETE FROM schedu1es WHERE work_day = ? and username = ?";
+				sql = "DELETE FROM schedules WHERE work_day = ? and username = ?";
 				stmt = conn.prepareStatement(sql);
 				return deleteSchedule((Schedule)bean, stmt);
 			}
