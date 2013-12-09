@@ -320,8 +320,8 @@ else if(e.getSource()==pProfileP.getCheckOut()){
     		getContentPane().add(nDrugP);
     		revalidate();
     		repaint();
-    	}*/
-		
+    	}
+		*/
 		else if(e.getSource()==spatientP.getBackButton()){
 			spatientP.getEnterPatient().setText("");
 			getContentPane().removeAll();
