@@ -112,7 +112,7 @@ public class Gui extends JFrame implements ActionListener{
 		c.fill=GridBagConstraints.HORIZONTAL;
 		c.insets= new Insets(0,0,0,0);
 		c.gridx=0;
-		c.gridy=5;
+		c.gridy=6;
 		c.gridwidth=2;
 		picLabel.add(warning, c);
 		warning.setForeground(Color.red);
@@ -315,12 +315,12 @@ else if(e.getSource()==pProfileP.getCheckOut()){
     		revalidate();
     		repaint();
     	}
-    	else if (e.getSource()==drugP.getAddButton()){
+    /*	else if (e.getSource()==drugP.getAddButton()){
     		getContentPane().removeAll();
     		getContentPane().add(nDrugP);
     		revalidate();
     		repaint();
-    	}
+    	}*/
 		
 		else if(e.getSource()==spatientP.getBackButton()){
 			spatientP.getEnterPatient().setText("");
